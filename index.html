@@ -206,6 +206,43 @@
         .status-wrong {
             color: #dc3545;
         }
+
+        /* スマートフォン向け最適化（1画面に収めるための調整） */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                padding: 1rem;
+            }
+            #word-display {
+                font-size: 2rem;
+                margin: 0.8rem 0;
+            }
+            .options-grid {
+                grid-template-columns: repeat(2, 1fr); /* 2列配置にして縦幅を節約 */
+                gap: 0.5rem; /* 余白を減らす */
+                margin-top: 1rem;
+            }
+            .option-btn {
+                padding: 0.8rem 0.5rem; /* ボタンの高さを抑える */
+                font-size: 0.9rem;     /* 文字を少し小さく */
+                line-height: 1.2;
+            }
+            #feedback {
+                margin-top: 0.8rem;
+                height: 1.5rem;
+                font-size: 1.1rem;
+            }
+            .btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 1.1rem;
+            }
+            #progress-info {
+                margin-bottom: 0.5rem;
+                font-size: 1rem;
+            }
+        }
     </style>
 </head>
 <body>
