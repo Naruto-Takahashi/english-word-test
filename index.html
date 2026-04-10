@@ -252,6 +252,13 @@
             <fieldset>
                 <legend>通常テスト</legend>
                 <div class="form-group">
+                    <label>単語セット</label>
+                    <div style="display: flex; gap: 1.5rem; padding-top: 0.5rem;">
+                        <label style="font-weight: normal; display: inline-flex; align-items: center; gap: 0.3rem;"><input type="radio" name="wordSet" value="1200" checked> 1200</label>
+                        <label style="font-weight: normal; display: inline-flex; align-items: center; gap: 0.3rem;"><input type="radio" name="wordSet" value="1400"> 1400</label>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label for="start-range">出題範囲 (開始番号)</label>
                     <input type="number" id="start-range" value="1" min="1">
                 </div>
@@ -293,31 +300,39 @@
             <div id="result-details"></div> <button id="restart-btn" class="btn">もう一度挑戦する</button>
         </div>
     </div>
-<script src="words.js"></script>
+<script src="words1200.js"></script>
+<script src="words1400.js"></script>
 <script>
 // ===================================================================================
 // アプリケーションのコード
 // ===================================================================================
 
 let allWords = [];
+let allWords1200 = [];
+let allWords1400 = [];
 let wordStats = {};
 let quizWords = [];
 let currentQuestionIndex = 0;
 let score = 0;
 let answeredWords = []; // ★追加：回答済みの単語を記録する配列
 
-// --- 正答率記録機能（変更なし） ---
-const STATS_KEY = 'wordTestStats';
+// --- 正答率記録機能 ---
+function getStatsKey() {
+    const selected = document.querySelector('input[name="wordSet"]:checked').value;
+    return selected === '1200' ? 'wordTestStats' : 'wordTestStats_' + selected;
+}
 
 function loadStats() {
-    const storedStats = localStorage.getItem(STATS_KEY);
+    const storedStats = localStorage.getItem(getStatsKey());
     if (storedStats) {
         wordStats = JSON.parse(storedStats);
+    } else {
+        wordStats = {};
     }
 }
 
 function saveStats() {
-    localStorage.setItem(STATS_KEY, JSON.stringify(wordStats));
+    localStorage.setItem(getStatsKey(), JSON.stringify(wordStats));
 }
 
 function updateStats(wordId, isCorrect) {
@@ -625,16 +640,36 @@ function showResult() {
     resultDetails.appendChild(list);
 }
 
-function init() {
-    const rawWords = parseTSV(tsvData);
-    allWords = preprocessWords(rawWords);
-    
-    loadStats();
-    
+function updateRangeMax() {
     const maxId = allWords.length > 0 ? allWords[allWords.length - 1].id : 0;
     startRangeInput.max = maxId;
     endRangeInput.value = maxId;
     endRangeInput.max = maxId;
+}
+
+function init() {
+    const rawWords1200 = parseTSV(words1200Data);
+    allWords1200 = preprocessWords(rawWords1200);
+    
+    const rawWords1400 = parseTSV(words1400Data);
+    allWords1400 = preprocessWords(rawWords1400);
+
+    allWords = allWords1200;
+    
+    loadStats();
+    updateRangeMax();
+    
+    document.querySelectorAll('input[name="wordSet"]').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            if (e.target.value === '1200') {
+                allWords = allWords1200;
+            } else {
+                allWords = allWords1400;
+            }
+            loadStats();
+            updateRangeMax();
+        });
+    });
     
     startBtn.addEventListener('click', () => startTest(false));
     startReviewBtn.addEventListener('click', () => startTest(true));
