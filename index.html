@@ -54,13 +54,19 @@
             font-weight: 600;
             color: #555;
         }
-        .form-group input {
+        .form-group input:not([type="radio"]) {
             width: 100%;
             padding: 0.8rem 1rem;
             border: 1px solid #dcdfe6;
             border-radius: 8px;
             box-sizing: border-box;
             font-size: 1rem;
+        }
+        .form-group input[type="radio"] {
+            width: auto;
+            transform: scale(1.2);
+            margin: 0;
+            cursor: pointer;
         }
         .btn {
             background-color: #1a73e8;
