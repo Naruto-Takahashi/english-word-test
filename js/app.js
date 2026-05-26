@@ -509,7 +509,7 @@ function init() {
     const rawWords1400 = parseTSV(words1400Data);
     allWords1400 = preprocessWords(rawWords1400);
 
-    allWords = allWords1200;
+    allWords = allWords1400;
     
     loadStats();
     updateRangeMax();
