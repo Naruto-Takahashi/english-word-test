@@ -1,0 +1,245 @@
+body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 1rem;
+            box-sizing: border-box;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 2rem 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 700px;
+            text-align: center;
+        }
+        .screen { display: none; }
+        #setup-screen { display: block; }
+        h1 {
+            color: #1a73e8;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+        fieldset {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+        legend {
+            font-weight: 600;
+            padding: 0 0.5rem;
+            color: #555;
+        }
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #555;
+        }
+        .form-group input:not([type="radio"]) {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #dcdfe6;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+        .form-group input[type="radio"] {
+            width: auto;
+            transform: scale(1.2);
+            margin: 0;
+            cursor: pointer;
+        }
+        .btn {
+            background-color: #1a73e8;
+            color: #fff;
+            border: none;
+            padding: 0.9rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: background-color 0.3s, transform 0.1s;
+            display: inline-block;
+            margin-top: 1rem;
+            width: 100%;
+        }
+        .btn:hover { background-color: #155ab6; }
+        .btn:active { transform: scale(0.98); }
+        #start-review-btn {
+            background-color: #ff9800;
+        }
+        #start-review-btn:hover {
+            background-color: #fb8c00;
+        }
+        
+        #word-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        #word-display {
+            font-size: 3rem;
+            color: #2c3e50;
+            margin: 0;
+        }
+        #speak-btn {
+            font-size: 1.8rem;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.2s;
+        }
+        #speak-btn:hover {
+            transform: scale(1.2);
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .option-btn {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+        }
+        .option-btn:hover:not(:disabled) {
+            border-color: #1a73e8;
+            background-color: #eaf2ff;
+        }
+        .option-btn.correct {
+            background-color: #d4edda;
+            color: #155724;
+            border-color: #c3e6cb;
+            font-weight: bold;
+        }
+        .option-btn.wrong {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-color: #f5c6cb;
+        }
+        .option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.9;
+        }
+        #progress-info {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #6c757d;
+        }
+        #feedback {
+            margin-top: 1.5rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+            min-height: 2rem;
+            line-height: 1.5;
+        }
+        #next-btn {
+            display: none;
+            margin: 2rem auto 0;
+            width: auto;
+            background-color: #28a745;
+        }
+        #next-btn:hover { background-color: #218838; }
+        #result-screen h2 {
+            color: #28a745;
+            font-size: 2.2rem;
+        }
+        #result-screen p {
+            font-size: 1.5rem;
+            margin: 0.8rem 0;
+        }
+        .result-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 2rem;
+            text-align: left;
+        }
+        .result-item {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .result-item:last-child {
+            border-bottom: none;
+        }
+        .result-word {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        .result-meaning {
+            color: #666;
+            margin-top: 0.2rem;
+            font-size: 0.9rem;
+        }
+        .result-status {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        .status-correct {
+            color: #28a745;
+        }
+        .status-wrong {
+            color: #dc3545;
+        }
+
+        /* スマートフォン向け最適化（1画面に収めるための調整） */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                padding: 1rem;
+            }
+            #word-display {
+                font-size: 2rem;
+                margin: 0.8rem 0;
+            }
+            .options-grid {
+                grid-template-columns: repeat(2, 1fr); /* 2列配置にして縦幅を節約 */
+                gap: 0.5rem; /* 余白を減らす */
+                margin-top: 1rem;
+            }
+            .option-btn {
+                padding: 0.8rem 0.5rem; /* ボタンの高さを抑える */
+                font-size: 0.9rem;     /* 文字を少し小さく */
+                line-height: 1.2;
+            }
+            #feedback {
+                margin-top: 0.8rem;
+                height: 1.5rem;
+                font-size: 1.1rem;
+            }
+            .btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 1.1rem;
+            }
+            #progress-info {
+                margin-bottom: 0.5rem;
+                font-size: 1rem;
+            }
+        }
