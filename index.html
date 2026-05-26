@@ -3,83 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>単語テストアプリ</title>
+    <title>英単語テスト</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div class="container">
         <h1>英単語テスト</h1>
+
+        <!-- セットアップ画面 -->
         <div id="setup-screen" class="screen">
-            <fieldset>
-                <legend>通常テスト</legend>
+            <div class="setup-section">
+                <h2>通常テスト</h2>
                 <div class="form-group">
                     <label>単語セット</label>
-                    <div style="display: flex; gap: 1.5rem; padding-top: 0.5rem;">
-                        <label style="font-weight: normal; display: inline-flex; align-items: center; gap: 0.3rem;"><input type="radio" name="wordSet" value="1200" checked> 1200</label>
-                        <label style="font-weight: normal; display: inline-flex; align-items: center; gap: 0.3rem;"><input type="radio" name="wordSet" value="1400"> 1400</label>
+                    <div class="radio-group">
+                        <label class="radio-label"><input type="radio" name="wordSet" value="1200" checked> 1200</label>
+                        <label class="radio-label"><input type="radio" name="wordSet" value="1400"> 1400</label>
                     </div>
                 </div>
                 <div class="form-group">
                     <label>出題形式</label>
-                    <div style="display: flex; gap: 1.5rem; padding-top: 0.5rem; flex-wrap: wrap;">
-                        <label style="font-weight: normal; display: inline-flex; align-items: center; gap: 0.3rem;"><input type="radio" name="testMode" value="en2ja" checked> 英語 → 日本語</label>
-                        <label style="font-weight: normal; display: inline-flex; align-items: center; gap: 0.3rem;"><input type="radio" name="testMode" value="ja2en"> 日本語 → 英語 (スペル)</label>
-                        <label style="font-weight: normal; display: inline-flex; align-items: center; gap: 0.3rem;"><input type="radio" name="testMode" value="random"> ランダム</label>
+                    <div class="radio-group">
+                        <label class="radio-label"><input type="radio" name="testMode" value="en2ja" checked> 英語 → 日本語</label>
+                        <label class="radio-label"><input type="radio" name="testMode" value="ja2en"> 日本語 → 英語 (スペル)</label>
+                        <label class="radio-label"><input type="radio" name="testMode" value="random"> ランダム</label>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="start-range">出題範囲 (開始番号)</label>
-                    <input type="number" id="start-range" value="1" min="1">
-                </div>
-                <div class="form-group">
-                    <label for="end-range">出題範囲 (終了番号)</label>
-                    <input type="number" id="end-range" value="1900" min="1">
+                <div class="form-group" style="display: flex; gap: 1rem;">
+                    <div style="flex: 1;">
+                        <label for="start-range">開始番号</label>
+                        <input type="number" id="start-range" value="1" min="1">
+                    </div>
+                    <div style="flex: 1;">
+                        <label for="end-range">終了番号</label>
+                        <input type="number" id="end-range" value="1900" min="1">
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="num-questions">問題数</label>
                     <input type="number" id="num-questions" value="10" min="1">
                 </div>
-                <button id="start-btn" class="btn">テスト開始</button>
-            </fieldset>
+                <button id="start-btn" class="btn btn-primary btn-full">テスト開始</button>
+            </div>
 
-            <fieldset>
-                <legend>苦手な単語を復習する</legend>
+            <div class="setup-section">
+                <h2>苦手な単語を復習する</h2>
                 <div class="form-group">
-                    <label for="num-review-questions">不正解の多い単語から出題する数</label>
+                    <label for="num-review-questions">出題する語数（不正解が多い順）</label>
                     <input type="number" id="num-review-questions" value="10" min="1">
                 </div>
-                <button id="start-review-btn" class="btn">復習開始</button>
-            </fieldset>
-
+                <button id="start-review-btn" class="btn btn-secondary btn-full">復習開始</button>
+            </div>
         </div>
+
+        <!-- テスト画面 -->
         <div id="test-screen" class="screen">
-            <div id="progress-info"></div>
+            <div class="test-header">
+                <div id="progress-info">残り: -問 / 全-問</div>
+                <button id="quit-btn" class="btn btn-outline quit-btn-small">× 中断</button>
+            </div>
+            
             <div id="word-container">
                 <h2 id="word-display"></h2>
                 <span id="speak-btn" title="発音を聞く">🔊</span>
             </div>
+
             <div id="feedback"></div>
+
             <div class="options-grid" id="options-container"></div>
             
             <div id="spelling-container" style="display: none; margin-top: 1rem; text-align: center; position: relative;">
-                <div id="spelling-hint" style="display: flex; justify-content: center; flex-wrap: wrap; pointer-events: none; margin-bottom: 0.5rem;"></div>
+                <div id="spelling-hint"></div>
                 <div id="spelling-length-hint" style="color: #6c757d; margin-bottom: 1.5rem; font-size: 1.1rem; pointer-events: none;"></div>
                 <input type="text" id="spelling-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="position: absolute; top: 0; left: 0; width: 100%; height: 80px; opacity: 0; z-index: 10; cursor: text;">
-                <button id="submit-spelling-btn" class="btn" style="width: auto; position: relative; z-index: 20; display: block; margin: 0 auto;">回答する</button>
+                <button id="submit-spelling-btn" class="btn btn-primary" style="width: auto; position: relative; z-index: 20; display: block; margin: 0 auto;">回答する</button>
             </div>
 
-            <button id="next-btn" class="btn">次の問題へ</button>
-            <button id="quit-btn" class="btn" style="background-color: #6c757d; margin-top: 1rem;">中断して戻る</button>
+            <button id="next-btn" class="btn btn-primary" style="margin-top: 2rem;">次の問題へ</button>
         </div>
+
+        <!-- 結果画面 -->
         <div id="result-screen" class="screen">
             <h2>テスト終了！</h2>
-            <p id="score-display"></p>
-            <p id="accuracy-display"></p>
-            <div id="result-details"></div> <button id="restart-btn" class="btn">もう一度挑戦する</button>
+            <p id="score-display" style="font-size: 1.5rem; font-weight: 600;"></p>
+            <p id="accuracy-display" style="color: var(--text-muted);"></p>
+            <div id="result-details"></div>
+            <button id="save-image-btn" class="btn btn-secondary btn-full" style="margin-top: 1rem;">結果を画像で保存</button>
+            <button id="copy-image-btn" class="btn btn-outline btn-full" style="margin-top: 1rem;">画像をクリップボードにコピー</button>
+            <button id="restart-btn" class="btn btn-primary btn-full" style="margin-top: 1rem;">もう一度挑戦する</button>
         </div>
     </div>
-<script src="data/words1200.js"></script>
-<script src="data/words1400.js"></script>
-<script src="js/app.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="data/words1200.js"></script>
+    <script src="data/words1400.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>

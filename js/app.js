@@ -160,6 +160,8 @@ const startReviewBtn = document.getElementById('start-review-btn');
 const restartBtn = document.getElementById('restart-btn');
 const nextBtn = document.getElementById('next-btn');
 const quitBtn = document.getElementById('quit-btn');
+const saveImageBtn = document.getElementById('save-image-btn');
+const copyImageBtn = document.getElementById('copy-image-btn');
 const startRangeInput = document.getElementById('start-range');
 
 let currentTestMode = 'en2ja'; // 現在の問題の形式を保持
@@ -189,8 +191,8 @@ function updateSpellingHint(isFinal = false) {
     const displayLength = Math.max(typed.length, w.length);
     for (let i = 0; i < displayLength; i++) {
         let char = '';
-        let color = '#333';
-        let border = '#dcdfe6';
+        let color = '#4a4e69';  // var(--text-color)
+        let border = '#e9ecef'; // var(--border-color)
         let opacity = '1';
         
         const expectedChar = w.charAt(i) || '';
@@ -198,19 +200,16 @@ function updateSpellingHint(isFinal = false) {
 
         if (i < typed.length) {
             char = typed.charAt(i);
-            border = '#1a73e8';
-            if (isSpace && char === expectedChar) {
-                border = 'transparent';
-            }
+            border = '#e9c46a'; // var(--primary-color)
         } else if (i === 0 && typed.length === 0 && !isFinal) {
             char = w.charAt(0);
-            color = '#1a73e8';
+            color = '#e9c46a';
             opacity = '0.5';
             if (isSpace) border = 'transparent';
         } else {
             char = isSpace ? expectedChar : '';
-            color = isSpace ? '#6c757d' : 'transparent';
-            border = isSpace ? 'transparent' : '#dcdfe6';
+            color = isSpace ? '#9a8c98' : 'transparent';
+            border = isSpace ? 'transparent' : '#e9ecef';
         }
         
         if (isFinal) {
@@ -219,23 +218,23 @@ function updateSpellingHint(isFinal = false) {
             const isCorrect = (correctWord === typedWord);
             
             if (i < typed.length) {
-                border = isCorrect ? '#28a745' : '#dc3545';
-                color = isCorrect ? '#155724' : '#721c24';
+                border = isCorrect ? '#84a59d' : '#e2979c'; // success/danger
+                color = isCorrect ? '#4a4e69' : '#e2979c';
                 if (isSpace && typed.charAt(i) === expectedChar) border = 'transparent';
             } else {
-                border = isCorrect ? '#28a745' : '#dc3545';
+                border = isCorrect ? '#84a59d' : '#e2979c';
                 if (isSpace) border = 'transparent';
             }
         }
         
         if (char === ' ') char = '&nbsp;';
         
-        html += `<div style="display: inline-block; width: 2rem; height: 2.8rem; line-height: 2.8rem; font-size: 1.8rem; font-family: monospace; font-weight: bold; text-align: center; border-bottom: 3px solid ${border}; margin: 0 0.15rem; color: ${color}; opacity: ${opacity}; text-transform: lowercase; vertical-align: bottom; transition: all 0.2s;">${char}</div>`;
+        html += `<div style="display: inline-block; width: 2.2rem; height: 3rem; line-height: 3rem; font-size: 1.8rem; font-family: 'Segoe UI', monospace; font-weight: 700; text-align: center; border-bottom: 4px solid ${border}; margin: 0 0.2rem; color: ${color}; opacity: ${opacity}; text-transform: lowercase; vertical-align: bottom; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);">${char}</div>`;
     }
     
     spellingHint.innerHTML = html;
     if (!isFinal) {
-        spellingLengthHint.textContent = `(${w.length}文字)`;
+        spellingLengthHint.textContent = `${w.length} characters`;
     } else {
         spellingLengthHint.textContent = '';
     }
@@ -395,14 +394,14 @@ function selectAnswer(e) {
         playSE('correct');
         score++;
         const correctText = Array.from(optionsContainer.children).find(btn => parseInt(btn.dataset.wordId) === correctId)?.textContent || '';
-        feedback.innerHTML = `正解！<br><span style="font-size: 1rem; color: #155724;"><strong>${correctText}</strong></span>`;
-        feedback.style.color = '#155724';
+        feedback.innerHTML = `正解！ <br><span style="font-size: 1.1rem; color: var(--success-color);"><strong>${correctText}</strong></span>`;
+        feedback.style.color = 'var(--success-color)';
     } else {
         playSE('wrong');
         selectedButton.classList.add('wrong');
         const correctText = Array.from(optionsContainer.children).find(btn => parseInt(btn.dataset.wordId) === correctId)?.textContent || '';
-        feedback.innerHTML = `不正解<br><span style="font-size: 1rem; color: #333;">正解: <strong>${correctText}</strong></span>`;
-        feedback.style.color = '#721c24';
+        feedback.innerHTML = `不正解<br><span style="font-size: 1.1rem; color: var(--text-color);">正解: <strong>${correctText}</strong></span>`;
+        feedback.style.color = 'var(--danger-color)';
     }
     nextBtn.style.display = 'inline-block';
 }
@@ -435,12 +434,12 @@ function submitSpellingAnswer() {
     if (isCorrect) {
         playSE('correct');
         score++;
-        feedback.innerHTML = `正解！<br><span style="font-size: 1.2rem; color: #155724;"><strong>${currentWord.word}</strong></span>`;
-        feedback.style.color = '#155724';
+        feedback.innerHTML = `正解！<br><span style="font-size: 1.2rem; color: var(--success-color);"><strong>${currentWord.word}</strong></span>`;
+        feedback.style.color = 'var(--success-color)';
     } else {
         playSE('wrong');
-        feedback.innerHTML = `不正解<br><span style="font-size: 1.2rem; color: #721c24;">正解: <strong>${currentWord.word}</strong></span>`;
-        feedback.style.color = '#721c24';
+        feedback.innerHTML = `不正解<br><span style="font-size: 1.2rem; color: var(--text-color);">正解: <strong>${currentWord.word}</strong></span>`;
+        feedback.style.color = 'var(--danger-color)';
     }
     nextBtn.style.display = 'inline-block';
     setTimeout(() => nextBtn.focus(), 100);
@@ -517,8 +516,81 @@ function init() {
         setupScreen.style.display = 'block';
     });
 
+    saveImageBtn.addEventListener('click', () => {
+        const container = document.querySelector('.container');
+        const resultList = document.querySelector('.result-list');
+        
+        // 保存ボタンとやり直しボタンを一時的に隠す
+        saveImageBtn.style.display = 'none';
+        restartBtn.style.display = 'none';
+        
+        // リストのスクロール制限を一時的に解除して全件表示させる
+        const originalMaxHeight = resultList.style.maxHeight;
+        const originalOverflow = resultList.style.overflowY;
+        resultList.style.maxHeight = 'none';
+        resultList.style.overflowY = 'visible';
+
+        html2canvas(container, {
+            backgroundColor: '#f8f9fa',
+            scale: 2, // 高解像度
+            logging: false,
+            useCORS: true
+        }).then(canvas => {
+            const link = document.createElement('a');
+            const date = new Date().toISOString().slice(0, 10);
+            link.download = `word-test-result-${date}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+
+            // 元の状態に戻す
+            saveImageBtn.style.display = 'block';
+            restartBtn.style.display = 'block';
+            resultList.style.maxHeight = originalMaxHeight;
+            resultList.style.overflowY = originalOverflow;
+        });
+    });
+
+    copyImageBtn.addEventListener('click', () => {
+        const container = document.querySelector('.container');
+        const resultList = document.querySelector('.result-list');
+        
+        // ボタンを一時的に隠す
+        saveImageBtn.style.display = 'none';
+        copyImageBtn.style.display = 'none';
+        restartBtn.style.display = 'none';
+        
+        const originalMaxHeight = resultList.style.maxHeight;
+        const originalOverflow = resultList.style.overflowY;
+        resultList.style.maxHeight = 'none';
+        resultList.style.overflowY = 'visible';
+
+        html2canvas(container, {
+            backgroundColor: '#fefae0', // --bg-color
+            scale: 2,
+            logging: false,
+            useCORS: true
+        }).then(canvas => {
+            canvas.toBlob(blob => {
+                const item = new ClipboardItem({ 'image/png': blob });
+                navigator.clipboard.write([item]).then(() => {
+                    alert("画像をクリップボードにコピーしました！");
+                }).catch(err => {
+                    console.error("Copy failed:", err);
+                    alert("コピーに失敗しました。お使いのブラウザが対応していない可能性があります。");
+                }).finally(() => {
+                    // 状態を戻す
+                    saveImageBtn.style.display = 'block';
+                    copyImageBtn.style.display = 'block';
+                    restartBtn.style.display = 'block';
+                    resultList.style.maxHeight = originalMaxHeight;
+                    resultList.style.overflowY = originalOverflow;
+                });
+            }, 'image/png');
+        });
+    });
+
     quitBtn.addEventListener('click', () => {
-        if (confirm("テストを中断して戻りますか？（ここまでの正解数は記録されません）")) {
+        if (confirm("テストを中断してメニューに戻りますか？\n（これまでの進捗は保存されません）")) {
             testScreen.style.display = 'none';
             setupScreen.style.display = 'block';
         }
@@ -528,6 +600,7 @@ function init() {
     spellingInput.addEventListener('input', updateSpellingHint);
     spellingInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
+            e.preventDefault();
             if (!spellingInput.disabled) {
                 submitSpellingAnswer();
             }
