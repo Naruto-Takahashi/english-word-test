@@ -21,9 +21,10 @@
                 </div>
                 <div class="form-group">
                     <label>出題形式</label>
-                    <div style="display: flex; gap: 1.5rem; padding-top: 0.5rem;">
+                    <div style="display: flex; gap: 1.5rem; padding-top: 0.5rem; flex-wrap: wrap;">
                         <label style="font-weight: normal; display: inline-flex; align-items: center; gap: 0.3rem;"><input type="radio" name="testMode" value="en2ja" checked> 英語 → 日本語</label>
                         <label style="font-weight: normal; display: inline-flex; align-items: center; gap: 0.3rem;"><input type="radio" name="testMode" value="ja2en"> 日本語 → 英語 (スペル)</label>
+                        <label style="font-weight: normal; display: inline-flex; align-items: center; gap: 0.3rem;"><input type="radio" name="testMode" value="random"> ランダム</label>
                     </div>
                 </div>
                 <div class="form-group">
@@ -68,6 +69,7 @@
             </div>
 
             <button id="next-btn" class="btn">次の問題へ</button>
+            <button id="quit-btn" class="btn" style="background-color: #6c757d; margin-top: 1rem;">中断して戻る</button>
         </div>
         <div id="result-screen" class="screen">
             <h2>テスト終了！</h2>

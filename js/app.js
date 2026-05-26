@@ -159,7 +159,10 @@ const startBtn = document.getElementById('start-btn');
 const startReviewBtn = document.getElementById('start-review-btn');
 const restartBtn = document.getElementById('restart-btn');
 const nextBtn = document.getElementById('next-btn');
+const quitBtn = document.getElementById('quit-btn');
 const startRangeInput = document.getElementById('start-range');
+
+let currentTestMode = 'en2ja'; // 現在の問題の形式を保持
 const endRangeInput = document.getElementById('end-range');
 const numQuestionsInput = document.getElementById('num-questions');
 const numReviewQuestionsInput = document.getElementById('num-review-questions');
@@ -311,9 +314,15 @@ function displayQuestion() {
     }
     progressInfo.textContent = `残り: ${quizWords.length - currentQuestionIndex}問 / 全${quizWords.length}問`;
     const currentWord = quizWords[currentQuestionIndex];
-    const testMode = document.querySelector('input[name="testMode"]:checked').value;
+    const selectedMode = document.querySelector('input[name="testMode"]:checked').value;
 
-    if (testMode === 'en2ja') {
+    if (selectedMode === 'random') {
+        currentTestMode = Math.random() < 0.5 ? 'en2ja' : 'ja2en';
+    } else {
+        currentTestMode = selectedMode;
+    }
+
+    if (currentTestMode === 'en2ja') {
         wordDisplay.textContent = currentWord.word;
         speakBtn.style.display = 'inline';
         speakBtn.onclick = () => { initAudio(); speak(currentWord.word); };
@@ -506,6 +515,13 @@ function init() {
     restartBtn.addEventListener('click', () => {
         resultScreen.style.display = 'none';
         setupScreen.style.display = 'block';
+    });
+
+    quitBtn.addEventListener('click', () => {
+        if (confirm("テストを中断して戻りますか？（ここまでの正解数は記録されません）")) {
+            testScreen.style.display = 'none';
+            setupScreen.style.display = 'block';
+        }
     });
 
     submitSpellingBtn.addEventListener('click', submitSpellingAnswer);
