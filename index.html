@@ -265,6 +265,13 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label>出題形式</label>
+                    <div style="display: flex; gap: 1.5rem; padding-top: 0.5rem;">
+                        <label style="font-weight: normal; display: inline-flex; align-items: center; gap: 0.3rem;"><input type="radio" name="testMode" value="en2ja" checked> 英語 → 日本語</label>
+                        <label style="font-weight: normal; display: inline-flex; align-items: center; gap: 0.3rem;"><input type="radio" name="testMode" value="ja2en"> 日本語 → 英語 (スペル)</label>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label for="start-range">出題範囲 (開始番号)</label>
                     <input type="number" id="start-range" value="1" min="1">
                 </div>
@@ -685,6 +692,15 @@ function init() {
         setupScreen.style.display = 'block';
     });
     
+    submitSpellingBtn.addEventListener('click', submitSpellingAnswer);
+    spellingInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            if (!spellingInput.disabled) {
+                submitSpellingAnswer();
+            }
+        }
+    });
+
     document.body.addEventListener('click', initAudio, { once: true });
 }
 
