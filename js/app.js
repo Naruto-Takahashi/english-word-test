@@ -554,19 +554,49 @@ function init() {
             logging: false,
             useCORS: true
         }).then(canvas => {
-            const link = document.createElement('a');
             const date = new Date().toISOString().slice(0, 10);
-            link.download = `word-test-result-${date}.png`;
-            link.href = canvas.toDataURL('image/png');
-            link.click();
+            const fileName = `word-test-result-${date}.png`;
 
-            // 元の状態に戻す
-            saveImageBtn.style.display = 'block';
-            restartBtn.style.display = 'block';
-            resultList.style.maxHeight = originalMaxHeight;
-            resultList.style.overflowY = originalOverflow;
+            // Web Share API (スマホ用共有機能) が使えるかチェック
+            canvas.toBlob(blob => {
+                const file = new File([blob], fileName, { type: 'image/png' });
+                
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    // スマホの共有メニューを開く
+                    navigator.share({
+                        files: [file],
+                        title: '英単語テスト結果',
+                        text: '本日のテスト結果です。'
+                    }).then(() => {
+                        console.log('Shared successfully');
+                    }).catch(err => {
+                        console.error('Share failed:', err);
+                        // ユーザーキャンセル以外の場合はダウンロードにフォールバック
+                        if (err.name !== 'AbortError') downloadImage(canvas, fileName);
+                    }).finally(() => restoreUI(resultList, originalMaxHeight, originalOverflow));
+                } else {
+                    // PCや非対応ブラウザはダウンロード
+                    downloadImage(canvas, fileName);
+                    restoreUI(resultList, originalMaxHeight, originalOverflow);
+                }
+            }, 'image/png');
         });
     });
+
+    function downloadImage(canvas, fileName) {
+        const link = document.createElement('a');
+        link.download = fileName;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+    }
+
+    function restoreUI(resultList, originalMaxHeight, originalOverflow) {
+        saveImageBtn.style.display = 'block';
+        if (copyImageBtn) copyImageBtn.style.display = 'block';
+        restartBtn.style.display = 'block';
+        resultList.style.maxHeight = originalMaxHeight;
+        resultList.style.overflowY = originalOverflow;
+    }
 
     copyImageBtn.addEventListener('click', () => {
         const container = document.querySelector('.container');
