@@ -376,17 +376,34 @@ h1 {
     #speak-btn { font-size: 1.8rem; }
 
     .options-grid { 
-        grid-template-columns: 1fr; 
-        gap: 0.8rem; 
-        margin-top: 1.5rem;
+        grid-template-columns: repeat(2, 1fr); /* 2列にする */
+        gap: 0.6rem; 
+        margin-top: 1rem;
     }
-    .option-btn { padding: 1rem; }
+    .option-btn { 
+        padding: 0.7rem 0.4rem; 
+        font-size: 0.9rem;
+        line-height: 1.2;
+        min-height: 3.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
     #spelling-input {
         font-size: 16px !important; /* iOSの自動ズーム防止 */
     }
 
-    #feedback { min-height: 3rem; font-size: 1.2rem; }
+    #feedback { 
+        min-height: 2.5rem; 
+        font-size: 1.1rem; 
+        margin-top: 0.8rem;
+    }
+
+    #next-btn {
+        margin-top: 1rem;
+        padding: 0.8rem 1.5rem;
+    }
 
     .setup-section { padding: 1.2rem; margin-bottom: 1.5rem; }
 }
