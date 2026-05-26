@@ -187,6 +187,15 @@ function updateSpellingHint(isFinal = false) {
     const w = quizWords[currentQuestionIndex].word;
     const typed = spellingInput.value;
     
+    // 動的にサイズを調整（単語が長い場合に小さくする）
+    let boxWidth = 2.2; // 基本の幅 (rem)
+    let fontSize = 1.8; // 基本のフォントサイズ (rem)
+    
+    if (w.length > 10) {
+        boxWidth = Math.max(1.2, 2.2 * (10 / w.length));
+        fontSize = Math.max(1.0, 1.8 * (10 / w.length));
+    }
+    
     let html = '';
     const displayLength = Math.max(typed.length, w.length);
     for (let i = 0; i < displayLength; i++) {
@@ -229,7 +238,7 @@ function updateSpellingHint(isFinal = false) {
         
         if (char === ' ') char = '&nbsp;';
         
-        html += `<div style="display: inline-block; width: 2.2rem; height: 3rem; line-height: 3rem; font-size: 1.8rem; font-family: 'Segoe UI', monospace; font-weight: 700; text-align: center; border-bottom: 4px solid ${border}; margin: 0 0.2rem; color: ${color}; opacity: ${opacity}; text-transform: lowercase; vertical-align: bottom; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);">${char}</div>`;
+        html += `<div style="display: inline-block; width: ${boxWidth}rem; height: 3rem; line-height: 3rem; font-size: ${fontSize}rem; font-family: 'Segoe UI', monospace; font-weight: 700; text-align: center; border-bottom: 4px solid ${border}; margin: 0 0.1rem; color: ${color}; opacity: ${opacity}; text-transform: lowercase; vertical-align: bottom; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);">${char}</div>`;
     }
     
     spellingHint.innerHTML = html;
