@@ -500,24 +500,46 @@ function showResult() {
 
 function updateRangeMax() {
     const maxId = allWords.length > 0 ? allWords[allWords.length - 1].id : 0;
-    startRangeInput.max = maxId;
-    endRangeInput.max = maxId;
+    // 終了番号が100の倍数になるように最大値を丸める（例: 1403 -> 1400）
+    const roundedMax = Math.floor(maxId / 100) * 100;
+    
+    startRangeInput.max = roundedMax;
+    endRangeInput.max = roundedMax;
     numQuestionsInput.max = Math.min(100, allWords.length);
     numReviewQuestionsInput.max = Math.min(100, allWords.length);
     
     // スライダーの初期位置を調整
-    if (parseInt(endRangeInput.value) > maxId || endRangeInput.value == "1900") {
-        endRangeInput.value = maxId;
+    if (parseInt(endRangeInput.value) > roundedMax || endRangeInput.value == "1900") {
+        endRangeInput.value = roundedMax;
     }
     if (parseInt(numReviewQuestionsInput.value) > numReviewQuestionsInput.max) {
         numReviewQuestionsInput.value = numReviewQuestionsInput.max;
     }
+    
+    createSliderTicks(roundedMax);
     updateSliderDisplays();
+}
+
+function createSliderTicks(max) {
+    const ticksContainer = document.getElementById('slider-ticks');
+    if (!ticksContainer) return;
+    ticksContainer.innerHTML = '';
+    const step = 100;
+    const count = max / step;
+    for (let i = 0; i <= count; i++) {
+        const tick = document.createElement('div');
+        tick.classList.add('tick');
+        ticksContainer.appendChild(tick);
+    }
 }
 
 function updateSliderDisplays() {
     if (rangeValueDisplay) {
-        rangeValueDisplay.textContent = `${startRangeInput.value} - ${endRangeInput.value}`;
+        // 開始は +1 (例: 0-100 -> 1-100)
+        let start = parseInt(startRangeInput.value);
+        let end = parseInt(endRangeInput.value);
+        if (start === 0) start = 1;
+        rangeValueDisplay.textContent = `${start} - ${end}`;
     }
     if (numQuestionsDisplay) {
         numQuestionsDisplay.textContent = numQuestionsInput.value;
@@ -542,6 +564,10 @@ function init() {
     // スライダーのイベントリスナー
     [startRangeInput, endRangeInput].forEach(input => {
         input.addEventListener('input', () => {
+            // 操作中のスライダーを前面に持ってくる
+            startRangeInput.style.zIndex = (input === startRangeInput) ? "3" : "2";
+            endRangeInput.style.zIndex = (input === endRangeInput) ? "3" : "2";
+
             // 開始が終了を超えないように制御
             if (parseInt(startRangeInput.value) > parseInt(endRangeInput.value)) {
                 if (input === startRangeInput) {
@@ -553,6 +579,10 @@ function init() {
             updateSliderDisplays();
         });
     });
+
+    startRangeInput.min = 0; // 0から100刻み (表示は1から)
+    startRangeInput.step = 100;
+    endRangeInput.step = 100;
 
     numQuestionsInput.addEventListener('input', updateSliderDisplays);
     numReviewQuestionsInput.addEventListener('input', updateSliderDisplays);
