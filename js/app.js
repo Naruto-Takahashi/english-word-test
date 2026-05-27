@@ -290,11 +290,9 @@ function startTest(isReview = false) {
         availableWords = weakWordIds.map(id => allWords.find(w => w.id == id));
         quizWords = availableWords;
     } else {
-        let startId = parseInt(startRangeInput.value);
+        let startId = parseInt(startRangeInput.value) + 1;
         const endId = parseInt(endRangeInput.value);
         const numQuestions = parseInt(numQuestionsInput.value);
-
-        if (startId === 0) startId = 1; // 0（スライダーの左端）を1として扱う
 
         if (isNaN(startId) || isNaN(endId) || isNaN(numQuestions)) {
             alert("有効な数値を入力してください．");
@@ -540,10 +538,9 @@ function createSliderTicks(containerId, max, step) {
 
 function updateSliderDisplays() {
     if (rangeValueDisplay) {
-        // 開始は +1 (例: 0-100 -> 1-100)
-        let start = parseInt(startRangeInput.value);
+        let start = parseInt(startRangeInput.value) + 1;
         let end = parseInt(endRangeInput.value);
-        if (start === 0) start = 1;
+        if (start > end) start = end; // 安全策
         rangeValueDisplay.textContent = `${start} - ${end}`;
     }
     if (numQuestionsDisplay) {

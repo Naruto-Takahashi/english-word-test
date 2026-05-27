@@ -1,5 +1,5 @@
 /* ===================================================================================
-   英単語テストアプリ：洗練されたダスティパステル・スタイル (v2.0)
+   英単語テストアプリ：洗練されたダスティパステル・スタイル (v2.1)
    =================================================================================== */
 
 :root {
@@ -86,7 +86,7 @@ h1 {
     border-radius: 3px;
 }
 
-/* 復習セクション専用のスタイル (v2.0) */
+/* 復習セクション専用のスタイル */
 .setup-review h2::before {
     background-color: var(--secondary-color);
 }
@@ -105,7 +105,7 @@ h1 {
     letter-spacing: 0.05em;
 }
 
-/* --- Range Slider Styling (v2.0 Optimized) --- */
+/* --- Range Slider Styling (v2.1 Enhanced) --- */
 .range-slider-wrapper {
     position: relative;
     width: 100%;
@@ -149,7 +149,7 @@ input[type="range"] {
     -webkit-appearance: none;
     appearance: none;
     width: 100%;
-    background: none;
+    background: transparent !important; /* 背景を確実に消す */
     outline: none;
     margin: 0;
 }
@@ -162,72 +162,75 @@ input[type="range"] {
     z-index: 2;
 }
 
-/* Thumb Base (v2.0) */
+/* Thumb Base (v2.1) */
 input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 42px; /* 36pxから42pxに拡大 */
-    height: 42px;
+    width: 44px; /* 42pxからさらにわずかに拡大 */
+    height: 44px;
     cursor: pointer;
     transition: all 0.2s;
     pointer-events: auto;
-    border: none;
+    border: none !important;
+    background-color: transparent !important; /* 四角い背景が出るのを防止 */
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
 }
 
 input[type="range"]::-moz-range-thumb {
-    width: 42px;
-    height: 42px;
+    width: 44px;
+    height: 44px;
     cursor: pointer;
-    border: none;
+    border: none !important;
+    background-color: transparent !important;
     pointer-events: auto;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
 }
 
-/* ▷ Start Thumb (SVG - Sage with perfect white border) */
+/* ▷ Start Thumb (SVG - Optimized for mobile Safari) */
 input[type="range"].thumb-start::-webkit-slider-thumb {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M10,8 L10,32 L32,20 Z' fill='%23a3b18a' stroke='white' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M12,10 L12,30 L30,20 Z' fill='%23a3b18a' stroke='white' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
 input[type="range"].thumb-start::-moz-range-thumb {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M10,8 L10,32 L32,20 Z' fill='%23a3b18a' stroke='white' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M12,10 L12,30 L30,20 Z' fill='%23a3b18a' stroke='white' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
 
-/* ◁ End Thumb (SVG - Sage with perfect white border) */
+/* ◁ End Thumb (SVG - Optimized for mobile Safari) */
 input[type="range"].thumb-end::-webkit-slider-thumb {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M30,8 L30,32 L8,20 Z' fill='%23a3b18a' stroke='white' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M28,10 L28,30 L10,20 Z' fill='%23a3b18a' stroke='white' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
 input[type="range"].thumb-end::-moz-range-thumb {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M30,8 L30,32 L8,20 Z' fill='%23a3b18a' stroke='white' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M28,10 L28,30 L10,20 Z' fill='%23a3b18a' stroke='white' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
 
-/* Single Slider Thumb (Standard Circle) */
+/* Single Slider Thumb (Warm Yellow for questions, Blue for review) */
 input[type="range"].single-slider::-webkit-slider-thumb {
-    background: var(--primary-color);
+    background-color: var(--primary-color) !important;
+    background-image: none !important;
     border-radius: 50%;
-    border: 3px solid #fff;
-    width: 28px;
-    height: 28px;
+    border: 3px solid #fff !important;
+    width: 30px;
+    height: 30px;
     box-shadow: 0 3px 8px rgba(0,0,0,0.15);
 }
 input[type="range"].single-slider::-moz-range-thumb {
-    background: var(--primary-color);
+    background-color: var(--primary-color) !important;
     border-radius: 50%;
-    border: 3px solid #fff;
-    width: 28px;
-    height: 28px;
+    border: 3px solid #fff !important;
+    width: 30px;
+    height: 30px;
     box-shadow: 0 3px 8px rgba(0,0,0,0.15);
 }
 
-/* 復習スライダー専用色 (v2.0) */
+/* 復習スライダー専用色 */
 input[type="range"].review-slider::-webkit-slider-thumb {
-    background: var(--secondary-color);
+    background-color: var(--secondary-color) !important;
 }
 input[type="range"].review-slider::-moz-range-thumb {
-    background: var(--secondary-color);
+    background-color: var(--secondary-color) !important;
 }
 
 /* --- Radio Button (Pill Design) --- */
