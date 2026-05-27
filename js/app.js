@@ -290,9 +290,11 @@ function startTest(isReview = false) {
         availableWords = weakWordIds.map(id => allWords.find(w => w.id == id));
         quizWords = availableWords;
     } else {
-        const startId = parseInt(startRangeInput.value);
+        let startId = parseInt(startRangeInput.value);
         const endId = parseInt(endRangeInput.value);
         const numQuestions = parseInt(numQuestionsInput.value);
+
+        if (startId === 0) startId = 1; // 0（スライダーの左端）を1として扱う
 
         if (isNaN(startId) || isNaN(endId) || isNaN(numQuestions)) {
             alert("有効な数値を入力してください．");
