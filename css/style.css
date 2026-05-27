@@ -1,5 +1,5 @@
 /* ===================================================================================
-   英単語テストアプリ：洗練されたダスティパステル・スタイル (v2.1)
+   英単語テストアプリ：洗練されたダスティパステル・スタイル (v2.2)
    =================================================================================== */
 
 :root {
@@ -31,16 +31,16 @@ body {
     margin: 0;
     padding: 1rem;
     box-sizing: border-box;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.02em;
 }
 
 .container {
     background-color: var(--card-bg);
-    padding: 3rem;
+    padding: 2.5rem 2rem;
     border-radius: var(--card-radius);
     box-shadow: var(--shadow);
     width: 100%;
-    max-width: 650px;
+    max-width: 600px; /* 少しスリムに */
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -51,17 +51,17 @@ body {
 
 h1 {
     color: var(--text-color);
-    margin-bottom: 2.5rem;
-    font-size: 2.2rem;
+    margin-bottom: 2rem;
+    font-size: 2rem;
     font-weight: 800;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.05em;
 }
 
 /* --- Setup Screen --- */
 .setup-section {
     text-align: left;
-    margin-bottom: 2rem;
-    padding: 1.8rem;
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
     background: #fbfbfc;
     border: 1px solid var(--border-color);
     border-radius: 20px;
@@ -70,7 +70,7 @@ h1 {
 .setup-section h2 {
     font-size: 1.1rem;
     margin-top: 0;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.2rem;
     color: var(--text-color);
     display: flex;
     align-items: center;
@@ -86,37 +86,30 @@ h1 {
     border-radius: 3px;
 }
 
-/* 復習セクション専用のスタイル */
-.setup-review h2::before {
-    background-color: var(--secondary-color);
-}
+.setup-review h2::before { background-color: var(--secondary-color); }
 
-.form-group {
-    margin-bottom: 1.5rem;
-}
-
+.form-group { margin-bottom: 1.2rem; }
 .form-group label {
     display: block;
-    margin-bottom: 0.8rem;
+    margin-bottom: 0.6rem;
     font-weight: 700;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: var(--text-muted);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
 }
 
-/* --- Range Slider Styling (v2.1 Enhanced) --- */
+/* --- Range Slider Styling (v2.2 Reset) --- */
 .range-slider-wrapper {
     position: relative;
     width: 100%;
-    height: 50px;
-    margin: 1.5rem 0;
+    height: 40px;
+    margin: 1rem 0;
 }
 
 .slider-track {
     position: absolute;
     width: 100%;
-    height: 8px;
+    height: 6px;
     background: #e9ecef;
     border-radius: 10px;
     top: 50%;
@@ -127,31 +120,27 @@ h1 {
 .slider-ticks {
     position: absolute;
     width: 100%;
-    height: 24px;
+    height: 16px;
     top: 50%;
     transform: translateY(-50%);
     display: flex;
     justify-content: space-between;
-    padding: 0 12px;
+    padding: 0 10px;
     box-sizing: border-box;
     pointer-events: none;
     z-index: 1;
 }
 
-.tick {
-    width: 3px;
-    height: 12px;
-    background: #adb5bd;
-    border-radius: 2px;
-}
+.tick { width: 2px; height: 10px; background: #adb5bd; border-radius: 1px; }
 
 input[type="range"] {
     -webkit-appearance: none;
     appearance: none;
     width: 100%;
-    background: transparent !important; /* 背景を確実に消す */
+    background: transparent !important;
     outline: none;
     margin: 0;
+    box-shadow: none !important; /* 影を徹底的に消す */
 }
 
 .range-slider-wrapper input[type="range"] {
@@ -162,20 +151,21 @@ input[type="range"] {
     z-index: 2;
 }
 
-/* Thumb Base (v2.1) */
+/* Thumb Base (v2.2 SVG optimized) */
 input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 44px; /* 42pxからさらにわずかに拡大 */
+    width: 44px;
     height: 44px;
     cursor: pointer;
     transition: all 0.2s;
     pointer-events: auto;
     border: none !important;
-    background-color: transparent !important; /* 四角い背景が出るのを防止 */
+    background-color: transparent !important;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
+    box-shadow: none !important;
 }
 
 input[type="range"]::-moz-range-thumb {
@@ -188,98 +178,85 @@ input[type="range"]::-moz-range-thumb {
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
+    box-shadow: none !important;
 }
 
-/* ▷ Start Thumb (SVG - Optimized for mobile Safari) */
 input[type="range"].thumb-start::-webkit-slider-thumb {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M12,10 L12,30 L30,20 Z' fill='%23a3b18a' stroke='white' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Cpath d='M14,12 L14,32 L32,22 Z' fill='%23a3b18a' stroke='white' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
-input[type="range"].thumb-start::-moz-range-thumb {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M12,10 L12,30 L30,20 Z' fill='%23a3b18a' stroke='white' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E");
-}
-
-/* ◁ End Thumb (SVG - Optimized for mobile Safari) */
 input[type="range"].thumb-end::-webkit-slider-thumb {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M28,10 L28,30 L10,20 Z' fill='%23a3b18a' stroke='white' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E");
-}
-input[type="range"].thumb-end::-moz-range-thumb {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M28,10 L28,30 L10,20 Z' fill='%23a3b18a' stroke='white' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Cpath d='M30,12 L30,32 L12,22 Z' fill='%23a3b18a' stroke='white' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
 
-/* Single Slider Thumb (Warm Yellow for questions, Blue for review) */
 input[type="range"].single-slider::-webkit-slider-thumb {
-    background-color: var(--primary-color) !important;
-    background-image: none !important;
-    border-radius: 50%;
-    border: 3px solid #fff !important;
-    width: 30px;
-    height: 30px;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Ccircle cx='22' cy='22' r='14' fill='%23e9c46a' stroke='white' stroke-width='3'/%3E%3C/svg%3E") !important;
 }
-input[type="range"].single-slider::-moz-range-thumb {
-    background-color: var(--primary-color) !important;
-    border-radius: 50%;
-    border: 3px solid #fff !important;
-    width: 30px;
-    height: 30px;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
-}
-
-/* 復習スライダー専用色 */
 input[type="range"].review-slider::-webkit-slider-thumb {
-    background-color: var(--secondary-color) !important;
-}
-input[type="range"].review-slider::-moz-range-thumb {
-    background-color: var(--secondary-color) !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Ccircle cx='22' cy='22' r='14' fill='%239dabac' stroke='white' stroke-width='3'/%3E%3C/svg%3E") !important;
 }
 
 /* --- Radio Button (Pill Design) --- */
-.radio-group { display: flex; gap: 0.8rem; flex-wrap: wrap; }
-.radio-label { font-weight: 600; display: inline-flex; align-items: center; justify-content: center; padding: 0.6rem 1.2rem; background: #fff; border: 2px solid var(--border-color); border-radius: 40px; cursor: pointer; font-size: 0.9rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); user-select: none; }
+.radio-group { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+.radio-label { font-weight: 600; display: inline-flex; align-items: center; justify-content: center; padding: 0.5rem 1rem; background: #fff; border: 2px solid var(--border-color); border-radius: 40px; cursor: pointer; font-size: 0.85rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); user-select: none; }
 .radio-label input { position: absolute; opacity: 0; width: 0; height: 0; }
-.radio-label:hover { border-color: var(--primary-color); background-color: #f8faf9; }
-.radio-label:has(input:checked) { background-color: var(--primary-color); border-color: var(--primary-color); color: #fff; box-shadow: 0 4px 12px rgba(163, 177, 138, 0.3); }
+.radio-label:has(input:checked) { background-color: var(--primary-color); border-color: var(--primary-color); color: #fff; box-shadow: 0 4px 10px rgba(163, 177, 138, 0.2); }
 
 /* --- Buttons --- */
-.btn { display: inline-flex; justify-content: center; align-items: center; padding: 0.9rem 2rem; border-radius: var(--btn-radius); cursor: pointer; font-size: 1rem; font-weight: 700; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); border: none; text-decoration: none; gap: 0.5rem; }
+.btn { display: inline-flex; justify-content: center; align-items: center; padding: 0.8rem 1.8rem; border-radius: var(--btn-radius); cursor: pointer; font-size: 1rem; font-weight: 700; transition: all 0.3s; border: none; text-decoration: none; gap: 0.5rem; }
 .btn-primary { background-color: var(--primary-color); color: #fff; }
-.btn-primary:hover { background-color: var(--primary-hover); transform: translateY(-2px); }
 .btn-secondary { background-color: var(--secondary-color); color: #fff; }
-.btn-secondary:hover { background-color: var(--secondary-hover); }
 .btn-outline { background-color: transparent; border: 2px solid var(--border-color); color: var(--text-muted); }
-.btn-outline:hover { background-color: #f8f9fa; border-color: var(--text-muted); color: var(--text-color); }
 .btn-full { width: 100%; }
 
-/* --- Test Screen --- */
-.test-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem; }
-#progress-info { font-size: 0.9rem; font-weight: 700; color: var(--text-muted); letter-spacing: 0.05em; }
-.quit-btn-small { padding: 0.5rem 1rem; font-size: 0.8rem; border-radius: 12px; }
-#word-container { margin: 3.5rem 0; }
-#word-display { font-size: 3.4rem; color: var(--text-color); margin: 0; font-weight: 800; }
-#speak-btn { font-size: 2rem; cursor: pointer; margin-left: 1.2rem; vertical-align: middle; opacity: 0.4; transition: all 0.2s; }
-#speak-btn:hover { opacity: 1; transform: scale(1.1); }
-.options-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.2rem; margin-top: 2.5rem; }
-.option-btn { background-color: #fff; border: 2px solid var(--border-color); padding: 1.2rem; border-radius: 16px; cursor: pointer; font-size: 1rem; font-weight: 600; color: var(--text-color); transition: all 0.2s; }
-.option-btn:hover:not(:disabled) { border-color: var(--primary-color); background-color: #fbfbfc; }
+/* --- Test Screen (Optimized Spacing) --- */
+.test-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+#progress-info { font-size: 0.85rem; font-weight: 700; color: var(--text-muted); }
+
+#word-container {
+    margin: 1.5rem 0; /* 余白を大幅に削減 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+#word-display {
+    font-size: 2.8rem; /* 少し小さく */
+    color: var(--text-color);
+    margin: 0;
+    font-weight: 800;
+}
+
+#speak-btn {
+    font-size: 1.8rem;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: transform 0.2s;
+}
+#speak-btn:hover { transform: scale(1.1); opacity: 1; }
+
+.options-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 1rem; }
+.option-btn { background-color: #fff; border: 2px solid var(--border-color); padding: 1rem; border-radius: 16px; cursor: pointer; font-size: 0.95rem; font-weight: 600; color: var(--text-color); transition: all 0.2s; min-height: 3.5rem; }
 .option-btn.correct { background-color: var(--success-color); color: #fff; border-color: var(--success-color); }
 .option-btn.wrong { background-color: var(--danger-color); color: #fff; border-color: var(--danger-color); }
-#feedback { margin-top: 1.5rem; min-height: 4rem; font-size: 1.4rem; }
-#spelling-hint { display: flex; justify-content: center; flex-wrap: nowrap; gap: 0; margin-bottom: 0.5rem; overflow-x: auto; padding: 0.5rem 0; }
-#spelling-hint::-webkit-scrollbar { display: none; }
 
-/* --- Result Screen --- */
-#result-screen h2 { color: var(--success-color); font-size: 2.8rem; font-weight: 800; margin-bottom: 1rem; }
-.result-list { list-style: none; padding: 0.5rem; margin: 2.5rem 0; text-align: left; max-height: 350px; overflow-y: auto; border-radius: 16px; background: #f8f9fa; }
-.result-item { padding: 1.2rem; margin-bottom: 0.5rem; background: #fff; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; }
+#feedback {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    min-height: 2.5rem; /* 余白を詰める */
+    font-size: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
 
 /* --- Mobile --- */
 @media (max-width: 600px) {
-    body { align-items: flex-start; padding-top: 2rem; }
-    .container { padding: 1.5rem 1.2rem; border-radius: 16px; }
-    h1 { font-size: 1.6rem; margin-bottom: 1.5rem; }
+    .container { padding: 1.5rem 1.2rem; border-radius: 20px; }
+    h1 { font-size: 1.6rem; margin-bottom: 1.2rem; }
     #word-display { font-size: 2.2rem; }
-    .options-grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
+    .options-grid { gap: 0.6rem; }
     .option-btn { padding: 0.7rem 0.4rem; font-size: 0.9rem; min-height: 3.2rem; }
     #spelling-input { font-size: 16px !important; }
-    .setup-section { padding: 1.2rem; margin-bottom: 1.5rem; }
+    #feedback { min-height: 2rem; font-size: 1.1rem; }
 }
