@@ -154,7 +154,7 @@ h1 {
 .tick {
     width: 2px;
     height: 8px;
-    background: #dee2e6;
+    background: #adb5bd; /* 少し濃いめにする */
     border-radius: 1px;
 }
 
