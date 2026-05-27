@@ -1,5 +1,5 @@
 /* ===================================================================================
-   英単語テストアプリ：洗練されたダスティパステル・スタイル (v2.4)
+   英単語テストアプリ：洗練されたダスティパステル・スタイル (v2.5)
    =================================================================================== */
 
 :root {
@@ -98,18 +98,18 @@ h1 {
     text-transform: uppercase;
 }
 
-/* --- Range Slider Styling (v2.4 Balanced Sizes) --- */
+/* --- Range Slider Styling (v2.5 Large Balanced Handles) --- */
 .range-slider-wrapper {
     position: relative;
     width: 100%;
-    height: 50px;
+    height: 60px;
     margin: 1.5rem 0;
 }
 
 .slider-track {
     position: absolute;
     width: 100%;
-    height: 6px;
+    height: 8px;
     background: #e9ecef;
     border-radius: 10px;
     top: 50%;
@@ -150,7 +150,7 @@ input[type="range"] {
     z-index: 2;
 }
 
-/* Thumb Base */
+/* Thumb Base (v2.5) */
 input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
@@ -174,42 +174,42 @@ input[type="range"]::-moz-range-thumb {
     background-position: center;
 }
 
-/* 三角形レバーのバランス調整 (v2.4) */
+/* 三角形レバーのバランス拡大 (v2.5) */
 input[type="range"].thumb-start::-webkit-slider-thumb,
 input[type="range"].thumb-end::-webkit-slider-thumb {
-    width: 48px; /* 大きすぎた56pxから48pxへ微縮小 */
-    height: 48px;
+    width: 60px; /* 48pxから60pxへ拡大 */
+    height: 60px;
 }
 input[type="range"].thumb-start::-moz-range-thumb,
 input[type="range"].thumb-end::-moz-range-thumb {
-    width: 48px;
-    height: 48px;
+    width: 60px;
+    height: 60px;
 }
 
-/* ▷ Start Thumb (SVG) */
+/* ▷ Start Thumb (SVG - もっと大きく太く描画) */
 input[type="range"].thumb-start::-webkit-slider-thumb {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Cpath d='M12,10 L12,30 L30,20 Z' fill='%23a3b18a' stroke='white' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Cpath d='M10,6 L10,38 L36,22 Z' fill='%23a3b18a' stroke='white' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
 input[type="range"].thumb-start::-moz-range-thumb {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Cpath d='M12,10 L12,30 L30,20 Z' fill='%23a3b18a' stroke='white' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Cpath d='M10,6 L10,38 L36,22 Z' fill='%23a3b18a' stroke='white' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
 
-/* ◁ End Thumb (SVG) */
+/* ◁ End Thumb (SVG - もっと大きく太く描画) */
 input[type="range"].thumb-end::-webkit-slider-thumb {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Cpath d='M28,10 L28,30 L10,20 Z' fill='%23a3b18a' stroke='white' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Cpath d='M34,6 L34,38 L8,22 Z' fill='%23a3b18a' stroke='white' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
 input[type="range"].thumb-end::-moz-range-thumb {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Cpath d='M28,10 L28,30 L10,20 Z' fill='%23a3b18a' stroke='white' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Cpath d='M34,6 L34,38 L8,22 Z' fill='%23a3b18a' stroke='white' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
 
-/* Single Slider Thumb (Circle - Reverted to perfect size) */
+/* Single Slider Thumb (Circle - 32pxから40pxへ拡大) */
 input[type="range"].single-slider::-webkit-slider-thumb {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Ccircle cx='22' cy='22' r='12' fill='%23e9c46a' stroke='white' stroke-width='3'/%3E%3C/svg%3E") !important;
-    width: 32px;
-    height: 32px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Ccircle cx='22' cy='22' r='15' fill='%23e9c46a' stroke='white' stroke-width='3'/%3E%3C/svg%3E") !important;
+    width: 40px;
+    height: 40px;
 }
 input[type="range"].single-slider.review-slider::-webkit-slider-thumb {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Ccircle cx='22' cy='22' r='12' fill='%239dabac' stroke='white' stroke-width='3'/%3E%3C/svg%3E") !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Ccircle cx='22' cy='22' r='15' fill='%239dabac' stroke='white' stroke-width='3'/%3E%3C/svg%3E") !important;
 }
 
 /* --- Radio Button (Pill Design) --- */
