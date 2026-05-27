@@ -518,15 +518,16 @@ function updateRangeMax() {
         numReviewQuestionsInput.value = numReviewQuestionsInput.max;
     }
     
-    createSliderTicks(roundedMax);
+    createSliderTicks('slider-ticks', roundedMax, 100);
+    createSliderTicks('num-questions-ticks', 100, 10);
+    createSliderTicks('num-review-ticks', 100, 10);
     updateSliderDisplays();
 }
 
-function createSliderTicks(max) {
-    const ticksContainer = document.getElementById('slider-ticks');
+function createSliderTicks(containerId, max, step) {
+    const ticksContainer = document.getElementById(containerId);
     if (!ticksContainer) return;
     ticksContainer.innerHTML = '';
-    const step = 100;
     const count = max / step;
     for (let i = 0; i <= count; i++) {
         const tick = document.createElement('div');

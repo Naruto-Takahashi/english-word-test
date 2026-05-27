@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>英単語テスト</title>
-    <link rel="stylesheet" href="css/style.css?v=1.6">
+    <link rel="stylesheet" href="css/style.css?v=1.7">
 </head>
 <body>
     <div class="container">
@@ -31,7 +31,7 @@
                 </div>
                 <div class="form-group">
                     <label>出題範囲: <span id="range-value-display" style="color: var(--primary-hover); font-variant-numeric: tabular-nums;">1 - 1400</span></label>
-                    <div class="dual-range-container">
+                    <div class="range-slider-wrapper">
                         <div class="slider-track"></div>
                         <div class="slider-ticks" id="slider-ticks"></div>
                         <input type="range" id="start-range" value="0" min="0" max="1400" step="100" class="thumb-start">
@@ -40,7 +40,11 @@
                 </div>
                 <div class="form-group">
                     <label for="num-questions">問題数: <span id="num-questions-display" style="color: var(--primary-hover); font-variant-numeric: tabular-nums;">10</span></label>
-                    <input type="range" id="num-questions" value="10" min="10" max="100" step="10" class="single-slider">
+                    <div class="range-slider-wrapper single">
+                        <div class="slider-track"></div>
+                        <div class="slider-ticks" id="num-questions-ticks"></div>
+                        <input type="range" id="num-questions" value="10" min="10" max="100" step="10" class="single-slider">
+                    </div>
                 </div>
                 <button id="start-btn" class="btn btn-primary btn-full">テスト開始</button>
             </div>
@@ -49,7 +53,11 @@
                 <h2>苦手な単語を復習する</h2>
                 <div class="form-group">
                     <label for="num-review-questions">出題する語数: <span id="num-review-questions-display" style="color: var(--primary-hover); font-variant-numeric: tabular-nums;">10</span></label>
-                    <input type="range" id="num-review-questions" value="10" min="10" max="100" step="10" class="single-slider">
+                    <div class="range-slider-wrapper single">
+                        <div class="slider-track"></div>
+                        <div class="slider-ticks" id="num-review-ticks"></div>
+                        <input type="range" id="num-review-questions" value="10" min="10" max="100" step="10" class="single-slider">
+                    </div>
                 </div>
                 <button id="start-review-btn" class="btn btn-secondary btn-full">復習開始</button>
             </div>
@@ -96,6 +104,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="data/words1200.js"></script>
     <script src="data/words1400.js"></script>
-    <script src="js/app.js?v=1.6"></script>
+    <script src="js/app.js?v=1.7"></script>
 </body>
 </html>

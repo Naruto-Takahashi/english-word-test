@@ -1,5 +1,5 @@
 /* ===================================================================================
-   英単語テストアプリ：洗練されたダスティパステル・スタイル (v1.6)
+   英単語テストアプリ：洗練されたダスティパステル・スタイル (v1.7)
    =================================================================================== */
 
 :root {
@@ -100,8 +100,8 @@ h1 {
     letter-spacing: 0.05em;
 }
 
-/* --- Range Slider Styling (v1.6 Optimized) --- */
-.dual-range-container {
+/* --- Range Slider Styling (v1.7) --- */
+.range-slider-wrapper {
     position: relative;
     width: 100%;
     height: 50px;
@@ -149,55 +149,71 @@ input[type="range"] {
     margin: 0;
 }
 
-/* デュアルスライダー用設定 */
-.dual-range-container input[type="range"] {
+.range-slider-wrapper input[type="range"] {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    pointer-events: none; /* トラック自体は無視 */
+    pointer-events: none;
     z-index: 2;
 }
 
-/* つまみ（Thumb）共通設定 */
+/* Thumb Base */
 input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
+    width: 30px;
+    height: 30px;
     cursor: pointer;
     box-shadow: 0 3px 8px rgba(0,0,0,0.15);
     transition: all 0.2s;
-    pointer-events: auto; /* つまみだけ触れるようにする */
-    border: 3px solid #fff;
+    pointer-events: auto;
+    border: none;
 }
 
 input[type="range"]::-moz-range-thumb {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+    border: none;
+    pointer-events: auto;
+}
+
+/* ▷ Start Thumb Shape */
+input[type="range"].thumb-start::-webkit-slider-thumb {
+    background: var(--accent-color);
+    clip-path: polygon(10% 10%, 90% 50%, 10% 90%);
+}
+input[type="range"].thumb-start::-moz-range-thumb {
+    background: var(--accent-color);
+    clip-path: polygon(10% 10%, 90% 50%, 10% 90%);
+}
+
+/* ◁ End Thumb Shape */
+input[type="range"].thumb-end::-webkit-slider-thumb {
+    background: var(--primary-color);
+    clip-path: polygon(90% 10%, 10% 50%, 90% 90%);
+}
+input[type="range"].thumb-end::-moz-range-thumb {
+    background: var(--primary-color);
+    clip-path: polygon(90% 10%, 10% 50%, 90% 90%);
+}
+
+/* Single Slider Thumb (Standard Circle) */
+input[type="range"].single-slider::-webkit-slider-thumb {
+    background: var(--primary-color);
+    border-radius: 50%;
+    border: 3px solid #fff;
     width: 26px;
     height: 26px;
+}
+input[type="range"].single-slider::-moz-range-thumb {
+    background: var(--primary-color);
     border-radius: 50%;
-    cursor: pointer;
     border: 3px solid #fff;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
-    pointer-events: auto;
+    width: 26px;
+    height: 26px;
 }
-
-/* つまみの色分け (v1.6) */
-input[type="range"].thumb-start::-webkit-slider-thumb { background: var(--accent-color); }
-input[type="range"].thumb-start::-moz-range-thumb { background: var(--accent-color); }
-
-input[type="range"].thumb-end::-webkit-slider-thumb { background: var(--primary-color); }
-input[type="range"].thumb-end::-moz-range-thumb { background: var(--primary-color); }
-
-/* 通常のスライダー（単体） */
-input[type="range"].single-slider {
-    background: #e9ecef;
-    height: 8px;
-    border-radius: 10px;
-    margin: 1.5rem 0;
-    pointer-events: auto;
-}
-input[type="range"].single-slider::-webkit-slider-thumb { background: var(--primary-color); }
 
 /* --- Radio Button (Pill Design) --- */
 .radio-group {
@@ -256,163 +272,38 @@ input[type="range"].single-slider::-webkit-slider-thumb { background: var(--prim
     gap: 0.5rem;
 }
 
-.btn-primary {
-    background-color: var(--primary-color);
-    color: #fff;
-}
-
-.btn-primary:hover {
-    background-color: var(--primary-hover);
-    transform: translateY(-2px);
-}
-
-.btn-secondary {
-    background-color: var(--secondary-color);
-    color: #fff;
-}
-
-.btn-secondary:hover {
-    background-color: var(--secondary-hover);
-}
-
-.btn-outline {
-    background-color: transparent;
-    border: 2px solid var(--border-color);
-    color: var(--text-muted);
-}
-
-.btn-outline:hover {
-    background-color: #f8f9fa;
-    border-color: var(--text-muted);
-    color: var(--text-color);
-}
-
+.btn-primary { background-color: var(--primary-color); color: #fff; }
+.btn-primary:hover { background-color: var(--primary-hover); transform: translateY(-2px); }
+.btn-secondary { background-color: var(--secondary-color); color: #fff; }
+.btn-secondary:hover { background-color: var(--secondary-hover); }
+.btn-outline { background-color: transparent; border: 2px solid var(--border-color); color: var(--text-muted); }
+.btn-outline:hover { background-color: #f8f9fa; border-color: var(--text-muted); color: var(--text-color); }
 .btn-full { width: 100%; }
 
 /* --- Test Screen --- */
-.test-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2.5rem;
-}
-
-#progress-info {
-    font-size: 0.9rem;
-    font-weight: 700;
-    color: var(--text-muted);
-    letter-spacing: 0.05em;
-}
-
-.quit-btn-small {
-    padding: 0.5rem 1rem;
-    font-size: 0.8rem;
-    border-radius: 12px;
-}
-
+.test-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem; }
+#progress-info { font-size: 0.9rem; font-weight: 700; color: var(--text-muted); letter-spacing: 0.05em; }
+.quit-btn-small { padding: 0.5rem 1rem; font-size: 0.8rem; border-radius: 12px; }
 #word-container { margin: 3.5rem 0; }
-
-#word-display {
-    font-size: 3.4rem;
-    color: var(--text-color);
-    margin: 0;
-    font-weight: 800;
-}
-
-#speak-btn {
-    font-size: 2rem;
-    cursor: pointer;
-    margin-left: 1.2rem;
-    vertical-align: middle;
-    opacity: 0.4;
-    transition: all 0.2s;
-}
-
+#word-display { font-size: 3.4rem; color: var(--text-color); margin: 0; font-weight: 800; }
+#speak-btn { font-size: 2rem; cursor: pointer; margin-left: 1.2rem; vertical-align: middle; opacity: 0.4; transition: all 0.2s; }
 #speak-btn:hover { opacity: 1; transform: scale(1.1); }
 
-.options-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.2rem;
-    margin-top: 2.5rem;
-}
-
-.option-btn {
-    background-color: #fff;
-    border: 2px solid var(--border-color);
-    padding: 1.2rem;
-    border-radius: 16px;
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--text-color);
-    transition: all 0.2s;
-}
-
-.option-btn:hover:not(:disabled) {
-    border-color: var(--primary-color);
-    background-color: #fbfbfc;
-}
-
-.option-btn.correct {
-    background-color: var(--success-color);
-    color: #fff;
-    border-color: var(--success-color);
-}
-
-.option-btn.wrong {
-    background-color: var(--danger-color);
-    color: #fff;
-    border-color: var(--danger-color);
-}
-
-#feedback {
-    margin-top: 1.5rem;
-    min-height: 4rem;
-    font-size: 1.4rem;
-}
+.options-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.2rem; margin-top: 2.5rem; }
+.option-btn { background-color: #fff; border: 2px solid var(--border-color); padding: 1.2rem; border-radius: 16px; cursor: pointer; font-size: 1rem; font-weight: 600; color: var(--text-color); transition: all 0.2s; }
+.option-btn:hover:not(:disabled) { border-color: var(--primary-color); background-color: #fbfbfc; }
+.option-btn.correct { background-color: var(--success-color); color: #fff; border-color: var(--success-color); }
+.option-btn.wrong { background-color: var(--danger-color); color: #fff; border-color: var(--danger-color); }
+#feedback { margin-top: 1.5rem; min-height: 4rem; font-size: 1.4rem; }
 
 /* --- Spelling UI --- */
-#spelling-hint {
-    display: flex;
-    justify-content: center;
-    flex-wrap: nowrap;
-    gap: 0;
-    margin-bottom: 0.5rem;
-    overflow-x: auto;
-    padding: 0.5rem 0;
-}
-
+#spelling-hint { display: flex; justify-content: center; flex-wrap: nowrap; gap: 0; margin-bottom: 0.5rem; overflow-x: auto; padding: 0.5rem 0; }
 #spelling-hint::-webkit-scrollbar { display: none; }
 
 /* --- Result Screen --- */
-#result-screen h2 {
-    color: var(--success-color);
-    font-size: 2.8rem;
-    font-weight: 800;
-    margin-bottom: 1rem;
-}
-
-.result-list {
-    list-style: none;
-    padding: 0.5rem;
-    margin: 2.5rem 0;
-    text-align: left;
-    max-height: 350px;
-    overflow-y: auto;
-    border-radius: 16px;
-    background: #f8f9fa;
-}
-
-.result-item {
-    padding: 1.2rem;
-    margin-bottom: 0.5rem;
-    background: #fff;
-    border-radius: 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+#result-screen h2 { color: var(--success-color); font-size: 2.8rem; font-weight: 800; margin-bottom: 1rem; }
+.result-list { list-style: none; padding: 0.5rem; margin: 2.5rem 0; text-align: left; max-height: 350px; overflow-y: auto; border-radius: 16px; background: #f8f9fa; }
+.result-item { padding: 1.2rem; margin-bottom: 0.5rem; background: #fff; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; }
 
 /* --- Mobile --- */
 @media (max-width: 600px) {
