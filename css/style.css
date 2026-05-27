@@ -1,5 +1,5 @@
 /* ===================================================================================
-   英単語テストアプリ：洗練されたダスティパステル・スタイル (v2.7)
+   英単語テストアプリ：洗練されたダスティパステル・スタイル (v2.8)
    =================================================================================== */
 
 :root {
@@ -98,11 +98,11 @@ h1 {
     text-transform: uppercase;
 }
 
-/* --- Range Slider Styling (v2.7 Vertical Alignment Fixed) --- */
+/* --- Range Slider Styling (v2.8 Horizontal Alignment Perfected) --- */
 .range-slider-wrapper {
     position: relative;
     width: 100%;
-    height: 60px; /* スライダーの高さを明示 */
+    height: 60px;
     margin: 1rem 0;
     display: flex;
     align-items: center;
@@ -110,25 +110,23 @@ h1 {
 
 .slider-track {
     position: absolute;
-    width: 100%;
+    /* レバーの半径分（26px）だけ左右を空けて，レバーの中心と端を合わせる */
+    left: 26px;
+    right: 26px;
     height: 6px;
     background: #e9ecef;
     border-radius: 10px;
-    top: 50%;
-    transform: translateY(-50%);
     z-index: 1;
 }
 
 .slider-ticks {
     position: absolute;
-    width: 100%;
+    /* トラックと同じ範囲に目盛りを配置 */
+    left: 26px;
+    right: 26px;
     height: 14px;
-    top: 50%;
-    transform: translateY(-50%);
     display: flex;
     justify-content: space-between;
-    padding: 0 10px;
-    box-sizing: border-box;
     pointer-events: none;
     z-index: 1;
 }
@@ -139,25 +137,24 @@ input[type="range"] {
     -webkit-appearance: none;
     appearance: none;
     width: 100%;
-    height: 60px; /* input自体の高さをwrapperに合わせる */
+    height: 100%;
     background: transparent !important;
     outline: none;
     margin: 0;
     border: none !important;
     box-shadow: none !important;
     position: relative;
-    display: block;
 }
 
 .range-slider-wrapper input[type="range"] {
     position: absolute;
-    top: 0; /* translateYではなく上端を合わせる */
+    top: 0;
     left: 0;
     pointer-events: none;
     z-index: 2;
 }
 
-/* Thumb Base (v2.7) */
+/* Thumb Base (v2.8) - 52pxに統一 */
 input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
@@ -172,7 +169,6 @@ input[type="range"]::-webkit-slider-thumb {
     background-repeat: no-repeat;
     background-position: center;
     box-shadow: none !important;
-    margin-top: 4px; /* 中心に合わせるための微調整 */
 }
 
 input[type="range"]::-moz-range-thumb {
@@ -188,28 +184,17 @@ input[type="range"]::-moz-range-thumb {
     box-shadow: none !important;
 }
 
-/* ▷ Start Thumb (SVG) */
+/* つまみの形状設定 */
 input[type="range"].thumb-start::-webkit-slider-thumb {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Cpath d='M12,10 L12,34 L32,22 Z' fill='%23a3b18a' stroke='white' stroke-width='3.5' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
-input[type="range"].thumb-start::-moz-range-thumb {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Cpath d='M12,10 L12,34 L32,22 Z' fill='%23a3b18a' stroke='white' stroke-width='3.5' stroke-linejoin='round'/%3E%3C/svg%3E");
-}
-
-/* ◁ End Thumb (SVG) */
 input[type="range"].thumb-end::-webkit-slider-thumb {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Cpath d='M32,10 L32,34 L12,22 Z' fill='%23a3b18a' stroke='white' stroke-width='3.5' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
-input[type="range"].thumb-end::-moz-range-thumb {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Cpath d='M32,10 L32,34 L12,22 Z' fill='%23a3b18a' stroke='white' stroke-width='3.5' stroke-linejoin='round'/%3E%3C/svg%3E");
-}
 
-/* Single Slider Thumb (Circle) */
+/* 丸型つまみも52pxの枠内で描画（位置合わせのため） */
 input[type="range"].single-slider::-webkit-slider-thumb {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Ccircle cx='22' cy='22' r='14' fill='%23e9c46a' stroke='white' stroke-width='3.5'/%3E%3C/svg%3E") !important;
-    width: 44px; /* 他のレバーと合わせる */
-    height: 44px;
-    margin-top: 8px; /* 円形用の微調整 */
 }
 input[type="range"].review-slider::-webkit-slider-thumb {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Ccircle cx='22' cy='22' r='14' fill='%239dabac' stroke='white' stroke-width='3.5'/%3E%3C/svg%3E") !important;
