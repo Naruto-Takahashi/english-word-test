@@ -169,6 +169,8 @@ const endRangeInput = document.getElementById('end-range');
 const numQuestionsInput = document.getElementById('num-questions');
 const numReviewQuestionsInput = document.getElementById('num-review-questions');
 const progressInfo = document.getElementById('progress-info');
+const rangeValueDisplay = document.getElementById('range-value-display');
+const numQuestionsDisplay = document.getElementById('num-questions-display');
 const wordDisplay = document.getElementById('word-display');
 const speakBtn = document.getElementById('speak-btn');
 const optionsContainer = document.getElementById('options-container');
@@ -498,8 +500,23 @@ function showResult() {
 function updateRangeMax() {
     const maxId = allWords.length > 0 ? allWords[allWords.length - 1].id : 0;
     startRangeInput.max = maxId;
-    endRangeInput.value = maxId;
     endRangeInput.max = maxId;
+    numQuestionsInput.max = Math.min(100, allWords.length);
+    
+    // スライダーの初期位置を調整
+    if (parseInt(endRangeInput.value) > maxId || endRangeInput.value == "1900") {
+        endRangeInput.value = maxId;
+    }
+    updateSliderDisplays();
+}
+
+function updateSliderDisplays() {
+    if (rangeValueDisplay) {
+        rangeValueDisplay.textContent = `${startRangeInput.value} - ${endRangeInput.value}`;
+    }
+    if (numQuestionsDisplay) {
+        numQuestionsDisplay.textContent = numQuestionsInput.value;
+    }
 }
 
 function init() {
@@ -513,6 +530,23 @@ function init() {
     
     loadStats();
     updateRangeMax();
+    
+    // スライダーのイベントリスナー
+    [startRangeInput, endRangeInput].forEach(input => {
+        input.addEventListener('input', () => {
+            // 開始が終了を超えないように制御
+            if (parseInt(startRangeInput.value) > parseInt(endRangeInput.value)) {
+                if (input === startRangeInput) {
+                    endRangeInput.value = startRangeInput.value;
+                } else {
+                    startRangeInput.value = endRangeInput.value;
+                }
+            }
+            updateSliderDisplays();
+        });
+    });
+
+    numQuestionsInput.addEventListener('input', updateSliderDisplays);
     
     document.querySelectorAll('input[name="wordSet"]').forEach(radio => {
         radio.addEventListener('change', (e) => {
