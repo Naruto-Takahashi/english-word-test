@@ -562,22 +562,41 @@ function init() {
     updateRangeMax();
     
     // スライダーのイベントリスナー
-    [startRangeInput, endRangeInput].forEach(input => {
-        input.addEventListener('input', () => {
-            // 操作中のスライダーを前面に持ってくる
-            startRangeInput.style.zIndex = (input === startRangeInput) ? "3" : "2";
-            endRangeInput.style.zIndex = (input === endRangeInput) ? "3" : "2";
-
-            // 開始が終了を超えないように制御
-            if (parseInt(startRangeInput.value) > parseInt(endRangeInput.value)) {
-                if (input === startRangeInput) {
-                    endRangeInput.value = startRangeInput.value;
-                } else {
-                    startRangeInput.value = endRangeInput.value;
-                }
+    const handleSliderInput = (input) => {
+        // 開始が終了を超えないように制御
+        if (parseInt(startRangeInput.value) > parseInt(endRangeInput.value)) {
+            if (input === startRangeInput) {
+                endRangeInput.value = startRangeInput.value;
+            } else {
+                startRangeInput.value = endRangeInput.value;
             }
-            updateSliderDisplays();
-        });
+        }
+        updateSliderDisplays();
+    };
+
+    [startRangeInput, endRangeInput].forEach(input => {
+        input.addEventListener('input', () => handleSliderInput(input));
+        
+        // タッチ/マウスダウン時に、クリック位置に近い方のレバーを前面に持ってくる
+        const swapZIndex = () => {
+            const val = parseInt(input.value);
+            const min = parseInt(input.min);
+            const max = parseInt(input.max);
+            const percent = (val - min) / (max - min);
+            
+            // 終了レバーが右端に近い場合は開始レバーを優先するなど、
+            // 操作の邪魔にならないよう z-index を調整
+            if (input === startRangeInput) {
+                startRangeInput.style.zIndex = "3";
+                endRangeInput.style.zIndex = "2";
+            } else {
+                startRangeInput.style.zIndex = "2";
+                endRangeInput.style.zIndex = "3";
+            }
+        };
+        
+        input.addEventListener('mousedown', swapZIndex);
+        input.addEventListener('touchstart', swapZIndex, {passive: true});
     });
 
     startRangeInput.min = 0; // 0から100刻み (表示は1から)
