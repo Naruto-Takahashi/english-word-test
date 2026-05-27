@@ -1,10 +1,11 @@
 /* ===================================================================================
-   英単語テストアプリ：洗練されたダスティパステル・スタイル
+   英単語テストアプリ：洗練されたダスティパステル・スタイル (v1.6)
    =================================================================================== */
 
 :root {
     --primary-color: #e9c46a;    /* ウォームイエロー - メイン */
     --primary-hover: #f4a261;    /* 落ち着いたオレンジイエロー - ホバー */
+    --accent-color: #a3b18a;     /* セージグリーン - サブアクセント */
     --secondary-color: #9dabac;  /* スレートブルー - 控えめなアクセント */
     --secondary-hover: #809a9b;  /* スレートブルーの濃いめ */
     --danger-color: #e2979c;     /* ダスティローズ - 不正解 */
@@ -14,7 +15,7 @@
     --bg-color: #fefae0;         /* クリームホワイト - 背景 */
     --card-bg: #ffffff;
     --border-color: #e9ecef;
-    --shadow: 0 10px 30px rgba(74, 78, 105, 0.08); /* 非常に柔らかい影 */
+    --shadow: 0 10px 30px rgba(74, 78, 105, 0.08);
     --card-radius: 24px;
     --btn-radius: 30px;
 }
@@ -30,7 +31,7 @@ body {
     margin: 0;
     padding: 1rem;
     box-sizing: border-box;
-    letter-spacing: 0.03em; /* わずかに広げてモダンに */
+    letter-spacing: 0.03em;
 }
 
 .container {
@@ -99,39 +100,20 @@ h1 {
     letter-spacing: 0.05em;
 }
 
-.form-group input:not([type="radio"]) {
-    width: 100%;
-    padding: 0.9rem 1.2rem;
-    background-color: #f1f3f4;
-    border: 2px solid transparent;
-    border-radius: 12px;
-    box-sizing: border-box;
-    font-size: 1rem;
-    color: var(--text-color);
-    transition: all 0.2s;
-}
-
-.form-group input:focus {
-    outline: none;
-    background-color: #fff;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 4px rgba(163, 177, 138, 0.15);
-}
-
-/* --- Range Slider Styling --- */
+/* --- Range Slider Styling (v1.6 Optimized) --- */
 .dual-range-container {
     position: relative;
     width: 100%;
-    height: 40px;
-    margin: 1rem 0;
+    height: 50px;
+    margin: 1.5rem 0;
 }
 
 .slider-track {
     position: absolute;
     width: 100%;
-    height: 6px;
+    height: 8px;
     background: #e9ecef;
-    border-radius: 5px;
+    border-radius: 10px;
     top: 50%;
     transform: translateY(-50%);
     z-index: 1;
@@ -140,74 +122,82 @@ h1 {
 .slider-ticks {
     position: absolute;
     width: 100%;
-    height: 20px;
+    height: 24px;
     top: 50%;
     transform: translateY(-50%);
     display: flex;
     justify-content: space-between;
-    padding: 0 10px;
+    padding: 0 12px;
     box-sizing: border-box;
     pointer-events: none;
     z-index: 1;
 }
 
 .tick {
-    width: 2px;
-    height: 8px;
-    background: #adb5bd; /* 少し濃いめにする */
-    border-radius: 1px;
+    width: 3px;
+    height: 12px;
+    background: #adb5bd;
+    border-radius: 2px;
 }
 
 input[type="range"] {
     -webkit-appearance: none;
     appearance: none;
     width: 100%;
-    background: transparent;
+    background: none;
     outline: none;
     margin: 0;
-    pointer-events: none; /* 下の要素を触れるようにする */
 }
 
-/* デュアルスライダー用: 重ね合わせ */
+/* デュアルスライダー用設定 */
 .dual-range-container input[type="range"] {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
+    pointer-events: none; /* トラック自体は無視 */
     z-index: 2;
 }
 
+/* つまみ（Thumb）共通設定 */
 input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 20px;
-    height: 20px;
-    background: var(--primary-color);
+    width: 26px;
+    height: 26px;
     border-radius: 50%;
     cursor: pointer;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
     transition: all 0.2s;
     pointer-events: auto; /* つまみだけ触れるようにする */
-    border: 2px solid #fff;
-}
-
-input[type="range"]::-webkit-slider-thumb:hover {
-    transform: scale(1.2);
-    background: var(--primary-hover);
+    border: 3px solid #fff;
 }
 
 input[type="range"]::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
-    background: var(--primary-color);
+    width: 26px;
+    height: 26px;
     border-radius: 50%;
     cursor: pointer;
-    border: 2px solid #fff;
+    border: 3px solid #fff;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
     pointer-events: auto;
 }
 
-.slider-container {
-    padding: 0.5rem 0;
+/* つまみの色分け (v1.6) */
+input[type="range"].thumb-start::-webkit-slider-thumb { background: var(--accent-color); }
+input[type="range"].thumb-start::-moz-range-thumb { background: var(--accent-color); }
+
+input[type="range"].thumb-end::-webkit-slider-thumb { background: var(--primary-color); }
+input[type="range"].thumb-end::-moz-range-thumb { background: var(--primary-color); }
+
+/* 通常のスライダー（単体） */
+input[type="range"].single-slider {
+    background: #e9ecef;
+    height: 8px;
+    border-radius: 10px;
+    margin: 1.5rem 0;
+    pointer-events: auto;
 }
+input[type="range"].single-slider::-webkit-slider-thumb { background: var(--primary-color); }
 
 /* --- Radio Button (Pill Design) --- */
 .radio-group {
@@ -269,13 +259,11 @@ input[type="range"]::-moz-range-thumb {
 .btn-primary {
     background-color: var(--primary-color);
     color: #fff;
-    box-shadow: 0 4px 15px rgba(163, 177, 138, 0.2);
 }
 
 .btn-primary:hover {
     background-color: var(--primary-hover);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(163, 177, 138, 0.3);
 }
 
 .btn-secondary {
@@ -285,7 +273,6 @@ input[type="range"]::-moz-range-thumb {
 
 .btn-secondary:hover {
     background-color: var(--secondary-hover);
-    transform: translateY(-2px);
 }
 
 .btn-outline {
@@ -300,13 +287,7 @@ input[type="range"]::-moz-range-thumb {
     color: var(--text-color);
 }
 
-.btn-full {
-    width: 100%;
-}
-
-.btn:active {
-    transform: translateY(0);
-}
+.btn-full { width: 100%; }
 
 /* --- Test Screen --- */
 .test-header {
@@ -329,9 +310,7 @@ input[type="range"]::-moz-range-thumb {
     border-radius: 12px;
 }
 
-#word-container {
-    margin: 3.5rem 0;
-}
+#word-container { margin: 3.5rem 0; }
 
 #word-display {
     font-size: 3.4rem;
@@ -373,15 +352,12 @@ input[type="range"]::-moz-range-thumb {
 .option-btn:hover:not(:disabled) {
     border-color: var(--primary-color);
     background-color: #fbfbfc;
-    transform: translateY(-3px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
 .option-btn.correct {
     background-color: var(--success-color);
     color: #fff;
     border-color: var(--success-color);
-    transform: scale(1.02);
 }
 
 .option-btn.wrong {
@@ -400,17 +376,14 @@ input[type="range"]::-moz-range-thumb {
 #spelling-hint {
     display: flex;
     justify-content: center;
-    flex-wrap: nowrap; /* 1行に強制 */
+    flex-wrap: nowrap;
     gap: 0;
     margin-bottom: 0.5rem;
-    overflow-x: auto; /* はみ出た場合は横スクロール */
+    overflow-x: auto;
     padding: 0.5rem 0;
-    -webkit-overflow-scrolling: touch;
 }
 
-#spelling-hint::-webkit-scrollbar {
-    display: none; /* スクロールバーは隠す */
-}
+#spelling-hint::-webkit-scrollbar { display: none; }
 
 /* --- Result Screen --- */
 #result-screen h2 {
@@ -420,21 +393,15 @@ input[type="range"]::-moz-range-thumb {
     margin-bottom: 1rem;
 }
 
-#score-display {
-    font-size: 1.8rem;
-    color: var(--text-color);
-}
-
 .result-list {
     list-style: none;
-    padding: 0;
+    padding: 0.5rem;
     margin: 2.5rem 0;
     text-align: left;
     max-height: 350px;
     overflow-y: auto;
     border-radius: 16px;
     background: #f8f9fa;
-    padding: 0.5rem;
 }
 
 .result-item {
@@ -445,56 +412,16 @@ input[type="range"]::-moz-range-thumb {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
 }
-
-.result-item:last-child { margin-bottom: 0; }
 
 /* --- Mobile --- */
 @media (max-width: 600px) {
-    body {
-        align-items: flex-start; /* 上寄せにする */
-        padding-top: 2rem;
-    }
-    .container { 
-        padding: 1.5rem 1.2rem; 
-        border-radius: 16px;
-    }
+    body { align-items: flex-start; padding-top: 2rem; }
+    .container { padding: 1.5rem 1.2rem; border-radius: 16px; }
     h1 { font-size: 1.6rem; margin-bottom: 1.5rem; }
-    
-    #word-container { margin: 1.5rem 0; }
     #word-display { font-size: 2.2rem; }
-    #speak-btn { font-size: 1.8rem; }
-
-    .options-grid { 
-        grid-template-columns: repeat(2, 1fr); /* 2列にする */
-        gap: 0.6rem; 
-        margin-top: 1rem;
-    }
-    .option-btn { 
-        padding: 0.7rem 0.4rem; 
-        font-size: 0.9rem;
-        line-height: 1.2;
-        min-height: 3.2rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    #spelling-input {
-        font-size: 16px !important; /* iOSの自動ズーム防止 */
-    }
-
-    #feedback { 
-        min-height: 2.5rem; 
-        font-size: 1.1rem; 
-        margin-top: 0.8rem;
-    }
-
-    #next-btn {
-        margin-top: 1rem;
-        padding: 0.8rem 1.5rem;
-    }
-
+    .options-grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
+    .option-btn { padding: 0.7rem 0.4rem; font-size: 0.9rem; min-height: 3.2rem; }
+    #spelling-input { font-size: 16px !important; }
     .setup-section { padding: 1.2rem; margin-bottom: 1.5rem; }
 }
