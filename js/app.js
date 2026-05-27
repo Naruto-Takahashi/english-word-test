@@ -171,6 +171,7 @@ const numReviewQuestionsInput = document.getElementById('num-review-questions');
 const progressInfo = document.getElementById('progress-info');
 const rangeValueDisplay = document.getElementById('range-value-display');
 const numQuestionsDisplay = document.getElementById('num-questions-display');
+const numReviewQuestionsDisplay = document.getElementById('num-review-questions-display');
 const wordDisplay = document.getElementById('word-display');
 const speakBtn = document.getElementById('speak-btn');
 const optionsContainer = document.getElementById('options-container');
@@ -502,10 +503,14 @@ function updateRangeMax() {
     startRangeInput.max = maxId;
     endRangeInput.max = maxId;
     numQuestionsInput.max = Math.min(100, allWords.length);
+    numReviewQuestionsInput.max = Math.min(100, allWords.length);
     
     // スライダーの初期位置を調整
     if (parseInt(endRangeInput.value) > maxId || endRangeInput.value == "1900") {
         endRangeInput.value = maxId;
+    }
+    if (parseInt(numReviewQuestionsInput.value) > numReviewQuestionsInput.max) {
+        numReviewQuestionsInput.value = numReviewQuestionsInput.max;
     }
     updateSliderDisplays();
 }
@@ -516,6 +521,9 @@ function updateSliderDisplays() {
     }
     if (numQuestionsDisplay) {
         numQuestionsDisplay.textContent = numQuestionsInput.value;
+    }
+    if (numReviewQuestionsDisplay) {
+        numReviewQuestionsDisplay.textContent = numReviewQuestionsInput.value;
     }
 }
 
@@ -547,6 +555,7 @@ function init() {
     });
 
     numQuestionsInput.addEventListener('input', updateSliderDisplays);
+    numReviewQuestionsInput.addEventListener('input', updateSliderDisplays);
     
     document.querySelectorAll('input[name="wordSet"]').forEach(radio => {
         radio.addEventListener('change', (e) => {
