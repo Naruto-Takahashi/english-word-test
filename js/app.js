@@ -352,9 +352,11 @@ function displayQuestion() {
         spellingContainer.style.display = 'none';
         optionsContainer.innerHTML = '';
         
-        // ★追加: 出題時に自動で音声を再生する
+        // ★追加: 出題時に自動で音声を再生する（初回のみ遅延を考慮してsetTimeoutを使用）
         initAudio();
-        speak(currentWord.word);
+        setTimeout(() => {
+            speak(currentWord.word);
+        }, 500);
         
         let options = [currentWord];
         let dummyCandidates = allWords.filter(w => w.pos === currentWord.pos && w.id !== currentWord.id);
