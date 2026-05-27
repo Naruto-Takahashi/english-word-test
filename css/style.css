@@ -1,11 +1,11 @@
 /* ===================================================================================
-   英単語テストアプリ：洗練されたダスティパステル・スタイル (v1.7)
+   英単語テストアプリ：洗練されたダスティパステル・スタイル (v1.8)
    =================================================================================== */
 
 :root {
     --primary-color: #e9c46a;    /* ウォームイエロー - メイン */
     --primary-hover: #f4a261;    /* 落ち着いたオレンジイエロー - ホバー */
-    --accent-color: #a3b18a;     /* セージグリーン - サブアクセント */
+    --accent-color: #a3b18a;     /* セージグリーン - サブアクセント / つまみの色 */
     --secondary-color: #9dabac;  /* スレートブルー - 控えめなアクセント */
     --secondary-hover: #809a9b;  /* スレートブルーの濃いめ */
     --danger-color: #e2979c;     /* ダスティローズ - 不正解 */
@@ -100,7 +100,7 @@ h1 {
     letter-spacing: 0.05em;
 }
 
-/* --- Range Slider Styling (v1.7) --- */
+/* --- Range Slider Styling (v1.8) --- */
 .range-slider-wrapper {
     position: relative;
     width: 100%;
@@ -157,121 +157,82 @@ input[type="range"] {
     z-index: 2;
 }
 
-/* Thumb Base */
+/* Thumb Base (v1.8) - filterを使用して縁取りを再現 */
 input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 30px;
-    height: 30px;
+    width: 34px;
+    height: 34px;
     cursor: pointer;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
     transition: all 0.2s;
     pointer-events: auto;
     border: none;
+    filter: drop-shadow(0 0 0 white) drop-shadow(0 0 0 white) drop-shadow(0 0 2px rgba(0,0,0,0.2));
 }
 
 input[type="range"]::-moz-range-thumb {
-    width: 30px;
-    height: 30px;
+    width: 34px;
+    height: 34px;
     cursor: pointer;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
     border: none;
     pointer-events: auto;
+    filter: drop-shadow(0 0 2px rgba(0,0,0,0.2));
 }
 
-/* ▷ Start Thumb Shape */
+/* ▷ Start Thumb (Sage with White Border) */
 input[type="range"].thumb-start::-webkit-slider-thumb {
     background: var(--accent-color);
-    clip-path: polygon(10% 10%, 90% 50%, 10% 90%);
+    clip-path: polygon(10% 10%, 10% 90%, 90% 50%); /* 右向き三角形 */
+    border: 3px solid #fff; /* clip-path下では無効な場合があるため下で補強 */
+    box-shadow: inset 0 0 0 3px #fff;
 }
 input[type="range"].thumb-start::-moz-range-thumb {
     background: var(--accent-color);
-    clip-path: polygon(10% 10%, 90% 50%, 10% 90%);
+    clip-path: polygon(10% 10%, 10% 90%, 90% 50%);
+    border: 3px solid #fff;
 }
 
-/* ◁ End Thumb Shape */
+/* ◁ End Thumb (Sage with White Border) */
 input[type="range"].thumb-end::-webkit-slider-thumb {
-    background: var(--primary-color);
-    clip-path: polygon(90% 10%, 10% 50%, 90% 90%);
+    background: var(--accent-color);
+    clip-path: polygon(90% 10%, 90% 90%, 10% 50%); /* 左向き三角形 */
+    box-shadow: inset 0 0 0 3px #fff;
 }
 input[type="range"].thumb-end::-moz-range-thumb {
-    background: var(--primary-color);
-    clip-path: polygon(90% 10%, 10% 50%, 90% 90%);
+    background: var(--accent-color);
+    clip-path: polygon(90% 10%, 90% 90%, 10% 50%);
+    border: 3px solid #fff;
 }
 
-/* Single Slider Thumb (Standard Circle) */
+/* Single Slider Thumb (Standard Circle - Sage with White Border) */
 input[type="range"].single-slider::-webkit-slider-thumb {
-    background: var(--primary-color);
+    background: var(--accent-color);
     border-radius: 50%;
     border: 3px solid #fff;
-    width: 26px;
-    height: 26px;
+    width: 28px;
+    height: 28px;
+    clip-path: none;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
 }
 input[type="range"].single-slider::-moz-range-thumb {
-    background: var(--primary-color);
+    background: var(--accent-color);
     border-radius: 50%;
     border: 3px solid #fff;
-    width: 26px;
-    height: 26px;
+    width: 28px;
+    height: 28px;
+    clip-path: none;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
 }
 
 /* --- Radio Button (Pill Design) --- */
-.radio-group {
-    display: flex;
-    gap: 0.8rem;
-    flex-wrap: wrap;
-}
-
-.radio-label {
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.6rem 1.2rem;
-    background: #fff;
-    border: 2px solid var(--border-color);
-    border-radius: 40px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    user-select: none;
-}
-
-.radio-label input {
-    position: absolute;
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.radio-label:hover {
-    border-color: var(--primary-color);
-    background-color: #f8faf9;
-}
-
-.radio-label:has(input:checked) {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
-    color: #fff;
-    box-shadow: 0 4px 12px rgba(163, 177, 138, 0.3);
-}
+.radio-group { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+.radio-label { font-weight: 600; display: inline-flex; align-items: center; justify-content: center; padding: 0.6rem 1.2rem; background: #fff; border: 2px solid var(--border-color); border-radius: 40px; cursor: pointer; font-size: 0.9rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); user-select: none; }
+.radio-label input { position: absolute; opacity: 0; width: 0; height: 0; }
+.radio-label:hover { border-color: var(--primary-color); background-color: #f8faf9; }
+.radio-label:has(input:checked) { background-color: var(--primary-color); border-color: var(--primary-color); color: #fff; box-shadow: 0 4px 12px rgba(163, 177, 138, 0.3); }
 
 /* --- Buttons --- */
-.btn {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0.9rem 2rem;
-    border-radius: var(--btn-radius);
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: 700;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border: none;
-    text-decoration: none;
-    gap: 0.5rem;
-}
-
+.btn { display: inline-flex; justify-content: center; align-items: center; padding: 0.9rem 2rem; border-radius: var(--btn-radius); cursor: pointer; font-size: 1rem; font-weight: 700; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); border: none; text-decoration: none; gap: 0.5rem; }
 .btn-primary { background-color: var(--primary-color); color: #fff; }
 .btn-primary:hover { background-color: var(--primary-hover); transform: translateY(-2px); }
 .btn-secondary { background-color: var(--secondary-color); color: #fff; }
@@ -288,15 +249,12 @@ input[type="range"].single-slider::-moz-range-thumb {
 #word-display { font-size: 3.4rem; color: var(--text-color); margin: 0; font-weight: 800; }
 #speak-btn { font-size: 2rem; cursor: pointer; margin-left: 1.2rem; vertical-align: middle; opacity: 0.4; transition: all 0.2s; }
 #speak-btn:hover { opacity: 1; transform: scale(1.1); }
-
 .options-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.2rem; margin-top: 2.5rem; }
 .option-btn { background-color: #fff; border: 2px solid var(--border-color); padding: 1.2rem; border-radius: 16px; cursor: pointer; font-size: 1rem; font-weight: 600; color: var(--text-color); transition: all 0.2s; }
 .option-btn:hover:not(:disabled) { border-color: var(--primary-color); background-color: #fbfbfc; }
 .option-btn.correct { background-color: var(--success-color); color: #fff; border-color: var(--success-color); }
 .option-btn.wrong { background-color: var(--danger-color); color: #fff; border-color: var(--danger-color); }
 #feedback { margin-top: 1.5rem; min-height: 4rem; font-size: 1.4rem; }
-
-/* --- Spelling UI --- */
 #spelling-hint { display: flex; justify-content: center; flex-wrap: nowrap; gap: 0; margin-bottom: 0.5rem; overflow-x: auto; padding: 0.5rem 0; }
 #spelling-hint::-webkit-scrollbar { display: none; }
 
