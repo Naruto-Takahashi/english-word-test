@@ -1,5 +1,5 @@
 /* ===================================================================================
-   英単語テストアプリ：洗練されたダスティパステル・スタイル (v2.2)
+   英単語テストアプリ：洗練されたダスティパステル・スタイル (v2.3)
    =================================================================================== */
 
 :root {
@@ -40,7 +40,7 @@ body {
     border-radius: var(--card-radius);
     box-shadow: var(--shadow);
     width: 100%;
-    max-width: 600px; /* 少しスリムに */
+    max-width: 600px;
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -98,12 +98,12 @@ h1 {
     text-transform: uppercase;
 }
 
-/* --- Range Slider Styling (v2.2 Reset) --- */
+/* --- Range Slider Styling (v2.3 Thumb Size Optimized) --- */
 .range-slider-wrapper {
     position: relative;
     width: 100%;
-    height: 40px;
-    margin: 1rem 0;
+    height: 50px;
+    margin: 1.5rem 0;
 }
 
 .slider-track {
@@ -140,7 +140,6 @@ input[type="range"] {
     background: transparent !important;
     outline: none;
     margin: 0;
-    box-shadow: none !important; /* 影を徹底的に消す */
 }
 
 .range-slider-wrapper input[type="range"] {
@@ -151,12 +150,10 @@ input[type="range"] {
     z-index: 2;
 }
 
-/* Thumb Base (v2.2 SVG optimized) */
+/* Thumb Base (v2.3) */
 input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 44px;
-    height: 44px;
     cursor: pointer;
     transition: all 0.2s;
     pointer-events: auto;
@@ -165,12 +162,9 @@ input[type="range"]::-webkit-slider-thumb {
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    box-shadow: none !important;
 }
 
 input[type="range"]::-moz-range-thumb {
-    width: 44px;
-    height: 44px;
     cursor: pointer;
     border: none !important;
     background-color: transparent !important;
@@ -178,20 +172,43 @@ input[type="range"]::-moz-range-thumb {
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    box-shadow: none !important;
 }
 
-input[type="range"].thumb-start::-webkit-slider-thumb {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Cpath d='M14,12 L14,32 L32,22 Z' fill='%23a3b18a' stroke='white' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E");
-}
+/* 三角形レバーの大幅拡大 (v2.3) */
+input[type="range"].thumb-start::-webkit-slider-thumb,
 input[type="range"].thumb-end::-webkit-slider-thumb {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Cpath d='M30,12 L30,32 L12,22 Z' fill='%23a3b18a' stroke='white' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E");
+    width: 56px; /* 44pxから56pxへ拡大 */
+    height: 56px;
+}
+input[type="range"].thumb-start::-moz-range-thumb,
+input[type="range"].thumb-end::-moz-range-thumb {
+    width: 56px;
+    height: 56px;
 }
 
+/* ▷ Start Thumb (SVG) */
+input[type="range"].thumb-start::-webkit-slider-thumb {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Cpath d='M10,6 L10,38 L38,22 Z' fill='%23a3b18a' stroke='white' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+input[type="range"].thumb-start::-moz-range-thumb {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Cpath d='M10,6 L10,38 L38,22 Z' fill='%23a3b18a' stroke='white' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+/* ◁ End Thumb (SVG) */
+input[type="range"].thumb-end::-webkit-slider-thumb {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Cpath d='M34,6 L34,38 L6,22 Z' fill='%23a3b18a' stroke='white' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+input[type="range"].thumb-end::-moz-range-thumb {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Cpath d='M34,6 L34,38 L6,22 Z' fill='%23a3b18a' stroke='white' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+/* Single Slider Thumb (Circle) */
 input[type="range"].single-slider::-webkit-slider-thumb {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Ccircle cx='22' cy='22' r='14' fill='%23e9c46a' stroke='white' stroke-width='3'/%3E%3C/svg%3E") !important;
+    width: 32px;
+    height: 32px;
 }
-input[type="range"].review-slider::-webkit-slider-thumb {
+input[type="range"].single-slider.review-slider::-webkit-slider-thumb {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Ccircle cx='22' cy='22' r='14' fill='%239dabac' stroke='white' stroke-width='3'/%3E%3C/svg%3E") !important;
 }
 
@@ -208,31 +225,13 @@ input[type="range"].review-slider::-webkit-slider-thumb {
 .btn-outline { background-color: transparent; border: 2px solid var(--border-color); color: var(--text-muted); }
 .btn-full { width: 100%; }
 
-/* --- Test Screen (Optimized Spacing) --- */
+/* --- Test Screen --- */
 .test-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
 #progress-info { font-size: 0.85rem; font-weight: 700; color: var(--text-muted); }
 
-#word-container {
-    margin: 1.5rem 0; /* 余白を大幅に削減 */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.8rem;
-}
-
-#word-display {
-    font-size: 2.8rem; /* 少し小さく */
-    color: var(--text-color);
-    margin: 0;
-    font-weight: 800;
-}
-
-#speak-btn {
-    font-size: 1.8rem;
-    cursor: pointer;
-    opacity: 0.6;
-    transition: transform 0.2s;
-}
+#word-container { margin: 1.5rem 0; display: flex; justify-content: center; align-items: center; gap: 0.8rem; }
+#word-display { font-size: 2.8rem; color: var(--text-color); margin: 0; font-weight: 800; }
+#speak-btn { font-size: 1.8rem; cursor: pointer; opacity: 0.6; transition: transform 0.2s; }
 #speak-btn:hover { transform: scale(1.1); opacity: 1; }
 
 .options-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 1rem; }
@@ -240,15 +239,7 @@ input[type="range"].review-slider::-webkit-slider-thumb {
 .option-btn.correct { background-color: var(--success-color); color: #fff; border-color: var(--success-color); }
 .option-btn.wrong { background-color: var(--danger-color); color: #fff; border-color: var(--danger-color); }
 
-#feedback {
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
-    min-height: 2.5rem; /* 余白を詰める */
-    font-size: 1.2rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
+#feedback { margin-top: 0.5rem; margin-bottom: 0.5rem; min-height: 2.5rem; font-size: 1.2rem; display: flex; flex-direction: column; justify-content: center; }
 
 /* --- Mobile --- */
 @media (max-width: 600px) {
