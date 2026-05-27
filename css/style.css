@@ -1,5 +1,5 @@
 /* ===================================================================================
-   英単語テストアプリ：洗練されたダスティパステル・スタイル (v2.6)
+   英単語テストアプリ：洗練されたダスティパステル・スタイル (v2.7)
    =================================================================================== */
 
 :root {
@@ -98,12 +98,14 @@ h1 {
     text-transform: uppercase;
 }
 
-/* --- Range Slider Styling (v2.6 Optimized SVG Handles) --- */
+/* --- Range Slider Styling (v2.7 Vertical Alignment Fixed) --- */
 .range-slider-wrapper {
     position: relative;
     width: 100%;
-    height: 50px;
-    margin: 1.2rem 0;
+    height: 60px; /* スライダーの高さを明示 */
+    margin: 1rem 0;
+    display: flex;
+    align-items: center;
 }
 
 .slider-track {
@@ -120,7 +122,7 @@ h1 {
 .slider-ticks {
     position: absolute;
     width: 100%;
-    height: 16px;
+    height: 14px;
     top: 50%;
     transform: translateY(-50%);
     display: flex;
@@ -137,25 +139,30 @@ input[type="range"] {
     -webkit-appearance: none;
     appearance: none;
     width: 100%;
+    height: 60px; /* input自体の高さをwrapperに合わせる */
     background: transparent !important;
     outline: none;
     margin: 0;
     border: none !important;
     box-shadow: none !important;
+    position: relative;
+    display: block;
 }
 
 .range-slider-wrapper input[type="range"] {
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 0; /* translateYではなく上端を合わせる */
+    left: 0;
     pointer-events: none;
     z-index: 2;
 }
 
-/* Thumb Base (v2.6 SVG-only for perfect rendering) */
+/* Thumb Base (v2.7) */
 input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
+    width: 52px;
+    height: 52px;
     cursor: pointer;
     transition: transform 0.2s;
     pointer-events: auto;
@@ -165,9 +172,12 @@ input[type="range"]::-webkit-slider-thumb {
     background-repeat: no-repeat;
     background-position: center;
     box-shadow: none !important;
+    margin-top: 4px; /* 中心に合わせるための微調整 */
 }
 
 input[type="range"]::-moz-range-thumb {
+    width: 52px;
+    height: 52px;
     cursor: pointer;
     border: none !important;
     background-color: transparent !important;
@@ -178,19 +188,7 @@ input[type="range"]::-moz-range-thumb {
     box-shadow: none !important;
 }
 
-/* 三角形レバーのサイズ微調整 (v2.6) */
-input[type="range"].thumb-start::-webkit-slider-thumb,
-input[type="range"].thumb-end::-webkit-slider-thumb {
-    width: 52px; /* 60pxから52pxへ微縮小 */
-    height: 52px;
-}
-input[type="range"].thumb-start::-moz-range-thumb,
-input[type="range"].thumb-end::-moz-range-thumb {
-    width: 52px;
-    height: 52px;
-}
-
-/* ▷ Start Thumb (SVG - Integrated Border) */
+/* ▷ Start Thumb (SVG) */
 input[type="range"].thumb-start::-webkit-slider-thumb {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Cpath d='M12,10 L12,34 L32,22 Z' fill='%23a3b18a' stroke='white' stroke-width='3.5' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
@@ -198,7 +196,7 @@ input[type="range"].thumb-start::-moz-range-thumb {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Cpath d='M12,10 L12,34 L32,22 Z' fill='%23a3b18a' stroke='white' stroke-width='3.5' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
 
-/* ◁ End Thumb (SVG - Integrated Border) */
+/* ◁ End Thumb (SVG) */
 input[type="range"].thumb-end::-webkit-slider-thumb {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Cpath d='M32,10 L32,34 L12,22 Z' fill='%23a3b18a' stroke='white' stroke-width='3.5' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
@@ -206,16 +204,15 @@ input[type="range"].thumb-end::-moz-range-thumb {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Cpath d='M32,10 L32,34 L12,22 Z' fill='%23a3b18a' stroke='white' stroke-width='3.5' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
 
-/* Single Slider Thumb (Circle - Balanced at 36px) */
+/* Single Slider Thumb (Circle) */
 input[type="range"].single-slider::-webkit-slider-thumb {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Ccircle cx='22' cy='22' r='14' fill='%23e9c46a' stroke='white' stroke-width='3.5'/%3E%3C/svg%3E") !important;
-    width: 36px;
-    height: 36px;
+    width: 44px; /* 他のレバーと合わせる */
+    height: 44px;
+    margin-top: 8px; /* 円形用の微調整 */
 }
-input[type="range"].single-slider.review-slider::-webkit-slider-thumb {
+input[type="range"].review-slider::-webkit-slider-thumb {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Ccircle cx='22' cy='22' r='14' fill='%239dabac' stroke='white' stroke-width='3.5'/%3E%3C/svg%3E") !important;
-    width: 36px;
-    height: 36px;
 }
 
 /* --- Radio Button (Pill Design) --- */
@@ -234,17 +231,14 @@ input[type="range"].single-slider.review-slider::-webkit-slider-thumb {
 /* --- Test Screen --- */
 .test-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
 #progress-info { font-size: 0.85rem; font-weight: 700; color: var(--text-muted); }
-
 #word-container { margin: 1.5rem 0; display: flex; justify-content: center; align-items: center; gap: 0.8rem; }
 #word-display { font-size: 2.8rem; color: var(--text-color); margin: 0; font-weight: 800; }
 #speak-btn { font-size: 1.8rem; cursor: pointer; opacity: 0.6; transition: transform 0.2s; }
 #speak-btn:hover { transform: scale(1.1); opacity: 1; }
-
 .options-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 1rem; }
 .option-btn { background-color: #fff; border: 2px solid var(--border-color); padding: 1rem; border-radius: 16px; cursor: pointer; font-size: 0.95rem; font-weight: 600; color: var(--text-color); transition: all 0.2s; min-height: 3.5rem; }
 .option-btn.correct { background-color: var(--success-color); color: #fff; border-color: var(--success-color); }
 .option-btn.wrong { background-color: var(--danger-color); color: #fff; border-color: var(--danger-color); }
-
 #feedback { margin-top: 0.5rem; margin-bottom: 0.5rem; min-height: 2.5rem; font-size: 1.2rem; display: flex; flex-direction: column; justify-content: center; }
 
 /* --- Mobile --- */
