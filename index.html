@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>英単語テスト</title>
-    <link rel="stylesheet" href="css/style.css?v=1.8">
+    <link rel="stylesheet" href="css/style.css?v=2.0">
 </head>
 <body>
     <div class="container">
@@ -49,14 +49,14 @@
                 <button id="start-btn" class="btn btn-primary btn-full">テスト開始</button>
             </div>
 
-            <div class="setup-section">
+            <div class="setup-section setup-review">
                 <h2>苦手な単語を復習する</h2>
                 <div class="form-group">
-                    <label for="num-review-questions">出題する語数: <span id="num-review-questions-display" style="color: var(--primary-hover); font-variant-numeric: tabular-nums;">10</span></label>
+                    <label for="num-review-questions">出題する語数: <span id="num-review-questions-display" style="color: var(--secondary-hover); font-variant-numeric: tabular-nums;">10</span></label>
                     <div class="range-slider-wrapper single">
                         <div class="slider-track"></div>
                         <div class="slider-ticks" id="num-review-ticks"></div>
-                        <input type="range" id="num-review-questions" value="10" min="10" max="100" step="10" class="single-slider">
+                        <input type="range" id="num-review-questions" value="10" min="10" max="100" step="10" class="single-slider review-slider">
                     </div>
                 </div>
                 <button id="start-review-btn" class="btn btn-secondary btn-full">復習開始</button>
@@ -104,6 +104,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="data/words1200.js"></script>
     <script src="data/words1400.js"></script>
-    <script src="js/app.js?v=1.8"></script>
+    <script src="js/app.js?v=2.0"></script>
 </body>
 </html>
