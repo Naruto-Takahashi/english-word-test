@@ -10,6 +10,9 @@ let quizWords = [];
 let currentQuestionIndex = 0;
 let score = 0;
 let answeredWords = []; // ★追加：回答済みの単語を記録する配列
+let timeLimit = 0;
+let timeRemaining = 0;
+let timerInterval = null;
 
 // --- 正答率記録機能 ---
 function getStatsKey() {
@@ -353,6 +356,8 @@ function timeUp() {
 function startTest(isReview = false) {
     initAudio();
     
+    timeLimit = parseInt(document.querySelector('input[name="timeLimit"]:checked').value);
+    
     let availableWords;
 
     if (isReview) {
@@ -477,6 +482,7 @@ function displayQuestion() {
 }
 
 function selectAnswer(e) {
+    clearInterval(timerInterval);
     const selectedButton = e.target;
     const currentWord = quizWords[currentQuestionIndex];
     const correctId = currentWord.id;
@@ -559,6 +565,7 @@ function nextQuestion() {
 }
 
 function showResult() {
+    clearInterval(timerInterval);
     saveStats();
     testScreen.style.display = 'none';
     resultScreen.style.display = 'block';
