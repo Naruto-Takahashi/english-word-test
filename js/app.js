@@ -169,6 +169,9 @@ const endRangeInput = document.getElementById('end-range');
 const numQuestionsInput = document.getElementById('num-questions');
 const numReviewQuestionsInput = document.getElementById('num-review-questions');
 const progressInfo = document.getElementById('progress-info');
+const timerBarContainer = document.getElementById('timer-bar-container');
+const timerBar = document.getElementById('timer-bar');
+const timerDisplay = document.getElementById('timer-display');
 const rangeValueDisplay = document.getElementById('range-value-display');
 const numQuestionsDisplay = document.getElementById('num-questions-display');
 const numReviewQuestionsDisplay = document.getElementById('num-review-questions-display');
@@ -266,6 +269,85 @@ function shuffleArray(array) {
         const j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
     }
+}
+
+function startTimer() {
+    clearInterval(timerInterval);
+    if (timeLimit <= 0) {
+        timerBarContainer.style.display = 'none';
+        timerDisplay.style.display = 'none';
+        return;
+    }
+    
+    timeRemaining = timeLimit;
+    timerBarContainer.style.display = 'block';
+    timerDisplay.style.display = 'block';
+    timerBar.style.width = '100%';
+    timerBar.style.backgroundColor = 'var(--primary-color)';
+    timerDisplay.textContent = `⏳ ${Math.ceil(timeRemaining)}s`;
+    timerDisplay.style.color = 'var(--text-color)';
+    
+    const startTime = Date.now();
+    
+    timerInterval = setInterval(() => {
+        const elapsed = (Date.now() - startTime) / 1000;
+        timeRemaining = timeLimit - elapsed;
+        
+        if (timeRemaining <= 0) {
+            timeRemaining = 0;
+            clearInterval(timerInterval);
+            timeUp();
+        }
+        
+        timerDisplay.textContent = `⏳ ${Math.ceil(timeRemaining)}s`;
+        const percentage = (timeRemaining / timeLimit) * 100;
+        timerBar.style.width = `${percentage}%`;
+        
+        if (timeRemaining <= 3 && timeRemaining > 0) {
+            timerBar.style.backgroundColor = 'var(--danger-color)';
+            timerDisplay.style.color = 'var(--danger-color)';
+        }
+    }, 100);
+}
+
+function timeUp() {
+    const currentWord = quizWords[currentQuestionIndex];
+    const isCorrect = false;
+
+    updateStats(currentWord.id, isCorrect);
+    answeredWords.push({
+        word: currentWord.word,
+        meaning: currentWord.meaning,
+        isCorrect: isCorrect
+    });
+
+    playSE('wrong');
+    const correctText = currentTestMode === 'en2ja' ? 
+        Array.from(optionsContainer.children).find(btn => parseInt(btn.dataset.wordId) === currentWord.id)?.textContent || '' : 
+        currentWord.word;
+    
+    feedback.innerHTML = `時間切れ<br><span style="font-size: 1.1rem; color: var(--text-color);">正解: <strong>${correctText}</strong></span>`;
+    feedback.style.color = 'var(--danger-color)';
+    
+    if (currentTestMode === 'en2ja') {
+        Array.from(optionsContainer.children).forEach(btn => {
+            btn.disabled = true;
+            if (parseInt(btn.dataset.wordId) === currentWord.id) {
+                btn.classList.add('correct');
+            }
+        });
+    } else {
+        spellingInput.disabled = true;
+        submitSpellingBtn.style.display = 'none';
+        updateSpellingHint(true);
+        speakBtn.style.display = 'inline';
+        speakBtn.onclick = () => { initAudio(); speak(currentWord.word); };
+        initAudio();
+        speak(currentWord.word);
+    }
+    
+    nextBtn.style.display = 'inline-block';
+    setTimeout(() => nextBtn.focus(), 100);
 }
 
 function startTest(isReview = false) {
@@ -390,6 +472,8 @@ function displayQuestion() {
         submitSpellingBtn.style.display = 'block';
         spellingInput.focus();
     }
+    
+    startTimer();
 }
 
 function selectAnswer(e) {
@@ -430,6 +514,7 @@ function selectAnswer(e) {
 }
 
 function submitSpellingAnswer() {
+    clearInterval(timerInterval);
     const answer = spellingInput.value.trim().toLowerCase();
     if (answer === '') return;
     
@@ -493,7 +578,7 @@ function showResult() {
                 <div class="result-word">${item.word}</div>
                 <div class="result-meaning">${item.meaning}</div>
             </div>
-            <div class="result-status status-${item.isCorrect ? 'correct' : 'wrong'}">${item.isCorrect ? '⭕️' : '❌'}</div>
+            <div class="result-status status-${item.isCorrect ? 'correct' : 'wrong'}">${item.isCorrect ? '⭕️' : (item.isTimeUp ? '⏳' : '❌')}</div>
         `;
         list.appendChild(listItem);
     });
@@ -733,6 +818,7 @@ function init() {
 
     quitBtn.addEventListener('click', () => {
         if (confirm("テストを中断してメニューに戻りますか？\n（これまでの進捗は保存されません）")) {
+            clearInterval(timerInterval);
             testScreen.style.display = 'none';
             setupScreen.style.display = 'block';
         }
@@ -750,6 +836,10 @@ function init() {
     });
 
     document.body.addEventListener('click', initAudio, { once: true });
+}
+
+init();
+nt.body.addEventListener('click', initAudio, { once: true });
 }
 
 init();

@@ -65,8 +65,12 @@
 
         <!-- テスト画面 -->
         <div id="test-screen" class="screen">
+            <div id="timer-bar-container" style="width: 100%; height: 6px; background: var(--border-color); border-radius: 3px; margin-bottom: 1rem; overflow: hidden; display: none;">
+                <div id="timer-bar" style="width: 100%; height: 100%; background: var(--primary-color); transition: width 0.1s linear, background-color 0.3s;"></div>
+            </div>
             <div class="test-header">
                 <div id="progress-info">残り: -問 / 全-問</div>
+                <div id="timer-display" style="font-weight: 700; color: var(--text-color); font-variant-numeric: tabular-nums; display: none;">⏳ 10s</div>
                 <button id="quit-btn" class="btn btn-outline quit-btn-small">× 中断</button>
             </div>
             
@@ -103,6 +107,11 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="data/words1200.js"></script>
+    <script src="data/words1400.js"></script>
+    <script src="js/app.js?v=2.8"></script>
+</body>
+</html>
+src="data/words1200.js"></script>
     <script src="data/words1400.js"></script>
     <script src="js/app.js?v=2.8"></script>
 </body>
