@@ -839,7 +839,3 @@ function init() {
 }
 
 init();
-nt.body.addEventListener('click', initAudio, { once: true });
-}
-
-init();
