@@ -4,10 +4,13 @@
  */
 
 function svg(paths, size = 20, className = '') {
-    return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon ${className}">${paths}</svg>`;
+    return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon ${className}" aria-hidden="true">${paths}</svg>`;
 }
 
 export const icons = {
+    // ホーム
+    home: (size = 20, cls = '') => svg('<path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline>', size, cls),
+
     // ロゴ・稲妻
     zap: (size = 20, cls = '') => svg('<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>', size, cls),
 
@@ -17,7 +20,7 @@ export const icons = {
     // 単語帳・しおり
     bookmark: (size = 20, cls = '', filled = false) => {
         const fill = filled ? 'fill="currentColor"' : 'fill="none"';
-        return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" ${fill} stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon ${cls}"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path></svg>`;
+        return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" ${fill} stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon ${cls}" aria-hidden="true"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path></svg>`;
     },
 
     // 設定・スライダー
@@ -29,7 +32,7 @@ export const icons = {
     // 星・お気に入り
     star: (size = 20, cls = '', filled = false) => {
         const fill = filled ? 'fill="currentColor"' : 'fill="none"';
-        return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" ${fill} stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon ${cls}"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>`;
+        return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" ${fill} stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon ${cls}" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>`;
     },
 
     // カードデッキ（カード暗記）

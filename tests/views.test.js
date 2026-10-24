@@ -5,6 +5,7 @@ import { target1400Data } from '../data/target1400.js';
 import { parseTSV, preprocessWords } from '../js/modules/parser.js';
 import { VocabStore } from '../js/modules/store.js';
 import { QuizEngine } from '../js/modules/quiz-engine.js';
+import { HomeView } from '../js/views/home-view.js';
 import { LearnView } from '../js/views/learn-view.js';
 import { WordsView } from '../js/views/words-view.js';
 import { StatsView } from '../js/views/stats-view.js';
@@ -15,12 +16,14 @@ test('All views render cleanly without TypeError or missing icons', () => {
         <!DOCTYPE html>
         <html>
         <body>
+            <div id="view-home"></div>
             <div id="view-learn"></div>
             <div id="view-quiz"></div>
             <div id="view-words"></div>
             <div id="view-stats"></div>
             <nav id="app-nav">
-                <button class="nav-item active" data-tab="learn">テスト</button>
+                <button class="nav-item active" data-tab="home">ホーム</button>
+                <button class="nav-item" data-tab="learn">テスト</button>
                 <button class="nav-item" data-tab="words">単語帳</button>
                 <button class="nav-item" data-tab="stats">設定</button>
             </nav>
@@ -41,7 +44,22 @@ test('All views render cleanly without TypeError or missing icons', () => {
     const store = new VocabStore();
     const engine = new QuizEngine({ allWords: words, store });
 
-    // 1. LearnView
+    // 0. HomeView
+    const homeContainer = document.getElementById('view-home');
+    const homeView = new HomeView({
+        container: homeContainer,
+        store,
+        onStartQuiz: () => {},
+        onNavigateTab: () => {},
+        onSetChange: () => {}
+    });
+    assert.doesNotThrow(() => {
+        homeView.setWords(words);
+    }, 'HomeView.setWords should not throw TypeError');
+    assert(homeContainer.innerHTML.includes('home-view-container'));
+    assert(homeContainer.innerHTML.includes('今日のおすすめ学習'));
+
+    // 1. LearnView (テスト画面)
     const learnContainer = document.getElementById('view-learn');
     const learnView = new LearnView({
         container: learnContainer,
@@ -49,7 +67,8 @@ test('All views render cleanly without TypeError or missing icons', () => {
         onStartQuiz: () => {}
     });
     learnView.setWords(words);
-    assert(learnContainer.innerHTML.includes('learn-layout-grid'));
+    assert(learnContainer.innerHTML.includes('test-view-container'));
+    assert(learnContainer.innerHTML.includes('テスト条件設定'));
 
     // 2. WordsView (単語帳タブ) - icons.eye などの未定義チェック
     const wordsContainer = document.getElementById('view-words');
@@ -74,7 +93,7 @@ test('All views render cleanly without TypeError or missing icons', () => {
         statsView.setWords(words);
     }, 'StatsView.setWords should not throw TypeError');
     assert(statsContainer.innerHTML.includes('stats-view-container'));
-    assert(statsContainer.innerHTML.includes('テスト出題設定'));
+    assert(statsContainer.innerHTML.includes('設定・データ管理'));
     assert(statsContainer.innerHTML.includes('周回学習・データ整理'));
 
     // 4. QuizView
@@ -92,7 +111,7 @@ test('All views render cleanly without TypeError or missing icons', () => {
     engine.stopTimer();
 });
 
-test('Navigation tab switching works for words and stats tabs', () => {
+test('Navigation tab switching works for all 4 tabs (home, learn, words, stats)', () => {
     const dom = new JSDOM(`
         <!DOCTYPE html>
         <html>
@@ -103,13 +122,15 @@ test('Navigation tab switching works for words and stats tabs', () => {
                 </div>
             </header>
             <main class="app-main">
-                <section id="view-learn" class="view-panel active"></section>
+                <section id="view-home" class="view-panel active"></section>
+                <section id="view-learn" class="view-panel" style="display: none;"></section>
                 <section id="view-quiz" class="view-panel" style="display: none;"></section>
                 <section id="view-words" class="view-panel" style="display: none;"></section>
                 <section id="view-stats" class="view-panel" style="display: none;"></section>
             </main>
             <nav id="app-nav" class="app-nav">
-                <button class="nav-item active" data-tab="learn">テスト</button>
+                <button class="nav-item active" data-tab="home">ホーム</button>
+                <button class="nav-item" data-tab="learn">テスト</button>
                 <button class="nav-item" data-tab="words">単語帳</button>
                 <button class="nav-item" data-tab="stats">設定</button>
             </nav>
@@ -126,17 +147,20 @@ test('Navigation tab switching works for words and stats tabs', () => {
     const store = new VocabStore();
 
     const slots = {
+        home: document.getElementById('view-home'),
         learn: document.getElementById('view-learn'),
         quiz: document.getElementById('view-quiz'),
         words: document.getElementById('view-words'),
         stats: document.getElementById('view-stats')
     };
 
+    const homeView = new HomeView({ container: slots.home, store, onStartQuiz: () => {}, onNavigateTab: (tab) => switchTab(tab), onSetChange: () => {} });
     const learnView = new LearnView({ container: slots.learn, store, onStartQuiz: () => {} });
     const quizView = new QuizView({ container: slots.quiz, store, engine: new QuizEngine({ store }), onFinish: () => {} });
     const wordsView = new WordsView({ container: slots.words, store });
     const statsView = new StatsView({ container: slots.stats, store, onSetChange: () => {} });
 
+    homeView.setWords(words);
     learnView.setWords(words);
     wordsView.setWords(words);
     statsView.setWords(words);
@@ -156,9 +180,22 @@ test('Navigation tab switching works for words and stats tabs', () => {
                 panel.classList.remove('active');
             }
         });
+        if (tabName === 'home') homeView.render();
+        if (tabName === 'learn') learnView.render();
         if (tabName === 'words') wordsView.render();
         if (tabName === 'stats') statsView.render();
     };
+
+    // 初期はホームタブをアクティブ化
+    switchTab('home');
+    assert.equal(slots.home.style.display, 'block');
+    assert.equal(slots.learn.style.display, 'none');
+
+    // テストタブへの切り替え
+    switchTab('learn');
+    assert.equal(slots.learn.style.display, 'block');
+    assert.equal(slots.home.style.display, 'none');
+    assert(slots.learn.innerHTML.includes('test-view-container'));
 
     // 単語帳タブへの切り替え
     switchTab('words');
@@ -170,7 +207,13 @@ test('Navigation tab switching works for words and stats tabs', () => {
     switchTab('stats');
     assert.equal(slots.stats.style.display, 'block');
     assert.equal(slots.words.style.display, 'none');
-    assert(slots.stats.innerHTML.includes('設定・統計'));
+    assert(slots.stats.innerHTML.includes('設定'));
+
+    // ホームタブへ復帰
+    switchTab('home');
+    assert.equal(slots.home.style.display, 'block');
+    assert.equal(slots.stats.style.display, 'none');
+    assert(slots.home.innerHTML.includes('home-view-container'));
 });
 
 test('WordsView flashcard mode supports flipping, status marking, and step navigation', () => {

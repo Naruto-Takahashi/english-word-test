@@ -1032,3 +1032,465 @@
     }
 }
 
+/* ==========================================================================
+   6. ホーム画面（HomeView）ダッシュボード & スマートアクション
+   ========================================================================== */
+.home-view-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding-bottom: 1rem;
+}
+
+/* 単語セット切り替えセグメント */
+.home-set-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.25rem 0;
+}
+
+.home-set-label {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text-muted, #64748b);
+}
+
+.home-set-selector {
+    display: inline-flex;
+    background: #f1f5f9;
+    border-radius: var(--radius-sm, 8px);
+    padding: 0.2rem;
+    border: 1px solid var(--border-color, #e2e8f0);
+}
+
+.home-set-btn {
+    padding: 0.35rem 0.85rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    border: none;
+    background: transparent;
+    border-radius: 6px;
+    color: var(--text-muted, #64748b);
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.home-set-btn.active {
+    background: #ffffff;
+    color: var(--primary-color, #4f46e5);
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+}
+
+/* 総合達成度カード */
+.home-progress-card {
+    background: #ffffff;
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: var(--radius-md, 12px);
+    padding: 1.25rem;
+    box-shadow: var(--shadow-sm, 0 1px 3px rgba(15, 23, 42, 0.05));
+}
+
+.progress-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.85rem;
+}
+
+.progress-card-subtitle {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-muted, #64748b);
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.progress-card-percent-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+}
+
+.progress-card-percent {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--text-color, #0f172a);
+    line-height: 1;
+    letter-spacing: -0.02em;
+}
+
+.progress-card-ratio {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted, #64748b);
+}
+
+/* 4ステータスチップ */
+.home-stats-chips {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding-top: 0.85rem;
+    border-top: 1px solid #f1f5f9;
+}
+
+.stat-chip {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #f8fafc;
+    border-radius: 6px;
+    padding: 0.5rem 0.25rem;
+    text-align: center;
+}
+
+.stat-chip .chip-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin-bottom: 0.35rem;
+}
+
+.chip-mastered .chip-dot { background: var(--success-color, #10b981); }
+.chip-learning .chip-dot { background: var(--primary-color, #4f46e5); }
+.chip-weak .chip-dot { background: var(--danger-color, #ef4444); }
+.chip-new .chip-dot { background: #94a3b8; }
+
+.stat-chip .chip-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #64748b;
+    margin-bottom: 0.15rem;
+}
+
+.stat-chip .chip-val {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+/* 今すぐ学習（スマートアクション）セクション */
+.home-section-title {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--text-color, #0f172a);
+    margin-bottom: 0.75rem;
+}
+
+.smart-actions-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+}
+
+.smart-action-card {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    background: #ffffff;
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: var(--radius-md, 12px);
+    padding: 1rem 1.15rem;
+    text-align: left;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+    transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+    width: 100%;
+}
+
+.smart-action-card:hover {
+    border-color: #cbd5e1;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+}
+
+.smart-action-card:active {
+    transform: scale(0.99);
+}
+
+.smart-action-card.card-urgent {
+    border-left: 4px solid var(--danger-color, #ef4444);
+    background: #fffafa;
+}
+
+.smart-action-card.card-primary {
+    border-left: 4px solid var(--primary-color, #4f46e5);
+}
+
+.smart-action-card.card-words {
+    border-left: 4px solid #0ea5e9;
+}
+
+.action-card-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.action-card-icon.weak-icon {
+    background: #fee2e2;
+    color: #ef4444;
+}
+
+.action-card-icon.section-icon {
+    background: #ede9fe;
+    color: #6366f1;
+}
+
+.action-card-icon.star-icon {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.action-card-icon.book-icon {
+    background: #e0f2fe;
+    color: #0284c7;
+}
+
+.action-card-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.action-card-title {
+    font-size: 0.92rem;
+    font-weight: 800;
+    color: var(--text-color, #0f172a);
+    margin-bottom: 0.2rem;
+}
+
+.action-card-desc {
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--text-muted, #64748b);
+}
+
+.action-card-arrow {
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    transition: transform 0.15s ease;
+}
+
+.smart-action-card:hover .action-card-arrow {
+    color: var(--primary-color, #4f46e5);
+    transform: translateX(3px);
+}
+
+/* ==========================================================================
+   7. テスト画面（TestView）出題条件バー & クイックテスト
+   ========================================================================== */
+.test-view-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.test-config-card {
+    background: #ffffff;
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: var(--radius-md, 12px);
+    padding: 0.9rem 1rem;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+}
+
+.test-config-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.test-config-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+.test-config-note {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #94a3b8;
+}
+
+.test-config-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.65rem;
+}
+
+@media (max-width: 480px) {
+    .test-config-grid {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+}
+
+.config-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.config-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #64748b;
+}
+
+.config-select-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: var(--radius-sm, 8px);
+    transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.config-select-wrap:hover {
+    border-color: #94a3b8;
+}
+
+.config-select-wrap:focus-within {
+    border-color: var(--primary-color, #4f46e5);
+    background: #ffffff;
+    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+}
+
+.config-select {
+    width: 100%;
+    appearance: none;
+    -webkit-appearance: none;
+    border: none;
+    background: transparent;
+    padding: 0.45rem 1.8rem 0.45rem 0.65rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #1e293b;
+    cursor: pointer;
+    outline: none;
+    font-family: inherit;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* 弱点・お気に入り特訓テストボタン行 */
+.test-quick-row {
+    display: flex;
+    gap: 0.65rem;
+}
+
+.test-quick-btn {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border-radius: var(--radius-sm, 8px);
+    border: 1px solid var(--border-color, #e2e8f0);
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+
+.test-quick-btn.btn-weak {
+    background: #fff5f5;
+    border-color: #fecaca;
+    color: #dc2626;
+}
+
+.test-quick-btn.btn-weak:hover {
+    background: #fee2e2;
+}
+
+.test-quick-btn.btn-star {
+    background: #fffbeb;
+    border-color: #fde68a;
+    color: #b45309;
+}
+
+.test-quick-btn.btn-star:hover {
+    background: #fef3c7;
+}
+
+.test-quick-btn:active {
+    transform: scale(0.98);
+}
+
+/* ==========================================================================
+   8. ボタン化されたチャプターカード & タイポグラフィ・アクセシビリティ磨き
+   ========================================================================== */
+button.chapter-card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    text-align: left;
+    font-family: inherit;
+    cursor: pointer;
+    background: #ffffff;
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: var(--radius-md, 12px);
+    padding: 0.9rem 1rem;
+    box-shadow: var(--shadow-sm, 0 1px 3px rgba(15, 23, 42, 0.05));
+    transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+button.chapter-card:hover {
+    border-color: #cbd5e1;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+}
+
+button.chapter-card:active {
+    transform: translateY(0) scale(0.99);
+}
+
+/* タイポグラフィ: 数字の横揺れ防止 (tabular-nums) */
+.progress-card-percent,
+.progress-card-ratio,
+.chip-val,
+.chapter-percent,
+.chapter-range,
+.chapter-mastered,
+.word-id-badge,
+.step-info-text,
+.quiz-timer-text {
+    font-variant-numeric: tabular-nums;
+}
+
+/* 見出しのテキスト折り返し最適化 */
+.view-title,
+.section-heading,
+.home-section-title,
+.settings-card-title,
+.action-card-title {
+    text-wrap: balance;
+}
+
+/* アクセシブルなフォーカスリング (:focus-visible) */
+.smart-action-card:focus-visible,
+button.chapter-card:focus-visible,
+.test-quick-btn:focus-visible,
+.home-set-btn:focus-visible,
+.config-select:focus-visible {
+    outline: 2px solid var(--primary-color, #4f46e5);
+    outline-offset: 2px;
+}
+
+

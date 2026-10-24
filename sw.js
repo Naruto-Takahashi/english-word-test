@@ -2,7 +2,7 @@
  * VocabFlow Service Worker (Cache-first offline strategy with HTTP cache bypass)
  */
 
-const CACHE_NAME = 'wordtest-v23';
+const CACHE_NAME = 'wordtest-v24';
 const ASSETS = [
     './',
     './index.html',
@@ -25,6 +25,7 @@ const ASSETS = [
     './js/modules/quiz-engine.js',
     './js/modules/share.js',
     './js/modules/pwa.js',
+    './js/views/home-view.js',
     './js/views/learn-view.js',
     './js/views/quiz-view.js',
     './js/views/words-view.js',

@@ -233,7 +233,7 @@ body.in-session .app-main {
     border-top: 1px solid var(--border-color);
     box-shadow: 0 -4px 16px rgba(15, 23, 42, 0.06);
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     padding-top: 0.35rem;
     padding-left: 0.5rem;
     padding-right: 0.5rem;

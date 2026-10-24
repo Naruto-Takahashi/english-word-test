@@ -2,18 +2,19 @@
  * 英単語テスト - メインエントリーポイント & ルーター
  */
 
-import { target1200Data } from '../data/target1200.js?v=5.70';
-import { target1400Data } from '../data/target1400.js?v=5.70';
-import { parseTSV, preprocessWords } from './modules/parser.js?v=5.70';
-import { VocabStore } from './modules/store.js?v=5.70';
-import { QuizEngine } from './modules/quiz-engine.js?v=5.70';
-import { initAudio } from './modules/audio.js?v=5.70';
+import { target1200Data } from '../data/target1200.js?v=5.80';
+import { target1400Data } from '../data/target1400.js?v=5.80';
+import { parseTSV, preprocessWords } from './modules/parser.js?v=5.80';
+import { VocabStore } from './modules/store.js?v=5.80';
+import { QuizEngine } from './modules/quiz-engine.js?v=5.80';
+import { initAudio } from './modules/audio.js?v=5.80';
 
-import { LearnView } from './views/learn-view.js?v=5.70';
-import { QuizView } from './views/quiz-view.js?v=5.70';
-import { WordsView } from './views/words-view.js?v=5.70';
-import { StatsView } from './views/stats-view.js?v=5.70';
-import { initPWA, promptInstallPWA, onPWAStateChange } from './modules/pwa.js?v=5.70';
+import { HomeView } from './views/home-view.js?v=5.80';
+import { LearnView } from './views/learn-view.js?v=5.80';
+import { QuizView } from './views/quiz-view.js?v=5.80';
+import { WordsView } from './views/words-view.js?v=5.80';
+import { StatsView } from './views/stats-view.js?v=5.80';
+import { initPWA, promptInstallPWA, onPWAStateChange } from './modules/pwa.js?v=5.80';
 
 class App {
     constructor() {
@@ -26,6 +27,7 @@ class App {
 
         // DOMスロット
         this.slots = {
+            home: document.getElementById('view-home'),
             learn: document.getElementById('view-learn'),
             quiz: document.getElementById('view-quiz'),
             words: document.getElementById('view-words'),
@@ -35,7 +37,7 @@ class App {
         this.nav = document.getElementById('app-nav');
         this.setLabelBadge = document.getElementById('active-set-badge');
 
-        this.activeTab = 'learn';
+        this.activeTab = 'home';
     }
 
     init() {
@@ -45,6 +47,14 @@ class App {
         this.setWordSet(this.store.currentSet, false);
 
         // 各Viewの初期化
+        this.homeView = new HomeView({
+            container: this.slots.home,
+            store: this.store,
+            onStartQuiz: (options) => this.startQuiz(options),
+            onNavigateTab: (tab) => this.switchTab(tab),
+            onSetChange: (newSet) => this.setWordSet(newSet, true)
+        });
+
         this.learnView = new LearnView({
             container: this.slots.learn,
             store: this.store,
@@ -71,7 +81,7 @@ class App {
 
         this.updateViewsWithWords();
         this.setupNavigation();
-        this.switchTab('learn');
+        this.switchTab('home');
 
         // 音声アンロック
         document.body.addEventListener('click', initAudio, { once: true });
@@ -96,7 +106,7 @@ class App {
 
         // Service Worker 登録 (PWA)
         if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
-            navigator.serviceWorker.register('./sw.js?v=5.70').catch(() => {});
+            navigator.serviceWorker.register('./sw.js?v=5.80').catch(() => {});
         }
     }
 
@@ -115,6 +125,7 @@ class App {
     }
 
     updateViewsWithWords() {
+        if (this.homeView) this.homeView.setWords(this.currentWords);
         if (this.learnView) this.learnView.setWords(this.currentWords);
         if (this.wordsView) this.wordsView.setWords(this.currentWords);
         if (this.statsView) this.statsView.setWords(this.currentWords);
@@ -173,7 +184,9 @@ class App {
         });
 
         // タブ切り替え時のリフレッシュ
-        if (tabName === 'learn' && this.learnView) {
+        if (tabName === 'home' && this.homeView) {
+            this.homeView.render();
+        } else if (tabName === 'learn' && this.learnView) {
             this.learnView.render();
         } else if (tabName === 'words' && this.wordsView) {
             this.wordsView.render();
