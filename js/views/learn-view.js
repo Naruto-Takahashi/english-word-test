@@ -94,14 +94,16 @@ export class LearnView {
                             <span class="custom-range-desc">授業の進度に合わせて出題</span>
                         </div>
                         <div class="range-inputs-row">
-                            <div class="range-input-group">
-                                <label for="custom-start-id">開始 No.</label>
-                                <input type="number" id="custom-start-id" value="${this.customStart}" min="1" max="${maxId}">
-                            </div>
-                            <span class="range-separator">〜</span>
-                            <div class="range-input-group">
-                                <label for="custom-end-id">終了 No.</label>
-                                <input type="number" id="custom-end-id" value="${this.customEnd}" min="1" max="${maxId}">
+                            <div class="range-inputs-pair">
+                                <div class="range-input-group">
+                                    <label for="custom-start-id">開始 No.</label>
+                                    <input type="number" id="custom-start-id" value="${this.customStart}" min="1" max="${maxId}">
+                                </div>
+                                <span class="range-separator">〜</span>
+                                <div class="range-input-group">
+                                    <label for="custom-end-id">終了 No.</label>
+                                    <input type="number" id="custom-end-id" value="${this.customEnd}" min="1" max="${maxId}">
+                                </div>
                             </div>
                             <button id="btn-start-custom-quiz" class="btn btn-primary range-start-btn">
                                 ${icons.zap(16)} テスト開始
@@ -114,7 +116,7 @@ export class LearnView {
                         <button id="quick-weak-btn" class="quick-action-card ${weakWords.length === 0 ? 'disabled' : ''}">
                             <div class="quick-action-icon weak-icon">${icons.rotateCcw(20)}</div>
                             <div class="quick-action-info">
-                                <div class="quick-action-title">苦手単語のスマート復習</div>
+                                <div class="quick-action-title">苦手単語の復習</div>
                                 <div class="quick-action-desc">${weakWords.length} 語の要復習単語 (${limitLabel})</div>
                             </div>
                         </button>
@@ -148,7 +150,7 @@ export class LearnView {
                                         <div class="chapter-bar-fill" style="width: ${ch.progress.percentage}%"></div>
                                     </div>
                                     <button class="btn-chapter-quiz btn-primary-outline" data-start="${ch.startId}" data-end="${ch.endId}">
-                                        ${icons.zap(15)} Section ${ch.index} テスト開始 (${limitLabel})
+                                        ${icons.zap(15)} Section ${ch.index} (${limitLabel})
                                     </button>
                                 </div>
                             `).join('')}

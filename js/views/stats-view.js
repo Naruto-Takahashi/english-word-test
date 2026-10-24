@@ -51,7 +51,7 @@ export class StatsView {
                             </div>
                         ` : `
                             <button id="pwa-install-btn" class="btn btn-primary pwa-btn-install" type="button">
-                                ${icons.download(16)} アプリをインストール (1クリック)
+                                ${icons.download(16)} アプリをインストール
                             </button>
                         `}
                     </div>
@@ -62,7 +62,7 @@ export class StatsView {
                     <h3 class="settings-card-title">単語セット選択</h3>
                     <div class="set-selector-row">
                         <button class="set-btn ${this.store.currentSet === '1400' ? 'active' : ''}" data-set="1400">
-                            Target 1400 (標準)
+                            Target 1400
                         </button>
                         <button class="set-btn ${this.store.currentSet === '1200' ? 'active' : ''}" data-set="1200">
                             Target 1200
@@ -76,7 +76,7 @@ export class StatsView {
                     <div class="stats-grid">
                         <div class="stat-box box-mastered">
                             <span class="stat-number">${stats.mastered}</span>
-                            <span class="stat-label">マスター (習得済)</span>
+                            <span class="stat-label">マスター</span>
                         </div>
                         <div class="stat-box box-learning">
                             <span class="stat-number">${stats.learning}</span>
@@ -84,7 +84,7 @@ export class StatsView {
                         </div>
                         <div class="stat-box box-weak">
                             <span class="stat-number">${stats.weak}</span>
-                            <span class="stat-label">要復習 (苦手)</span>
+                            <span class="stat-label">要復習</span>
                         </div>
                         <div class="stat-box box-new">
                             <span class="stat-number">${stats.new}</span>

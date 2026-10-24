@@ -264,23 +264,25 @@ export class WordsView {
             return `
                 <div class="word-dict-card ${hint ? 'has-hint' : ''}" data-word-id="${w.id}">
                     <div class="dict-card-main">
-                        <button class="dict-star-btn ${isBkm ? 'active' : ''}" data-word-id="${w.id}" aria-label="お気に入り" title="お気に入り">${icons.star(18)}</button>
-                        <span class="dict-no-badge">No. ${w.id}</span>
-                        <div class="dict-body">
-                            <div class="dict-title-row">
+                        <div class="dict-top-row">
+                            <button class="dict-star-btn ${isBkm ? 'active' : ''}" data-word-id="${w.id}" aria-label="お気に入り" title="お気に入り">${icons.star(18)}</button>
+                            <span class="dict-no-badge">No. ${w.id}</span>
+                            <div class="dict-word-wrap">
                                 <span class="dict-word">${w.word}</span>
                                 <span class="pos-badge">${w.pos || '単語'}</span>
                                 <button class="dict-speak-btn" data-word="${w.word}" aria-label="発音" title="発音を聞く">${icons.volume(16)}</button>
                             </div>
-                            <div class="dict-meaning">${w.meaning}</div>
+                            <div class="dict-card-actions">
+                                <span class="status-pill status-${record.status}">${statusLabel}</span>
+                                ${hint ? `
+                                    <button class="dict-chevron-btn" type="button" aria-label="覚え方を展開" title="覚え方を展開">
+                                        ${icons.chevronDown(16)}
+                                    </button>
+                                ` : ''}
+                            </div>
                         </div>
-                        <div class="dict-card-actions">
-                            <span class="status-pill status-${record.status}">${statusLabel}</span>
-                            ${hint ? `
-                                <button class="dict-chevron-btn" type="button" aria-label="覚え方を展開" title="覚え方を展開">
-                                    ${icons.chevronDown(16)}
-                                </button>
-                            ` : ''}
+                        <div class="dict-meaning-row">
+                            <div class="dict-meaning">${w.meaning}</div>
                         </div>
                     </div>
                     ${hint ? `
