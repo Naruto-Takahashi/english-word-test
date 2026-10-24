@@ -2,18 +2,18 @@
  * 英単語テスト - メインエントリーポイント & ルーター
  */
 
-import { target1200Data } from '../data/target1200.js?v=4.70';
-import { target1400Data } from '../data/target1400.js?v=4.70';
-import { parseTSV, preprocessWords } from './modules/parser.js?v=4.70';
-import { VocabStore } from './modules/store.js?v=4.70';
-import { QuizEngine } from './modules/quiz-engine.js?v=4.70';
-import { initAudio } from './modules/audio.js?v=4.80';
+import { target1200Data } from '../data/target1200.js?v=5.00';
+import { target1400Data } from '../data/target1400.js?v=5.00';
+import { parseTSV, preprocessWords } from './modules/parser.js?v=5.00';
+import { VocabStore } from './modules/store.js?v=5.00';
+import { QuizEngine } from './modules/quiz-engine.js?v=5.00';
+import { initAudio } from './modules/audio.js?v=5.00';
 
-import { LearnView } from './views/learn-view.js?v=4.70';
-import { QuizView } from './views/quiz-view.js?v=4.70';
-import { WordsView } from './views/words-view.js?v=4.70';
-import { StatsView } from './views/stats-view.js?v=4.70';
-import { initPWA, promptInstallPWA, onPWAStateChange } from './modules/pwa.js?v=4.70';
+import { LearnView } from './views/learn-view.js?v=5.00';
+import { QuizView } from './views/quiz-view.js?v=5.00';
+import { WordsView } from './views/words-view.js?v=5.00';
+import { StatsView } from './views/stats-view.js?v=5.00';
+import { initPWA, promptInstallPWA, onPWAStateChange } from './modules/pwa.js?v=5.00';
 
 class App {
     constructor() {
@@ -96,7 +96,7 @@ class App {
 
         // Service Worker 登録 (PWA)
         if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
-            navigator.serviceWorker.register('./sw.js?v=4.80').catch(() => {});
+            navigator.serviceWorker.register('./sw.js?v=5.00').catch(() => {});
         }
     }
 
@@ -151,6 +151,9 @@ class App {
     switchTab(tabName) {
         this.activeTab = tabName;
         document.body.classList.remove('in-session');
+        if (this.quizView) {
+            this.quizView.stop();
+        }
 
         // タブボタンのアクティブ状態
         if (this.nav) {

@@ -3,8 +3,8 @@
  * 学習データ可視化、単語セット切り替え、環境設定、JSONバックアップ/復元
  */
 
-import { icons } from '../modules/icons.js?v=4.60';
-import { promptInstallPWA, isStandalone, canInstallPWA, onPWAStateChange } from '../modules/pwa.js?v=4.60';
+import { icons } from '../modules/icons.js?v=5.00';
+import { promptInstallPWA, isStandalone, canInstallPWA, onPWAStateChange } from '../modules/pwa.js?v=5.00';
 
 export class StatsView {
     constructor({ container, store, onSetChange }) {
@@ -128,8 +128,8 @@ export class StatsView {
                     <p class="settings-desc">端末変更やブラウザのデータ消去に備え、進捗データをJSONファイルとして保存できます。</p>
 
                     <div class="backup-btn-row">
-                        <button id="backup-export-btn" class="btn btn-outline">${icons.download(16)} 進捗をダウンロード</button>
-                        <button id="backup-import-btn" class="btn btn-outline">${icons.upload(16)} バックアップを復元</button>
+                        <button id="backup-export-btn" class="btn btn-outline" type="button">${icons.download(16)} 進捗をダウンロード</button>
+                        <button id="backup-import-btn" class="btn btn-outline" type="button">${icons.upload(16)} バックアップを復元</button>
                         <input type="file" id="backup-file-input" accept=".json" style="display: none;">
                     </div>
                 </div>
@@ -138,7 +138,7 @@ export class StatsView {
                 <div class="settings-card danger-card">
                     <h3 class="settings-card-title" style="color: var(--danger-color);">データの初期化</h3>
                     <p class="settings-desc">現在の単語セット（${this.store.currentSet}語）の学習履歴をすべて消去します。</p>
-                    <button id="reset-data-btn" class="btn btn-danger-outline">${icons.trash(16)} 現在の学習履歴をリセット</button>
+                    <button id="reset-data-btn" class="btn btn-danger-outline" type="button">${icons.trash(16)} 現在の学習履歴をリセット</button>
                 </div>
             </div>
         `;

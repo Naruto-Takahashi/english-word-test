@@ -1,5 +1,8 @@
 /* ===================================================================================
    VocabFlow - Quiz & Result Animation Styles (quiz-animations.css)
+   - Spring Physics を基調とした心地よいフィードバック
+   - 物理的打鍵感 (Tactile Feedback)
+   - タイマー呼吸パルス & コンボ演出
    =================================================================================== */
 
 /* -----------------------------------------------------------------------------------
@@ -22,11 +25,11 @@
 }
 
 .timer-ring-bg {
-    stroke: #e2e8f0;
+    stroke: var(--slate-200, #e2e8f0);
 }
 
 .timer-ring-progress {
-    stroke: var(--primary-color, #4f46e5);
+    stroke: var(--primary-color, #2563eb);
     stroke-linecap: round;
     transition: stroke-dashoffset 0.1s linear, stroke 0.3s ease;
 }
@@ -36,60 +39,64 @@
     font-size: 0.8rem;
     font-weight: 800;
     font-family: var(--font-mono, "SF Mono", Menlo, Consolas, monospace);
-    color: var(--text-color, #1e293b);
+    color: var(--text-color, #0f172a);
     line-height: 1;
     pointer-events: none;
     transition: color 0.3s ease;
 }
 
-/* 残り時間1.5秒以下: 警告色へスムーズに変化 & パルス演出 */
+/* 残り時間1.5秒以下: 警告色へスムーズに変化 & 緊張感ある呼吸パルス */
 .quiz-timer-ring-container.timer-warning .timer-ring-progress {
     stroke: var(--danger-color, #ef4444) !important;
-    animation: ringDangerPulse 0.6s ease-in-out infinite alternate;
+    animation: ringWarningPulse 0.7s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
 }
 
 .quiz-timer-ring-container.timer-warning .timer-ring-text {
     color: var(--danger-color, #ef4444) !important;
-    animation: textDangerPulse 0.6s ease-in-out infinite alternate;
+    animation: textWarningPulse 0.7s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
 }
 
-@keyframes ringDangerPulse {
+@keyframes ringWarningPulse {
     0% {
+        transform: scale(1);
         filter: drop-shadow(0 0 2px rgba(239, 68, 68, 0.4));
     }
     100% {
-        filter: drop-shadow(0 0 7px rgba(239, 68, 68, 0.85));
+        transform: scale(1.05);
+        filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.8));
     }
 }
 
-@keyframes textDangerPulse {
+@keyframes textWarningPulse {
     0% {
         transform: scale(1);
     }
     100% {
-        transform: scale(1.1);
+        transform: scale(1.08);
     }
 }
 
 
 /* -----------------------------------------------------------------------------------
-   2. 選択肢インタラクション & フィードバック
+   2. 選択肢インタラクション & フィードバック (Spring Physics)
    ----------------------------------------------------------------------------------- */
 .quiz-option-btn {
-    transition: transform 0.12s cubic-bezier(0.2, 0.8, 0.2, 1),
-                background-color 0.2s ease,
-                border-color 0.2s ease,
-                box-shadow 0.2s ease;
+    transition: transform 100ms ease-out,
+                background-color 0.18s ease,
+                border-color 0.18s ease,
+                box-shadow 0.18s ease;
     will-change: transform;
+    touch-action: manipulation;
 }
 
-/* キーボード（1〜4）押下時の一瞬の押し込み & タッチ時の物理的打鍵フィードバック */
+/* キーボード（1〜4）押下時の一瞬の押し込み & タッチ時の物理的打鍵感 */
 .quiz-option-btn.is-active-press,
 .quiz-option-btn:active:not(:disabled) {
-    transform: scale(0.98) !important;
+    transform: scale(0.97) !important;
+    transition: transform 80ms ease-out !important;
 }
 
-/* 正解時: 爽やかなグリーン + scale(1.02) + 控えめなグローアニメーション */
+/* 正解時: 鮮やかなパルス・グロー (Spring curve) + scale(1.02) */
 .quiz-option-btn.is-correct {
     background: var(--success-color, #10b981) !important;
     border-color: var(--success-color, #10b981) !important;
@@ -106,31 +113,37 @@
 
 @keyframes correctPopGlow {
     0% {
-        transform: scale(0.98);
+        transform: scale(0.97);
         box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6);
     }
-    50% {
+    45% {
         transform: scale(1.03);
-        box-shadow: 0 0 18px 4px rgba(16, 185, 129, 0.45);
+        box-shadow: 0 0 0 6px rgba(16, 185, 129, 0.25), 0 8px 24px -2px rgba(16, 185, 129, 0.4);
+    }
+    75% {
+        transform: scale(1.015);
     }
     100% {
         transform: scale(1.02);
-        box-shadow: 0 0 12px 2px rgba(16, 185, 129, 0.3);
+        box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.18), 0 6px 16px -2px rgba(16, 185, 129, 0.3);
     }
 }
 
-/* 連続正解（コンボ）バッジの弾けるアニメーション (scale 1.25 -> 1.0) */
+/* 連続正解（コンボ）バッジの弾けるポップアップアニメーション */
 @keyframes comboPop {
     0% {
-        transform: scale(0.8);
-        opacity: 0.8;
+        transform: scale(0.72);
+        opacity: 0.6;
     }
     45% {
         transform: scale(1.25);
         opacity: 1;
     }
-    75% {
+    72% {
         transform: scale(0.96);
+    }
+    88% {
+        transform: scale(1.03);
     }
     100% {
         transform: scale(1);
@@ -140,7 +153,7 @@
 
 .combo-badge,
 .combo-badge.combo-pop-animate {
-    animation: comboPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    animation: comboPop 0.42s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
 /* 不正解時 & タイムアップ時: 物理的な微細シェイクアニメーション */
@@ -152,19 +165,19 @@
         transform: translateX(-6px);
     }
     30% {
-        transform: translateX(6px);
+        transform: translateX(5px);
     }
     45% {
         transform: translateX(-4px);
     }
     60% {
-        transform: translateX(4px);
+        transform: translateX(3px);
     }
     75% {
-        transform: translateX(-2px);
+        transform: translateX(-1.5px);
     }
     90% {
-        transform: translateX(2px);
+        transform: translateX(0.8px);
     }
 }
 
@@ -190,30 +203,30 @@
 /* -----------------------------------------------------------------------------------
    3. リザルト画面のプレミアム演出
    ----------------------------------------------------------------------------------- */
-/* リザルト全体の入場アニメーション（下からスッと浮き上がる） */
-@keyframes fadeInUp {
+/* リザルト全体の入場アニメーション（Spring風にスッと浮き上がる） */
+@keyframes resultFadeInUp {
     from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(24px) scale(0.98);
     }
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
     }
 }
 
 .result-container {
     text-align: center;
     padding: 1.5rem 0;
-    animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation: resultFadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .result-container .result-words-box {
-    animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+    animation: resultFadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both;
 }
 
 .result-container .result-btn-col {
-    animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
+    animation: resultFadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.22s both;
 }
 
 /* 円形プログレスリング (SVG Circle Progress) */
@@ -236,13 +249,13 @@
 
 .result-progress-ring .ring-bg {
     fill: none;
-    stroke: #f1f5f9;
+    stroke: var(--slate-100, #f1f5f9);
     stroke-width: 9;
 }
 
 .result-progress-ring .ring-progress {
     fill: none;
-    stroke: var(--primary-color, #4f46e5);
+    stroke: var(--primary-color, #2563eb);
     stroke-width: 9;
     stroke-linecap: round;
     transition: stroke-dashoffset 1.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -264,15 +277,31 @@
 .result-ring-content .result-score-percent {
     font-size: 2.2rem;
     font-weight: 800;
-    color: var(--primary-color, #4f46e5);
+    color: var(--primary-color, #2563eb);
     line-height: 1;
     font-variant-numeric: tabular-nums;
+    animation: scorePopSpring 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
+}
+
+@keyframes scorePopSpring {
+    0% {
+        transform: scale(0.6);
+        opacity: 0;
+    }
+    60% {
+        transform: scale(1.15);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 .result-ring-content .result-score-sub {
     font-size: 0.75rem;
     font-weight: 700;
-    color: var(--text-muted, #64748b);
+    color: var(--text-muted, #475569);
     margin-top: 0.25rem;
 }
 

@@ -2,7 +2,7 @@
  * VocabFlow Service Worker (Cache-first offline strategy with HTTP cache bypass)
  */
 
-const CACHE_NAME = 'wordtest-v14';
+const CACHE_NAME = 'wordtest-v15';
 const ASSETS = [
     './',
     './index.html',

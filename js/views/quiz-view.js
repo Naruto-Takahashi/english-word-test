@@ -2,10 +2,10 @@
  * スピードクイズ（4択 / スペル入力）の画面View
  */
 
-import { initAudio, playSE, speak } from '../modules/audio.js?v=4.80';
-import { saveResultAsImage } from '../modules/share.js?v=4.60';
-import { icons } from '../modules/icons.js?v=4.60';
-import { getWordHint } from '../../data/hints1400.js?v=4.60';
+import { initAudio, playSE, speak } from '../modules/audio.js?v=5.00';
+import { saveResultAsImage } from '../modules/share.js?v=5.00';
+import { icons } from '../modules/icons.js?v=5.00';
+import { getWordHint } from '../../data/hints1400.js?v=5.00';
 
 export class QuizView {
     constructor({ container, store, engine, onFinish }) {
@@ -354,6 +354,8 @@ export class QuizView {
         const feedback = this.container.querySelector('#quiz-feedback');
         const nextBtn = this.container.querySelector('#quiz-next-btn');
 
+        if (!optionsGrid || !feedback || !nextBtn) return;
+
         // カード全体にシェイクを付与
         const quizCard = this.container.querySelector('.quiz-card');
         if (quizCard) {
@@ -495,11 +497,17 @@ export class QuizView {
                 <!-- アクションボタン -->
                 <div class="result-btn-col">
                     ${results.wrongWords.length > 0 ? `
-                        <button id="res-retry-wrong-btn" class="btn btn-warning btn-full">
-                            間違えた単語（${results.wrongWords.length}語）を今すぐ特訓
+                        <button id="res-retry-wrong-btn" class="btn btn-primary btn-full" type="button">
+                            ${icons.zap(16)} 間違えた単語（${results.wrongWords.length}語）を特訓する
                         </button>
-                    ` : ''}
-                    <button id="res-finish-btn" class="btn btn-primary btn-full">ホームに戻る</button>
+                        <button id="res-finish-btn" class="btn btn-outline btn-full" type="button">
+                            ホームに戻る
+                        </button>
+                    ` : `
+                        <button id="res-finish-btn" class="btn btn-primary btn-full" type="button">
+                            ホームに戻る
+                        </button>
+                    `}
                 </div>
             </div>
         `;
@@ -567,8 +575,15 @@ export class QuizView {
         });
 
         this.container.querySelector('#res-finish-btn').addEventListener('click', () => {
+            this.stop();
             this.onFinish();
         });
+    }
+
+    stop() {
+        clearTimeout(this.autoAdvanceTimer);
+        this.engine.stopTimer();
+        this.isAnswering = false;
     }
 
     setupKeyListeners() {

@@ -3,9 +3,9 @@
  * セクション別分割表示 (Section 1〜14)、全範囲検索、単語番号バッジ、厳選ヒントのアコーディオン表示
  */
 
-import { initAudio, speak } from '../modules/audio.js?v=4.80';
-import { icons } from '../modules/icons.js?v=4.60';
-import { getWordHint } from '../../data/hints1400.js?v=4.60';
+import { initAudio, speak } from '../modules/audio.js?v=5.00';
+import { icons } from '../modules/icons.js?v=5.00';
+import { getWordHint } from '../../data/hints1400.js?v=5.00';
 
 export class WordsView {
     constructor({ container, store }) {
@@ -265,12 +265,12 @@ export class WordsView {
                 <div class="word-dict-card ${hint ? 'has-hint' : ''}" data-word-id="${w.id}">
                     <div class="dict-card-main">
                         <div class="dict-top-row">
-                            <button class="dict-star-btn ${isBkm ? 'active' : ''}" data-word-id="${w.id}" aria-label="お気に入り" title="お気に入り">${icons.star(18)}</button>
+                            <button class="dict-star-btn ${isBkm ? 'active' : ''}" data-word-id="${w.id}" type="button" aria-label="お気に入り" title="お気に入り">${icons.star(18)}</button>
                             <span class="dict-no-badge">No. ${w.id}</span>
                             <div class="dict-word-wrap">
                                 <span class="dict-word">${w.word}</span>
                                 <span class="pos-badge">${w.pos || '単語'}</span>
-                                <button class="dict-speak-btn" data-word="${w.word}" aria-label="発音" title="発音を聞く">${icons.volume(16)}</button>
+                                <button class="dict-speak-btn" data-word="${w.word}" type="button" aria-label="発音" title="発音を聞く">${icons.volume(16)}</button>
                             </div>
                             <div class="dict-card-actions">
                                 <span class="status-pill status-${record.status}">${statusLabel}</span>
