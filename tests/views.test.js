@@ -61,7 +61,7 @@ test('All views render cleanly without TypeError or missing icons', () => {
         wordsView.setWords(words);
     }, 'WordsView.setWords should not throw TypeError');
     assert(wordsContainer.innerHTML.includes('words-view-container'));
-    assert(wordsContainer.innerHTML.includes('暗記マスク'));
+    assert(wordsContainer.innerHTML.includes('赤シート'));
 
     // 3. StatsView (設定タブ)
     const statsContainer = document.getElementById('view-stats');

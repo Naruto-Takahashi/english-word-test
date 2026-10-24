@@ -3,9 +3,9 @@
  * セクション別分割表示 (Section 1〜14)、全範囲検索、単語番号バッジ、厳選ヒントのアコーディオン表示
  */
 
-import { initAudio, speak } from '../modules/audio.js?v=5.30';
-import { icons } from '../modules/icons.js?v=5.30';
-import { getWordHint } from '../../data/hints1400.js?v=5.30';
+import { initAudio, speak } from '../modules/audio.js?v=5.40';
+import { icons } from '../modules/icons.js?v=5.40';
+import { getWordHint } from '../../data/hints1400.js?v=5.40';
 
 export class WordsView {
     constructor({ container, store }) {
@@ -113,12 +113,26 @@ export class WordsView {
                     </div>
 
                     ${this.viewMode === 'list' ? `
-                        <!-- 検索ボックス -->
-                        <div class="search-box">
-                            <span class="search-icon">${icons.search(16)}</span>
-                            <input type="text" id="words-search-input" class="search-input" placeholder="英単語や意味で検索 (全範囲)..." value="${this.searchQuery}">
-                            ${this.searchQuery ? `<button id="words-search-clear" class="search-clear-btn" type="button" aria-label="検索をクリア">${icons.x(14)}</button>` : ''}
+                        <!-- 検索バー ＆ 赤シートワンタップボタンの横並び行 -->
+                        <div class="search-action-bar">
+                            <div class="search-box">
+                                <span class="search-icon">${icons.search(16)}</span>
+                                <input type="text" id="words-search-input" class="search-input" placeholder="英単語や意味で検索 (全範囲)..." value="${this.searchQuery}">
+                                ${this.searchQuery ? `<button id="words-search-clear" class="search-clear-btn" type="button" aria-label="検索をクリア">${icons.x(14)}</button>` : ''}
+                            </div>
+                            <button id="btn-red-sheet" class="btn-red-sheet ${this.store.settings.wordsMask !== 'none' ? 'active' : ''}" type="button" aria-label="赤シート（暗記マスク）切り替え" title="赤シートを敷く / 外す">
+                                <span class="red-sheet-icon">
+                                    ${this.store.settings.wordsMask !== 'none' ? icons.eye(16) : icons.eyeOff(16)}
+                                </span>
+                                <span>赤シート ${this.store.settings.wordsMask !== 'none' ? 'ON' : 'OFF'}</span>
+                            </button>
                         </div>
+
+                        ${this.store.settings.wordsMask !== 'none' ? `
+                            <div class="red-sheet-toast-tip">
+                                ${icons.rotateCcw(12)} 長押しで覗き見、タップでめくり
+                            </div>
+                        ` : ''}
 
                         <!-- 全範囲検索インジケータ -->
                         <div id="search-scope-indicator" class="search-scope-indicator" style="${this.searchQuery ? 'display: flex;' : 'display: none;'}">
@@ -152,18 +166,6 @@ export class WordsView {
                         <button class="filter-pill ${this.currentFilter === 'learning' ? 'active' : ''}" data-filter="learning" type="button">${icons.bookOpen(13)} 学習中</button>
                         <button class="filter-pill ${this.currentFilter === 'mastered' ? 'active' : ''}" data-filter="mastered" type="button">${icons.check(13)} マスター</button>
                     </div>
-
-                    ${this.viewMode === 'list' ? `
-                        <!-- 赤シート風マスク切り替えバー -->
-                        <div class="mask-control-row">
-                            <span class="mask-label">${icons.eye(14)} 暗記マスク:</span>
-                            <div class="mask-pills" role="radiogroup" aria-label="暗記マスク切り替え">
-                                <button class="mask-pill ${this.store.settings.wordsMask === 'none' ? 'active' : ''}" data-mask="none" type="button">表示</button>
-                                <button class="mask-pill ${this.store.settings.wordsMask === 'meaning' ? 'active' : ''}" data-mask="meaning" type="button">意味を隠す</button>
-                                <button class="mask-pill ${this.store.settings.wordsMask === 'word' ? 'active' : ''}" data-mask="word" type="button">単語を隠す</button>
-                            </div>
-                        </div>
-                    ` : ''}
                 </div>
 
                 <!-- メイン表示領域（リスト または カードめくり） -->
@@ -234,17 +236,16 @@ export class WordsView {
             });
         });
 
-        // マスクピル切り替え（リストモード時のみ）
-        this.container.querySelectorAll('.mask-pill').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const mask = btn.dataset.mask;
-                this.store.settings.wordsMask = mask;
+        // 赤シート（暗記マスク）ワンタップトグル
+        const redSheetBtn = this.container.querySelector('#btn-red-sheet');
+        if (redSheetBtn) {
+            redSheetBtn.addEventListener('click', () => {
+                const current = this.store.settings.wordsMask || 'none';
+                this.store.settings.wordsMask = (current === 'none') ? 'meaning' : 'none';
                 this.store.save();
-                this.container.querySelectorAll('.mask-pill').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                this.updateList();
+                this.render();
             });
-        });
+        }
 
         this.updateView();
     }
