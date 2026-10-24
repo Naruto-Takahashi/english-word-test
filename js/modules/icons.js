@@ -75,5 +75,8 @@ export const icons = {
 
     // 共有・デバイス（PWA用）
     share: (size = 20, cls = '') => svg('<path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" x2="12" y1="2" y2="15"></line>', size, cls),
-    smartphone: (size = 20, cls = '') => svg('<rect width="14" height="20" x="5" y="2" rx="2" ry="2"></rect><line x1="12" x2="12.01" y1="18" y2="18"></line>', size, cls)
+    smartphone: (size = 20, cls = '') => svg('<rect width="14" height="20" x="5" y="2" rx="2" ry="2"></rect><line x1="12" x2="12.01" y1="18" y2="18"></line>', size, cls),
+
+    // 王冠（全問正解・達成）
+    crown: (size = 20, cls = '') => svg('<path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"></path>', size, cls)
 };

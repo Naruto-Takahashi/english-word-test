@@ -419,7 +419,7 @@ export class QuizView {
         let celebrationBadge = '';
         if (isPerfect) {
             resultTitle = 'Perfect Score!';
-            celebrationBadge = `<div class="result-perfect-badge">${icons.flame(16)} 👑 全問正解達成！</div>`;
+            celebrationBadge = `<div class="result-perfect-badge">${icons.crown(18)} 全問正解達成！</div>`;
         } else if (results.accuracy >= 80) {
             resultTitle = 'Great Job!';
         } else if (results.accuracy >= 60) {

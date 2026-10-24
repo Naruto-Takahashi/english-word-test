@@ -5,7 +5,7 @@
   "type": "module",
   "main": "js/app.js",
   "scripts": {
-    "test": "node --test tests/modules.test.js"
+    "test": "node --test tests/modules.test.js tests/no-emoji.test.js"
   },
   "repository": {
     "type": "git",
