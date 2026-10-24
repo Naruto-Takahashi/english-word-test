@@ -7,7 +7,7 @@ import { target1400Data } from '../data/target1400.js?v=4.70';
 import { parseTSV, preprocessWords } from './modules/parser.js?v=4.70';
 import { VocabStore } from './modules/store.js?v=4.70';
 import { QuizEngine } from './modules/quiz-engine.js?v=4.70';
-import { initAudio } from './modules/audio.js?v=4.70';
+import { initAudio } from './modules/audio.js?v=4.80';
 
 import { LearnView } from './views/learn-view.js?v=4.70';
 import { QuizView } from './views/quiz-view.js?v=4.70';
@@ -96,7 +96,7 @@ class App {
 
         // Service Worker 登録 (PWA)
         if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
-            navigator.serviceWorker.register('./sw.js?v=4.70').catch(() => {});
+            navigator.serviceWorker.register('./sw.js?v=4.80').catch(() => {});
         }
     }
 

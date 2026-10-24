@@ -3,7 +3,7 @@
  * セクション別分割表示 (Section 1〜14)、全範囲検索、単語番号バッジ、厳選ヒントのアコーディオン表示
  */
 
-import { initAudio, speak } from '../modules/audio.js?v=4.60';
+import { initAudio, speak } from '../modules/audio.js?v=4.80';
 import { icons } from '../modules/icons.js?v=4.60';
 import { getWordHint } from '../../data/hints1400.js?v=4.60';
 

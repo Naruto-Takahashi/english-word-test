@@ -22,28 +22,28 @@ export function playSE(type, param = 1) {
     if (type === 'correct') {
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
-        gain.gain.setValueAtTime(0.08, t);
+        gain.gain.setValueAtTime(0.32, t);
         osc.type = 'sine';
         osc.frequency.setValueAtTime(523.25, t); // C5
-        gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.1);
+        gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.12);
         osc.connect(gain);
         gain.connect(audioCtx.destination);
         osc.start(t);
-        osc.stop(t + 0.1);
+        osc.stop(t + 0.12);
 
         setTimeout(() => {
             if (!audioCtx) return;
             const t2 = audioCtx.currentTime;
             const osc2 = audioCtx.createOscillator();
             const gain2 = audioCtx.createGain();
-            gain2.gain.setValueAtTime(0.08, t2);
+            gain2.gain.setValueAtTime(0.32, t2);
             osc2.type = 'sine';
             osc2.frequency.setValueAtTime(783.99, t2); // G5
-            gain2.gain.exponentialRampToValueAtTime(0.0001, t2 + 0.15);
+            gain2.gain.exponentialRampToValueAtTime(0.0001, t2 + 0.18);
             osc2.connect(gain2);
             gain2.connect(audioCtx.destination);
             osc2.start(t2);
-            osc2.stop(t2 + 0.15);
+            osc2.stop(t2 + 0.18);
         }, 80);
     } else if (type === 'combo') {
         // コンボ数に応じてピッチが少しずつ上がる明るいチャイム
@@ -53,26 +53,26 @@ export function playSE(type, param = 1) {
 
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
-        gain.gain.setValueAtTime(0.1, t);
+        gain.gain.setValueAtTime(0.35, t);
         osc.type = 'triangle';
         osc.frequency.setValueAtTime(freq, t);
-        gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.2);
+        gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.22);
         osc.connect(gain);
         gain.connect(audioCtx.destination);
         osc.start(t);
-        osc.stop(t + 0.2);
+        osc.stop(t + 0.22);
     } else if (type === 'wrong') {
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
-        gain.gain.setValueAtTime(0.09, t);
+        gain.gain.setValueAtTime(0.25, t);
         osc.type = 'sawtooth';
         osc.frequency.setValueAtTime(130, t);
-        osc.frequency.exponentialRampToValueAtTime(90, t + 0.2);
-        gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.2);
+        osc.frequency.exponentialRampToValueAtTime(90, t + 0.22);
+        gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.22);
         osc.connect(gain);
         gain.connect(audioCtx.destination);
         osc.start(t);
-        osc.stop(t + 0.2);
+        osc.stop(t + 0.22);
     }
 }
 
@@ -113,6 +113,7 @@ export function speak(text) {
         utterance.voice = preferredEnglishVoice;
         utterance.lang = preferredEnglishVoice.lang;
         utterance.rate = 0.90;
+        utterance.volume = 0.85;
         window.speechSynthesis.speak(utterance);
         return;
     }
@@ -128,12 +129,14 @@ export function speak(text) {
         const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=${encodeURIComponent(cleanWord)}`;
         ttsAudioElement = new Audio(url);
         ttsAudioElement.playbackRate = 0.95;
+        ttsAudioElement.volume = 0.85;
         ttsAudioElement.play().catch(() => {
             // オフライン等で再生できない場合のみ、SpeechSynthesisにフォールバック
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
                 const fallback = new SpeechSynthesisUtterance(cleanWord);
                 fallback.lang = 'en-US';
+                fallback.volume = 0.85;
                 window.speechSynthesis.speak(fallback);
             }
         });
