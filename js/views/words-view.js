@@ -3,9 +3,9 @@
  * セクション別分割表示 (Section 1〜14)、全範囲検索、単語番号バッジ、厳選ヒントのアコーディオン表示
  */
 
-import { initAudio, speak } from '../modules/audio.js?v=5.50';
-import { icons } from '../modules/icons.js?v=5.50';
-import { getWordHint } from '../../data/hints1400.js?v=5.50';
+import { initAudio, speak } from '../modules/audio.js?v=5.60';
+import { icons } from '../modules/icons.js?v=5.60';
+import { getWordHint } from '../../data/hints1400.js?v=5.60';
 
 export class WordsView {
     constructor({ container, store }) {
@@ -100,82 +100,59 @@ export class WordsView {
         const isRedSheetActive = maskMode !== 'none';
 
         this.container.innerHTML = `
-            <div class="words-view-container">
+            <div class="words-view-container" aria-label="単語帳">
                 <div class="words-header">
-                    <!-- モード切り替えバー（リスト / カードめくり） -->
-                    <div class="words-mode-bar">
-                        <div class="words-mode-toggle" role="radiogroup" aria-label="単語帳表示形式">
-                            <button class="words-mode-btn ${this.viewMode === 'list' ? 'active' : ''}" data-mode="list" type="button">
-                                ${icons.bookOpen(14)} リスト一覧
-                            </button>
-                            <button class="words-mode-btn ${this.viewMode === 'card' ? 'active' : ''}" data-mode="card" type="button">
-                                ${icons.layers(14)} カードめくり
-                            </button>
+                    <!-- 1行目: 検索バーと表示モード（リスト / カード）切り替え -->
+                    <div class="words-top-bar">
+                        <div class="search-box">
+                            <span class="search-icon">${icons.search(16)}</span>
+                            <input type="text" id="words-search-input" class="search-input" placeholder="英単語や意味で検索 (全範囲)..." value="${this.searchQuery}">
+                            ${this.searchQuery ? `<button id="words-search-clear" class="search-clear-btn" type="button" aria-label="検索をクリア">${icons.x(14)}</button>` : ''}
                         </div>
-                        <div id="words-count-text" class="words-count-text"></div>
+                        <button id="btn-words-mode" class="btn-words-mode ${this.viewMode === 'card' ? 'active' : ''}" type="button" aria-label="表示形式切り替え" title="${this.viewMode === 'list' ? 'カードめくりモードへ' : 'リスト一覧へ'}">
+                            ${this.viewMode === 'list' ? `${icons.layers(15)}<span>カード</span>` : `${icons.bookOpen(15)}<span>リスト</span>`}
+                        </button>
                     </div>
 
-                    ${this.viewMode === 'list' ? `
-                        <!-- 検索バー ＆ 赤シート一体型コントロールの横並び行 -->
-                        <div class="search-action-bar">
-                            <div class="search-box">
-                                <span class="search-icon">${icons.search(16)}</span>
-                                <input type="text" id="words-search-input" class="search-input" placeholder="英単語や意味で検索 (全範囲)..." value="${this.searchQuery}">
-                                ${this.searchQuery ? `<button id="words-search-clear" class="search-clear-btn" type="button" aria-label="検索をクリア">${icons.x(14)}</button>` : ''}
+                    <!-- 2行目: セクションステッパー ＆ フィルタードロップダウン -->
+                    <div class="words-control-row">
+                        <!-- セクションステッパー（前へ ◀ セレクト ▶ 次へ） -->
+                        <div class="section-stepper" ${this.searchQuery ? 'style="opacity: 0.5; pointer-events: none;"' : ''}>
+                            <button id="sec-prev-btn" class="stepper-arrow-btn" type="button" aria-label="前のセクションへ" ${this.currentSection <= 1 ? 'disabled' : ''}>
+                                ${icons.arrowLeft(15)}
+                            </button>
+                            <div class="stepper-select-wrap">
+                                <select id="section-select" class="section-select" aria-label="セクション選択">
+                                    ${sections.map(s => {
+                                        const startNo = (s - 1) * 100 + 1;
+                                        const endNo = Math.min(s * 100, this.allWords.length);
+                                        return `<option value="${s}" ${s === this.currentSection ? 'selected' : ''}>Section ${s} (${startNo}–${endNo})</option>`;
+                                    }).join('')}
+                                </select>
+                                <span class="select-chevron">${icons.chevronDown(13)}</span>
                             </div>
-                            <div class="red-sheet-control-group ${isRedSheetActive ? 'active' : ''}">
-                                <button id="btn-red-sheet" class="btn-red-sheet" type="button" aria-label="赤シート切り替え" title="赤シートを敷く / 外す">
-                                    <span class="red-sheet-icon">
-                                        ${isRedSheetActive ? icons.eye(15) : icons.eyeOff(15)}
-                                    </span>
-                                    <span>赤シート ${isRedSheetActive ? 'ON' : 'OFF'}</span>
-                                </button>
-                                ${isRedSheetActive ? `
-                                    <button id="btn-sheet-target" class="btn-sheet-target" type="button" aria-label="隠す対象切り替え" title="意味 ⇄ 英語を切り替え">
-                                        <span>${maskMode === 'word' ? '英語隠し' : '意味隠し'}</span>
-                                        ${icons.rotateCcw(11)}
-                                    </button>
-                                ` : ''}
-                            </div>
+                            <button id="sec-next-btn" class="stepper-arrow-btn" type="button" aria-label="次のセクションへ" ${this.currentSection >= totalSections ? 'disabled' : ''}>
+                                ${icons.arrowRight(15)}
+                            </button>
                         </div>
 
-                        ${isRedSheetActive ? `
-                            <div class="red-sheet-toast-tip">
-                                ${icons.rotateCcw(12)} 長押し・ホバーで覗き見、タップでめくり
-                            </div>
-                        ` : ''}
-
-                        <!-- 全範囲検索インジケータ -->
-                        <div id="search-scope-indicator" class="search-scope-indicator" style="${this.searchQuery ? 'display: flex;' : 'display: none;'}">
-                            <span class="search-scope-tag">全範囲検索</span>
-                            <span id="search-scope-text">全 ${this.allWords.length} 語から「${this.searchQuery}」を検索中</span>
-                        </div>
-                    ` : ''}
-
-                    <!-- セクション選択タブ (Section 1〜Section 14) -->
-                    <div class="section-tabs-wrapper">
-                        <div class="section-tabs-row" id="section-tabs-row">
-                            ${sections.map(s => {
-                                const startNo = (s - 1) * 100 + 1;
-                                const endNo = Math.min(s * 100, this.allWords.length);
-                                const isActive = (s === this.currentSection && !this.searchQuery);
-                                return `
-                                    <button class="section-tab-btn ${isActive ? 'active' : ''}" data-section="${s}" type="button">
-                                        <span class="sec-label">Sec ${s}</span>
-                                        <span class="sec-range">No.${startNo}–${endNo}</span>
-                                    </button>
-                                `;
-                            }).join('')}
+                        <!-- フィルタードロップダウン -->
+                        <div class="filter-select-wrap">
+                            <select id="filter-select" class="filter-select" aria-label="単語絞り込み">
+                                <option value="all" ${this.currentFilter === 'all' ? 'selected' : ''}>すべて (${this.allWords.length})</option>
+                                <option value="bookmarked" ${this.currentFilter === 'bookmarked' ? 'selected' : ''}>お気に入り</option>
+                                <option value="weak" ${this.currentFilter === 'weak' ? 'selected' : ''}>要復習</option>
+                                <option value="learning" ${this.currentFilter === 'learning' ? 'selected' : ''}>学習中</option>
+                                <option value="mastered" ${this.currentFilter === 'mastered' ? 'selected' : ''}>マスター</option>
+                            </select>
+                            <span class="select-chevron">${icons.chevronDown(13)}</span>
                         </div>
                     </div>
 
-                    <!-- フィルターピル -->
-                    <div class="filter-pills-row">
-                        <button class="filter-pill ${this.currentFilter === 'all' ? 'active' : ''}" data-filter="all" type="button">すべて</button>
-                        <button class="filter-pill ${this.currentFilter === 'bookmarked' ? 'active' : ''}" data-filter="bookmarked" type="button">${icons.star(13, '', true)} お気に入り</button>
-                        <button class="filter-pill ${this.currentFilter === 'weak' ? 'active' : ''}" data-filter="weak" type="button">${icons.rotateCcw(13)} 要復習</button>
-                        <button class="filter-pill ${this.currentFilter === 'learning' ? 'active' : ''}" data-filter="learning" type="button">${icons.bookOpen(13)} 学習中</button>
-                        <button class="filter-pill ${this.currentFilter === 'mastered' ? 'active' : ''}" data-filter="mastered" type="button">${icons.check(13)} マスター</button>
+                    <!-- 全範囲検索インジケータ -->
+                    <div id="search-scope-indicator" class="search-scope-indicator" style="${this.searchQuery ? 'display: flex;' : 'display: none;'}">
+                        <span class="search-scope-tag">全範囲検索</span>
+                        <span id="search-scope-text">全 ${this.allWords.length} 語から「${this.searchQuery}」を検索中</span>
                     </div>
                 </div>
 
@@ -185,22 +162,36 @@ export class WordsView {
                         ? '<div id="words-list" class="words-list"></div>' 
                         : '<div id="flashcard-stage" class="flashcard-stage"></div>'}
                 </div>
+
+                <!-- フローティング赤シート FAB（リスト表示時のみ） -->
+                ${this.viewMode === 'list' ? `
+                    <div class="red-sheet-fab-container ${isRedSheetActive ? 'active' : ''}">
+                        ${isRedSheetActive ? `
+                            <button id="btn-sheet-target" class="sheet-fab-target-btn" type="button" aria-label="隠す対象切り替え" title="意味 ⇄ 英語を切り替え">
+                                <span>${maskMode === 'word' ? '英語隠し' : '意味隠し'}</span>
+                                ${icons.rotateCcw(12)}
+                            </button>
+                        ` : ''}
+                        <button id="btn-red-sheet" class="sheet-fab-main-btn" type="button" aria-label="赤シート切り替え" title="赤シートを敷く / 外す">
+                            <span class="sheet-fab-icon">${isRedSheetActive ? icons.eye(17) : icons.eyeOff(17)}</span>
+                            <span class="sheet-fab-label">${isRedSheetActive ? '赤シート中' : '赤シート'}</span>
+                        </button>
+                    </div>
+                ` : ''}
             </div>
         `;
 
-        // モード切り替えイベント
-        this.container.querySelectorAll('.words-mode-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const mode = btn.dataset.mode;
-                if (mode !== this.viewMode) {
-                    this.viewMode = mode;
-                    this.store.settings.wordsViewMode = mode;
-                    this.store.save();
-                    this.isCardFlipped = false;
-                    this.render();
-                }
+        // 表示モード切り替えイベント（リスト ⇄ カード）
+        const modeBtn = this.container.querySelector('#btn-words-mode');
+        if (modeBtn) {
+            modeBtn.addEventListener('click', () => {
+                this.viewMode = (this.viewMode === 'list') ? 'card' : 'list';
+                this.store.settings.wordsViewMode = this.viewMode;
+                this.store.save();
+                this.isCardFlipped = false;
+                this.render();
             });
-        });
+        }
 
         // 検索入力イベント（リストモード時のみ）
         const searchInput = this.container.querySelector('#words-search-input');
@@ -213,11 +204,37 @@ export class WordsView {
             this.bindClearBtn();
         }
 
-        // セクションタブ切り替え
-        this.container.querySelectorAll('.section-tab-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const sec = parseInt(btn.dataset.section, 10);
-                this.currentSection = sec;
+        // セクションステッパー: 前へ
+        const prevBtn = this.container.querySelector('#sec-prev-btn');
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => {
+                if (this.currentSection > 1) {
+                    this.currentSection--;
+                    this.cardIndex = 0;
+                    this.isCardFlipped = false;
+                    this.render();
+                }
+            });
+        }
+
+        // セクションステッパー: 次へ
+        const nextBtn = this.container.querySelector('#sec-next-btn');
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                if (this.currentSection < totalSections) {
+                    this.currentSection++;
+                    this.cardIndex = 0;
+                    this.isCardFlipped = false;
+                    this.render();
+                }
+            });
+        }
+
+        // セクションステッパー: セレクト選択
+        const secSelect = this.container.querySelector('#section-select');
+        if (secSelect) {
+            secSelect.addEventListener('change', (e) => {
+                this.currentSection = parseInt(e.target.value, 10);
                 this.cardIndex = 0;
                 this.isCardFlipped = false;
                 if (this.searchQuery) {
@@ -225,29 +242,22 @@ export class WordsView {
                     if (searchInput) searchInput.value = '';
                     this.updateClearBtn();
                 }
-                this.updateSectionTabActive();
-                const row = this.container.querySelector('.section-tabs-row');
-                if (row) {
-                    const scrollLeft = btn.offsetLeft - (row.clientWidth / 2) + (btn.clientWidth / 2);
-                    row.scrollTo({ left: scrollLeft, behavior: 'smooth' });
-                }
-                this.updateView();
+                this.render();
             });
-        });
+        }
 
-        // フィルターピル切り替え
-        this.container.querySelectorAll('.filter-pill').forEach(btn => {
-            btn.addEventListener('click', () => {
-                this.currentFilter = btn.dataset.filter;
+        // フィルタードロップダウン切り替え
+        const filterSelect = this.container.querySelector('#filter-select');
+        if (filterSelect) {
+            filterSelect.addEventListener('change', (e) => {
+                this.currentFilter = e.target.value;
                 this.cardIndex = 0;
                 this.isCardFlipped = false;
-                this.container.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
                 this.updateView();
             });
-        });
+        }
 
-        // 赤シート（暗記マスク）ワンタップトグル
+        // 赤シート（暗記マスク）ワンタップトグル（FAB）
         const redSheetBtn = this.container.querySelector('#btn-red-sheet');
         if (redSheetBtn) {
             redSheetBtn.addEventListener('click', () => {
@@ -322,10 +332,24 @@ export class WordsView {
 
     updateSectionTabActive() {
         const isSearching = Boolean(this.searchQuery);
-        this.container.querySelectorAll('.section-tab-btn').forEach(b => {
-            const s = parseInt(b.dataset.section, 10);
-            b.classList.toggle('active', !isSearching && s === this.currentSection);
-        });
+        const stepper = this.container.querySelector('.section-stepper');
+        if (stepper) {
+            stepper.style.opacity = isSearching ? '0.5' : '1';
+            stepper.style.pointerEvents = isSearching ? 'none' : 'auto';
+        }
+        const select = this.container.querySelector('#section-select');
+        if (select) {
+            select.value = String(this.currentSection);
+        }
+        const prevBtn = this.container.querySelector('#sec-prev-btn');
+        if (prevBtn) {
+            prevBtn.disabled = this.currentSection <= 1;
+        }
+        const nextBtn = this.container.querySelector('#sec-next-btn');
+        if (nextBtn) {
+            const totalSections = this.getSectionCount();
+            nextBtn.disabled = this.currentSection >= totalSections;
+        }
     }
 
     updateList() {
@@ -390,10 +414,12 @@ export class WordsView {
         };
         const filterSuffix = filterNames[this.currentFilter] || '';
 
-        if (isSearching) {
-            countText.textContent = `全範囲検索${filterSuffix}: ${filtered.length} 語ヒット`;
-        } else {
-            countText.textContent = `Section ${this.currentSection} (No. ${secStart}–${secEnd})${filterSuffix}: ${filtered.length} 語`;
+        if (countText) {
+            if (isSearching) {
+                countText.textContent = `全範囲検索${filterSuffix}: ${filtered.length} 語ヒット`;
+            } else {
+                countText.textContent = `Section ${this.currentSection} (No. ${secStart}–${secEnd})${filterSuffix}: ${filtered.length} 語`;
+            }
         }
 
         if (filtered.length === 0) {

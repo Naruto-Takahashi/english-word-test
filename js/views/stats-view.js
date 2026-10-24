@@ -3,8 +3,8 @@
  * 学習データ可視化、単語セット切り替え、環境設定、JSONバックアップ/復元
  */
 
-import { icons } from '../modules/icons.js?v=5.50';
-import { promptInstallPWA, isStandalone, canInstallPWA, onPWAStateChange } from '../modules/pwa.js?v=5.50';
+import { icons } from '../modules/icons.js?v=5.60';
+import { promptInstallPWA, isStandalone, canInstallPWA, onPWAStateChange } from '../modules/pwa.js?v=5.60';
 
 export class StatsView {
     constructor({ container, store, onSetChange }) {

@@ -248,7 +248,7 @@ test('WordsView supports red sheet toggle and target switching between meaning a
     // 赤シートをONにする
     redSheetBtn.click();
     assert.equal(store.settings.wordsMask, 'meaning');
-    assert(container.querySelector('.red-sheet-control-group.active'));
+    assert(container.querySelector('.red-sheet-fab-container.active'));
     let sheetTargetBtn = container.querySelector('#btn-sheet-target');
     assert(sheetTargetBtn);
     assert(sheetTargetBtn.textContent.includes('意味隠し'));
@@ -276,6 +276,57 @@ test('WordsView supports red sheet toggle and target switching between meaning a
     redSheetBtn.click();
     assert.equal(store.settings.wordsMask, 'word');
     assert(container.querySelectorAll('.dict-word.is-masked').length > 0);
+});
+
+test('WordsView section stepper and filter dropdown operate properly', () => {
+    const dom = new JSDOM(`
+        <!DOCTYPE html>
+        <html>
+        <body>
+            <div id="view-words"></div>
+        </body>
+        </html>
+    `, { url: 'http://localhost' });
+
+    global.window = dom.window;
+    global.document = dom.window.document;
+    global.localStorage = dom.window.localStorage;
+
+    const words = preprocessWords(parseTSV(target1400Data)); // 全1400語
+    const store = new VocabStore();
+    const container = document.getElementById('view-words');
+    const wordsView = new WordsView({ container, store });
+    wordsView.setWords(words);
+
+    // 初期状態: Section 1
+    assert.equal(wordsView.currentSection, 1);
+    const prevBtn = container.querySelector('#sec-prev-btn');
+    const nextBtn = container.querySelector('#sec-next-btn');
+    const secSelect = container.querySelector('#section-select');
+    assert(prevBtn);
+    assert(nextBtn);
+    assert(secSelect);
+    assert.equal(prevBtn.disabled, true);
+    assert.equal(nextBtn.disabled, false);
+    assert.equal(secSelect.value, '1');
+
+    // 「次へ」ボタンで Section 2 へ進む
+    nextBtn.click();
+    assert.equal(wordsView.currentSection, 2);
+    assert.equal(container.querySelector('#section-select').value, '2');
+    assert.equal(container.querySelector('#sec-prev-btn').disabled, false);
+
+    // 「前へ」ボタンで Section 1 へ戻る
+    container.querySelector('#sec-prev-btn').click();
+    assert.equal(wordsView.currentSection, 1);
+    assert.equal(container.querySelector('#section-select').value, '1');
+
+    // フィルターを「お気に入り」に変更
+    const filterSelect = container.querySelector('#filter-select');
+    assert(filterSelect);
+    filterSelect.value = 'bookmarked';
+    filterSelect.dispatchEvent(new dom.window.Event('change'));
+    assert.equal(wordsView.currentFilter, 'bookmarked');
 });
 
 
