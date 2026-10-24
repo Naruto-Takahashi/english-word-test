@@ -197,9 +197,11 @@ test('WordsView flashcard mode supports flipping, status marking, and step navig
     assert.equal(wordsView.viewMode, 'list');
     assert(container.innerHTML.includes('words-list'));
 
-    // カードめくりモードへ切り替え
-    wordsView.viewMode = 'card';
-    wordsView.render();
+    // カードめくりタブをクリックして切り替え
+    const cardTabBtn = container.querySelector('.words-mode-tab[data-mode="card"]');
+    assert(cardTabBtn);
+    cardTabBtn.click();
+    assert.equal(wordsView.viewMode, 'card');
     assert(container.innerHTML.includes('flashcard-stage'));
     assert(container.innerHTML.includes('flashcard-word'));
     assert.equal(wordsView.isCardFlipped, false);

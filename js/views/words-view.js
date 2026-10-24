@@ -3,9 +3,9 @@
  * セクション別分割表示 (Section 1〜14)、全範囲検索、単語番号バッジ、厳選ヒントのアコーディオン表示
  */
 
-import { initAudio, speak } from '../modules/audio.js?v=5.60';
-import { icons } from '../modules/icons.js?v=5.60';
-import { getWordHint } from '../../data/hints1400.js?v=5.60';
+import { initAudio, speak } from '../modules/audio.js?v=5.70';
+import { icons } from '../modules/icons.js?v=5.70';
+import { getWordHint } from '../../data/hints1400.js?v=5.70';
 
 export class WordsView {
     constructor({ container, store }) {
@@ -102,19 +102,30 @@ export class WordsView {
         this.container.innerHTML = `
             <div class="words-view-container" aria-label="単語帳">
                 <div class="words-header">
-                    <!-- 1行目: 検索バーと表示モード（リスト / カード）切り替え -->
-                    <div class="words-top-bar">
-                        <div class="search-box">
-                            <span class="search-icon">${icons.search(16)}</span>
-                            <input type="text" id="words-search-input" class="search-input" placeholder="英単語や意味で検索 (全範囲)..." value="${this.searchQuery}">
-                            ${this.searchQuery ? `<button id="words-search-clear" class="search-clear-btn" type="button" aria-label="検索をクリア">${icons.x(14)}</button>` : ''}
-                        </div>
-                        <button id="btn-words-mode" class="btn-words-mode ${this.viewMode === 'card' ? 'active' : ''}" type="button" aria-label="表示形式切り替え" title="${this.viewMode === 'list' ? 'カードめくりモードへ' : 'リスト一覧へ'}">
-                            ${this.viewMode === 'list' ? `${icons.layers(15)}<span>カード</span>` : `${icons.bookOpen(15)}<span>リスト</span>`}
+                    <!-- 上部: フラットなアンダーライン型 2分割タブ -->
+                    <div class="words-mode-tabs" role="tablist" aria-label="単語帳表示形式">
+                        <button class="words-mode-tab ${this.viewMode === 'list' ? 'active' : ''}" data-mode="list" role="tab" aria-selected="${this.viewMode === 'list'}" type="button">
+                            ${icons.bookOpen(16)}
+                            <span>リスト一覧</span>
+                        </button>
+                        <button class="words-mode-tab ${this.viewMode === 'card' ? 'active' : ''}" data-mode="card" role="tab" aria-selected="${this.viewMode === 'card'}" type="button">
+                            ${icons.layers(16)}
+                            <span>カードめくり</span>
                         </button>
                     </div>
 
-                    <!-- 2行目: セクションステッパー ＆ フィルタードロップダウン -->
+                    ${this.viewMode === 'list' ? `
+                        <!-- 検索バー行（横幅いっぱい配置） -->
+                        <div class="words-search-row">
+                            <div class="search-box">
+                                <span class="search-icon">${icons.search(16)}</span>
+                                <input type="text" id="words-search-input" class="search-input" placeholder="英単語や意味で検索 (全範囲)..." value="${this.searchQuery}">
+                                ${this.searchQuery ? `<button id="words-search-clear" class="search-clear-btn" type="button" aria-label="検索をクリア">${icons.x(14)}</button>` : ''}
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    <!-- セクションステッパー ＆ フィルタードロップダウン -->
                     <div class="words-control-row">
                         <!-- セクションステッパー（前へ ◀ セレクト ▶ 次へ） -->
                         <div class="section-stepper" ${this.searchQuery ? 'style="opacity: 0.5; pointer-events: none;"' : ''}>
@@ -181,17 +192,19 @@ export class WordsView {
             </div>
         `;
 
-        // 表示モード切り替えイベント（リスト ⇄ カード）
-        const modeBtn = this.container.querySelector('#btn-words-mode');
-        if (modeBtn) {
-            modeBtn.addEventListener('click', () => {
-                this.viewMode = (this.viewMode === 'list') ? 'card' : 'list';
-                this.store.settings.wordsViewMode = this.viewMode;
-                this.store.save();
-                this.isCardFlipped = false;
-                this.render();
+        // 表示モードタブ切り替えイベント（リスト ⇄ カード）
+        this.container.querySelectorAll('.words-mode-tab').forEach(tabBtn => {
+            tabBtn.addEventListener('click', () => {
+                const mode = tabBtn.dataset.mode;
+                if (mode !== this.viewMode) {
+                    this.viewMode = mode;
+                    this.store.settings.wordsViewMode = mode;
+                    this.store.save();
+                    this.isCardFlipped = false;
+                    this.render();
+                }
             });
-        }
+        });
 
         // 検索入力イベント（リストモード時のみ）
         const searchInput = this.container.querySelector('#words-search-input');
