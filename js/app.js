@@ -2,18 +2,18 @@
  * 英単語テスト - メインエントリーポイント & ルーター
  */
 
-import { target1200Data } from '../data/target1200.js';
-import { target1400Data } from '../data/target1400.js';
-import { parseTSV, preprocessWords } from './modules/parser.js';
-import { VocabStore } from './modules/store.js';
-import { QuizEngine } from './modules/quiz-engine.js';
-import { initAudio } from './modules/audio.js';
+import { target1200Data } from '../data/target1200.js?v=4.60';
+import { target1400Data } from '../data/target1400.js?v=4.60';
+import { parseTSV, preprocessWords } from './modules/parser.js?v=4.60';
+import { VocabStore } from './modules/store.js?v=4.60';
+import { QuizEngine } from './modules/quiz-engine.js?v=4.60';
+import { initAudio } from './modules/audio.js?v=4.60';
 
-import { LearnView } from './views/learn-view.js';
-import { QuizView } from './views/quiz-view.js';
-import { WordsView } from './views/words-view.js';
-import { StatsView } from './views/stats-view.js';
-import { initPWA, promptInstallPWA, onPWAStateChange } from './modules/pwa.js';
+import { LearnView } from './views/learn-view.js?v=4.60';
+import { QuizView } from './views/quiz-view.js?v=4.60';
+import { WordsView } from './views/words-view.js?v=4.60';
+import { StatsView } from './views/stats-view.js?v=4.60';
+import { initPWA, promptInstallPWA, onPWAStateChange } from './modules/pwa.js?v=4.60';
 
 class App {
     constructor() {
@@ -96,7 +96,7 @@ class App {
 
         // Service Worker 登録 (PWA)
         if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
-            navigator.serviceWorker.register('./sw.js').catch(() => {});
+            navigator.serviceWorker.register('./sw.js?v=4.60').catch(() => {});
         }
     }
 

@@ -3,7 +3,7 @@
  * beforeinstallprompt の捕捉、1クリックインストールダイアログ呼び出し、iOS向け案内ガイド
  */
 
-import { icons } from './icons.js';
+import { icons } from './icons.js?v=4.60';
 
 let deferredPrompt = null;
 const listeners = new Set();

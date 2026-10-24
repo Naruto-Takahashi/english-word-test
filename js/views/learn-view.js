@@ -3,7 +3,7 @@
  * 授業用テスト（問題数選択・カスタム範囲テスト）、スマート復習、チャプター一覧
  */
 
-import { icons } from '../modules/icons.js';
+import { icons } from '../modules/icons.js?v=4.60';
 
 export class LearnView {
     constructor({ container, store, onStartQuiz }) {

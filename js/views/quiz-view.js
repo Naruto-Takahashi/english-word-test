@@ -2,10 +2,10 @@
  * スピードクイズ（4択 / スペル入力）の画面View
  */
 
-import { initAudio, playSE, speak } from '../modules/audio.js';
-import { saveResultAsImage } from '../modules/share.js';
-import { icons } from '../modules/icons.js';
-import { getWordHint } from '../../data/hints1400.js';
+import { initAudio, playSE, speak } from '../modules/audio.js?v=4.60';
+import { saveResultAsImage } from '../modules/share.js?v=4.60';
+import { icons } from '../modules/icons.js?v=4.60';
+import { getWordHint } from '../../data/hints1400.js?v=4.60';
 
 export class QuizView {
     constructor({ container, store, engine, onFinish }) {

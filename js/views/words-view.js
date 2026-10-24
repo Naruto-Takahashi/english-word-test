@@ -3,9 +3,9 @@
  * セクション別分割表示 (Section 1〜14)、全範囲検索、単語番号バッジ、厳選ヒントのアコーディオン表示
  */
 
-import { initAudio, speak } from '../modules/audio.js';
-import { icons } from '../modules/icons.js';
-import { getWordHint } from '../../data/hints1400.js';
+import { initAudio, speak } from '../modules/audio.js?v=4.60';
+import { icons } from '../modules/icons.js?v=4.60';
+import { getWordHint } from '../../data/hints1400.js?v=4.60';
 
 export class WordsView {
     constructor({ container, store }) {
