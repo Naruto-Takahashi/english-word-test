@@ -175,6 +175,8 @@ test('Icons module renders clean SVG strings', () => {
     assert(icons.chevronDown().includes('<polyline points="6 9 12 15 18 9"'));
     assert(icons.share().includes('polyline points="16 6 12 2 8 6"'));
     assert(icons.smartphone().includes('<rect width="14" height="20"'));
+    assert(icons.eye(14).includes('<svg') && icons.eye(14).includes('circle cx="12" cy="12"'));
+    assert(icons.eyeOff(14).includes('<svg') && icons.eyeOff(14).includes('line x1="2" x2="22"'));
 });
 
 test('getWordHint returns rich etymology, loanword link, and grammar note for curated words, null for others', () => {

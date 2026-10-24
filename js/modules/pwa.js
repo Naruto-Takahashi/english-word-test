@@ -3,7 +3,7 @@
  * beforeinstallprompt の捕捉、1クリックインストールダイアログ呼び出し、iOS向け案内ガイド
  */
 
-import { icons } from './icons.js?v=5.20';
+import { icons } from './icons.js?v=5.21';
 
 let deferredPrompt = null;
 const listeners = new Set();
@@ -14,9 +14,10 @@ const listeners = new Set();
  */
 export function isStandalone() {
     return (
-        window.matchMedia('(display-mode: standalone)').matches ||
-        window.navigator.standalone === true ||
-        document.referrer.includes('android-app://')
+        (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) ||
+        (typeof window !== 'undefined' && window.navigator && window.navigator.standalone === true) ||
+        (typeof document !== 'undefined' && document.referrer && document.referrer.includes('android-app://')) ||
+        false
     );
 }
 
