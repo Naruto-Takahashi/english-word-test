@@ -2,18 +2,18 @@
  * 英単語テスト - メインエントリーポイント & ルーター
  */
 
-import { target1200Data } from '../data/target1200.js?v=5.21';
-import { target1400Data } from '../data/target1400.js?v=5.21';
-import { parseTSV, preprocessWords } from './modules/parser.js?v=5.21';
-import { VocabStore } from './modules/store.js?v=5.21';
-import { QuizEngine } from './modules/quiz-engine.js?v=5.21';
-import { initAudio } from './modules/audio.js?v=5.21';
+import { target1200Data } from '../data/target1200.js?v=5.30';
+import { target1400Data } from '../data/target1400.js?v=5.30';
+import { parseTSV, preprocessWords } from './modules/parser.js?v=5.30';
+import { VocabStore } from './modules/store.js?v=5.30';
+import { QuizEngine } from './modules/quiz-engine.js?v=5.30';
+import { initAudio } from './modules/audio.js?v=5.30';
 
-import { LearnView } from './views/learn-view.js?v=5.21';
-import { QuizView } from './views/quiz-view.js?v=5.21';
-import { WordsView } from './views/words-view.js?v=5.21';
-import { StatsView } from './views/stats-view.js?v=5.21';
-import { initPWA, promptInstallPWA, onPWAStateChange } from './modules/pwa.js?v=5.21';
+import { LearnView } from './views/learn-view.js?v=5.30';
+import { QuizView } from './views/quiz-view.js?v=5.30';
+import { WordsView } from './views/words-view.js?v=5.30';
+import { StatsView } from './views/stats-view.js?v=5.30';
+import { initPWA, promptInstallPWA, onPWAStateChange } from './modules/pwa.js?v=5.30';
 
 class App {
     constructor() {
@@ -96,7 +96,7 @@ class App {
 
         // Service Worker 登録 (PWA)
         if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
-            navigator.serviceWorker.register('./sw.js?v=5.21').catch(() => {});
+            navigator.serviceWorker.register('./sw.js?v=5.30').catch(() => {});
         }
     }
 
@@ -123,13 +123,13 @@ class App {
     setupNavigation() {
         if (!this.nav) return;
 
-        // PC（幅 820px以上: ヘッダー配置）とスマホ（幅 820px未満: 画面最下部ボトムナビ）でDOM配置を同期
-        const headerInner = document.querySelector('.header-inner');
+        // PC（幅 820px以上: ヘッダー中央配置）とスマホ（幅 820px未満: 画面最下部ボトムナビ）でDOM配置を同期
+        const headerCenter = document.querySelector('#header-center');
         const appLayout = document.querySelector('.app-layout');
         const syncPlacement = () => {
             if (window.innerWidth >= 820) {
-                if (headerInner && this.nav.parentElement !== headerInner) {
-                    headerInner.appendChild(this.nav);
+                if (headerCenter && this.nav.parentElement !== headerCenter) {
+                    headerCenter.appendChild(this.nav);
                 }
             } else {
                 if (appLayout && this.nav.parentElement !== appLayout) {

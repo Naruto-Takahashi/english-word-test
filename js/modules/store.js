@@ -21,7 +21,8 @@ export class VocabStore {
             timeLimit: 10, // 10秒（標準） / 5秒 / 0秒（制限なし）
             quizMode: 'en2ja', // 'en2ja' | 'ja2en'
             quizOrder: 'random', // 'random' | 'sequential'
-            wordsMask: 'none' // 'none' | 'meaning' | 'word'
+            wordsMask: 'none', // 'none' | 'meaning' | 'word'
+            wordsViewMode: 'list' // 'list' | 'card'
         };
         this.load();
     }
@@ -89,6 +90,22 @@ export class VocabStore {
         }
 
         record.lastStudiedAt = now;
+        this.wordStats[id] = record;
+        this.save();
+        return record;
+    }
+
+    setWordStatus(id, status) {
+        const record = this.getWordRecord(id);
+        record.status = status;
+        if (status === STATUS.MASTERED) {
+            record.streak = Math.max(record.streak, 3);
+            record.correctCount++;
+        } else if (status === STATUS.WEAK) {
+            record.streak = 0;
+            record.incorrectCount++;
+        }
+        record.lastStudiedAt = Date.now();
         this.wordStats[id] = record;
         this.save();
         return record;

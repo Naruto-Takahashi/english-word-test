@@ -241,20 +241,27 @@ body.in-session .app-main {
     z-index: 100;
 }
 
-/* PC（画面共有・授業時）のヘッダー内タブナビゲーション */
+/* PC（大画面・プロジェクター）のヘッダー中央セグメントナビゲーション */
 @media (min-width: 820px) {
+    .header-center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex: 1;
+    }
     .app-nav {
         position: static;
         transform: none;
         width: auto;
         max-width: none;
-        background: transparent;
-        border-top: none;
-        box-shadow: none;
+        background: #f1f5f9;
+        border-radius: var(--radius-full);
+        border: 1px solid var(--border-color);
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04);
         display: flex;
         align-items: center;
-        gap: 0.4rem;
-        padding: 0;
+        gap: 0.2rem;
+        padding: 0.25rem;
         z-index: auto;
     }
 }
@@ -278,21 +285,24 @@ body.in-session .app-main {
     .nav-item {
         flex-direction: row;
         gap: 0.45rem;
-        padding: 0.45rem 1rem;
+        padding: 0.45rem 1.15rem;
         border-radius: var(--radius-full);
-        background: var(--bg-color);
+        background: transparent;
         font-size: 0.85rem;
-        font-weight: 700;
-        border: 1px solid var(--border-color);
+        font-weight: 600;
+        border: 1px solid transparent;
+        color: var(--text-muted);
     }
     .nav-item:hover {
-        background: #e2e8f0;
+        background: rgba(255, 255, 255, 0.6);
         color: var(--text-color);
     }
     .nav-item.active {
-        background: var(--primary-light);
+        background: #ffffff;
         color: var(--primary-color);
-        border-color: var(--primary-color);
+        font-weight: 700;
+        border-color: rgba(0, 0, 0, 0.04);
+        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.04);
     }
 }
 

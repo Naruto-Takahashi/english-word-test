@@ -473,3 +473,333 @@
     color: var(--text-color, #0f172a) !important;
     box-shadow: inset 0 0 0 1px #fca5a5;
 }
+
+/* 指先タッチ・長押し／ホバーでの覗き見（Peek） */
+.dict-meaning.is-masked.is-peeking,
+.dict-word.is-masked.is-peeking {
+    background: rgba(254, 202, 202, 0.45) !important;
+    color: var(--text-color, #0f172a) !important;
+    opacity: 0.9;
+    box-shadow: inset 0 0 0 1px #f87171, 0 2px 8px rgba(239, 68, 68, 0.15);
+    transform: translateY(-1px);
+    transition: all 0.1s ease;
+}
+
+/* ==========================================================================
+   4. 単語帳: モード切り替えバー（リスト / カードめくり）
+   ========================================================================== */
+.words-mode-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.65rem;
+}
+
+.words-mode-toggle {
+    display: inline-flex;
+    background: #f1f5f9;
+    padding: 0.2rem;
+    border-radius: var(--radius-full, 9999px);
+    border: 1px solid var(--border-color, #e2e8f0);
+}
+
+.words-mode-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-muted, #64748b);
+    border: none;
+    background: transparent;
+    border-radius: var(--radius-full, 9999px);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.words-mode-btn.active {
+    background: #ffffff;
+    color: var(--primary-color, #4f46e5);
+    font-weight: 700;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+}
+
+/* ==========================================================================
+   5. 単語帳: カードめくり（リング単語帳 / フラッシュカード）モード
+   ========================================================================== */
+.flashcard-stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-top: 0.25rem;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.flashcard-top-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 480px;
+    margin-bottom: 0.75rem;
+    padding: 0 0.25rem;
+}
+
+.flashcard-progress-badge {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text-muted, #64748b);
+    background: #f1f5f9;
+    padding: 0.2rem 0.65rem;
+    border-radius: var(--radius-full, 9999px);
+}
+
+.flashcard-step-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.flashcard-step-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--border-color, #e2e8f0);
+    background: #ffffff;
+    color: var(--text-muted, #64748b);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.flashcard-step-btn:hover {
+    background: #f8fafc;
+    color: var(--text-color, #0f172a);
+}
+
+.flashcard-wrapper {
+    width: 100%;
+    max-width: 480px;
+    cursor: pointer;
+}
+
+.flashcard {
+    position: relative;
+    width: 100%;
+    min-height: 250px;
+    background: #ffffff;
+    border-radius: var(--radius-lg, 16px);
+    border: 1.5px solid var(--border-color, #e2e8f0);
+    box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.08), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1.25rem 1.25rem 1rem;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+    touch-action: pan-y;
+}
+
+.flashcard:active {
+    transform: scale(0.985);
+}
+
+.flashcard.is-flipped {
+    border-color: #c7d2fe;
+    background: linear-gradient(180deg, #ffffff 0%, #f8faff 100%);
+    box-shadow: 0 10px 28px -4px rgba(79, 70, 229, 0.12), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
+}
+
+.flashcard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.flashcard-header-left {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.flashcard-header-right {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.flashcard-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1rem 0.5rem;
+    flex: 1;
+}
+
+.flashcard-word {
+    font-size: 2.2rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--text-color, #0f172a);
+    margin-bottom: 0.35rem;
+    word-break: break-word;
+}
+
+.flashcard-meaning {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text-color, #0f172a);
+    line-height: 1.4;
+    margin-bottom: 0.4rem;
+}
+
+.flashcard-hint-box {
+    margin-top: 0.6rem;
+    padding: 0.5rem 0.75rem;
+    background: #eff6ff;
+    border-radius: var(--radius-md, 10px);
+    font-size: 0.8rem;
+    color: #1e40af;
+    text-align: left;
+    width: 100%;
+    line-height: 1.45;
+}
+
+.flashcard-hint-item {
+    margin-bottom: 0.25rem;
+}
+.flashcard-hint-item:last-child {
+    margin-bottom: 0;
+}
+.flashcard-hint-item strong {
+    color: #1d4ed8;
+    margin-right: 0.25rem;
+}
+
+.flashcard-footer-tip {
+    font-size: 0.74rem;
+    font-weight: 600;
+    color: var(--text-muted, #94a3b8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    padding-top: 0.5rem;
+}
+
+/* スマホ片手親指操作アクションバー */
+.flashcard-thumb-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 480px;
+    margin-top: 1rem;
+    padding: 0 0.25rem;
+    gap: 0.65rem;
+}
+
+.btn-card-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    padding: 0.8rem 1rem;
+    border-radius: var(--radius-full, 9999px);
+    font-size: 0.92rem;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    flex: 1;
+    touch-action: manipulation;
+}
+
+.btn-card-action:active {
+    transform: scale(0.95);
+}
+
+.btn-card-weak {
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1.5px solid #fca5a5;
+}
+
+.btn-card-weak:hover {
+    background: #fee2e2;
+}
+
+.btn-card-speak {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    padding: 0;
+    flex: 0 0 48px;
+    background: #f1f5f9;
+    color: var(--text-color, #0f172a);
+    border: 1px solid var(--border-color, #e2e8f0);
+}
+
+.btn-card-speak:hover {
+    background: #e2e8f0;
+}
+
+.btn-card-master {
+    background: #f0fdf4;
+    color: #16a34a;
+    border: 1.5px solid #86efac;
+}
+
+.btn-card-master:hover {
+    background: #dcfce7;
+}
+
+/* スマホ用ヘッダー・セクションバーの圧縮調整 */
+@media (max-width: 640px) {
+    .words-header {
+        margin-bottom: 0.6rem;
+    }
+    .section-tabs-wrapper {
+        margin-bottom: 0.5rem;
+    }
+    .section-tab-btn {
+        padding: 0.35rem 0.65rem;
+    }
+    .section-tab-btn .sec-label {
+        font-size: 0.78rem;
+    }
+    .section-tab-btn .sec-range {
+        font-size: 0.65rem;
+    }
+    .filter-pills-row {
+        margin-bottom: 0.45rem;
+        gap: 0.3rem;
+    }
+    .filter-pill {
+        padding: 0.28rem 0.65rem;
+        font-size: 0.74rem;
+    }
+    .mask-control-row {
+        margin-bottom: 0.5rem;
+        padding: 0.35rem 0.65rem;
+    }
+    .words-count-text {
+        font-size: 0.72rem;
+        margin-top: 0.35rem;
+    }
+    .word-dict-card {
+        padding: 0.75rem 0.85rem;
+        margin-bottom: 0.5rem;
+    }
+}
+

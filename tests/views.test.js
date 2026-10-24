@@ -173,3 +173,47 @@ test('Navigation tab switching works for words and stats tabs', () => {
     assert(slots.stats.innerHTML.includes('設定・統計'));
 });
 
+test('WordsView flashcard mode supports flipping, status marking, and step navigation', () => {
+    const dom = new JSDOM(`
+        <!DOCTYPE html>
+        <html>
+        <body>
+            <div id="view-words"></div>
+        </body>
+        </html>
+    `, { url: 'http://localhost' });
+
+    global.window = dom.window;
+    global.document = dom.window.document;
+    global.localStorage = dom.window.localStorage;
+
+    const words = preprocessWords(parseTSV(target1400Data)).slice(0, 20);
+    const store = new VocabStore();
+    const container = document.getElementById('view-words');
+    const wordsView = new WordsView({ container, store });
+
+    wordsView.setWords(words);
+    // 初期はリストモード
+    assert.equal(wordsView.viewMode, 'list');
+    assert(container.innerHTML.includes('words-list'));
+
+    // カードめくりモードへ切り替え
+    wordsView.viewMode = 'card';
+    wordsView.render();
+    assert(container.innerHTML.includes('flashcard-stage'));
+    assert(container.innerHTML.includes('flashcard-word'));
+    assert.equal(wordsView.isCardFlipped, false);
+
+    // カードを裏返す（Space / タップ）
+    wordsView.toggleCardFlip();
+    assert.equal(wordsView.isCardFlipped, true);
+    assert(container.innerHTML.includes('flashcard-meaning'));
+
+    // 「覚えた（mastered）」としてマーク
+    const currentWordId = wordsView.getFilteredWords()[0].id;
+    wordsView.markCurrentCard('mastered');
+    assert.equal(store.getWordRecord(currentWordId).status, 'mastered');
+    assert.equal(wordsView.cardIndex, 1); // 次のカードへ進む
+});
+
+
