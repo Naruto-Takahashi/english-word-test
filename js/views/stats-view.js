@@ -3,8 +3,8 @@
  * アプリ管理（PWA）、環境設定（自動送り・発音・効果音）、周回学習・データバックアップ/初期化
  */
 
-import { icons } from '../modules/icons.js?v=5.80';
-import { promptInstallPWA, isStandalone, canInstallPWA, onPWAStateChange } from '../modules/pwa.js?v=5.80';
+import { icons } from '../modules/icons.js?v=5.90';
+import { promptInstallPWA, isStandalone, canInstallPWA, onPWAStateChange } from '../modules/pwa.js?v=5.90';
 
 export class StatsView {
     constructor({ container, store, onSetChange }) {

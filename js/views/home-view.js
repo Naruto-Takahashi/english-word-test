@@ -3,7 +3,7 @@
  * 学習ダッシュボード、現在地・総合進捗、ワンタップスマート学習アクション
  */
 
-import { icons } from '../modules/icons.js?v=5.80';
+import { icons } from '../modules/icons.js?v=5.90';
 
 export class HomeView {
     constructor({ container, store, onStartQuiz, onNavigateTab, onSetChange }) {
@@ -105,23 +105,26 @@ export class HomeView {
                     <h3 class="home-section-title">今日のおすすめ学習</h3>
 
                     <div class="smart-actions-grid">
-                        <!-- 要復習特訓（最優先アクション） -->
+                        <!-- 要復習特訓（苦手単語がある場合） -->
                         ${weakWords.length > 0 ? `
-                            <button id="home-action-weak" class="smart-action-card card-urgent" type="button">
-                                <div class="action-card-icon weak-icon">${icons.rotateCcw(22)}</div>
+                            <button id="home-action-weak" class="smart-action-card" type="button">
+                                <div class="action-card-icon">${icons.rotateCcw(20)}</div>
                                 <div class="action-card-text">
-                                    <div class="action-card-title">苦手単語の集中特訓</div>
-                                    <div class="action-card-desc">要復習に登録された ${weakWords.length} 語をテスト</div>
+                                    <div class="action-card-title-row">
+                                        <span class="action-card-title">苦手単語の集中特訓</span>
+                                        <span class="action-badge-weak">${weakWords.length}語</span>
+                                    </div>
+                                    <div class="action-card-desc">要復習に登録された単語から集中出題</div>
                                 </div>
                                 <span class="action-card-arrow">${icons.arrowRight(16)}</span>
                             </button>
                         ` : ''}
 
                         <!-- 次のセクションテスト -->
-                        <button id="home-action-section" class="smart-action-card card-primary" type="button">
-                            <div class="action-card-icon section-icon">${icons.zap(22)}</div>
+                        <button id="home-action-section" class="smart-action-card" type="button">
+                            <div class="action-card-icon">${icons.zap(20)}</div>
                             <div class="action-card-text">
-                                <div class="action-card-title">Section ${nextSection} のテスト開始</div>
+                                <div class="action-card-title">Section ${nextSection} のテスト</div>
                                 <div class="action-card-desc">No. ${nextSecStart}–${nextSecEnd} から出題</div>
                             </div>
                             <span class="action-card-arrow">${icons.arrowRight(16)}</span>
@@ -130,7 +133,7 @@ export class HomeView {
                         <!-- ブックマーク特訓 -->
                         ${bookmarkedWords.length > 0 ? `
                             <button id="home-action-bookmark" class="smart-action-card" type="button">
-                                <div class="action-card-icon star-icon">${icons.star(22, '', true)}</div>
+                                <div class="action-card-icon">${icons.star(20, '', true)}</div>
                                 <div class="action-card-text">
                                     <div class="action-card-title">お気に入り単語の特訓</div>
                                     <div class="action-card-desc">登録された ${bookmarkedWords.length} 語をテスト</div>
@@ -140,8 +143,8 @@ export class HomeView {
                         ` : ''}
 
                         <!-- 単語帳・暗記へジャンプ -->
-                        <button id="home-action-words" class="smart-action-card card-words" type="button">
-                            <div class="action-card-icon book-icon">${icons.bookOpen(22)}</div>
+                        <button id="home-action-words" class="smart-action-card" type="button">
+                            <div class="action-card-icon">${icons.bookOpen(20)}</div>
                             <div class="action-card-text">
                                 <div class="action-card-title">単語帳で暗記・赤シート</div>
                                 <div class="action-card-desc">リスト閲覧・カードめくり・語源ヒント</div>

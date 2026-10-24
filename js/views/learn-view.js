@@ -3,7 +3,7 @@
  * 出題条件の直前設定（形式・問題数・制限時間・順序）、チャプター別テスト、カスタム範囲テスト
  */
 
-import { icons } from '../modules/icons.js?v=5.80';
+import { icons } from '../modules/icons.js?v=5.90';
 
 export class LearnView {
     constructor({ container, store, onStartQuiz }) {
