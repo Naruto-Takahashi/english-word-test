@@ -18,8 +18,10 @@ export class VocabStore {
             autoAdvance: true,
             autoSpeak: true,
             soundEnabled: true,
-            timeLimit: 0,
-            quizMode: 'en2ja' // 'en2ja' | 'ja2en' | 'spelling'
+            timeLimit: 10, // 10秒（標準） / 5秒 / 0秒（制限なし）
+            quizMode: 'en2ja', // 'en2ja' | 'ja2en'
+            quizOrder: 'random', // 'random' | 'sequential'
+            wordsMask: 'none' // 'none' | 'meaning' | 'word'
         };
         this.load();
     }
@@ -169,6 +171,32 @@ export class VocabStore {
         } catch (e) {
             return { success: false, error: e.message };
         }
+    }
+
+    resetMasteredToLearning() {
+        let count = 0;
+        for (const id in this.wordStats) {
+            if (this.wordStats[id] && this.wordStats[id].status === STATUS.MASTERED) {
+                this.wordStats[id].status = STATUS.LEARNING;
+                this.wordStats[id].streak = 0;
+                count++;
+            }
+        }
+        if (count > 0) this.save();
+        return count;
+    }
+
+    clearWeakStatus() {
+        let count = 0;
+        for (const id in this.wordStats) {
+            if (this.wordStats[id] && this.wordStats[id].status === STATUS.WEAK) {
+                this.wordStats[id].status = STATUS.LEARNING;
+                this.wordStats[id].streak = 0;
+                count++;
+            }
+        }
+        if (count > 0) this.save();
+        return count;
     }
 
     resetCurrentSetData() {

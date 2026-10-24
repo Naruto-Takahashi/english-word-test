@@ -210,6 +210,55 @@
     transform: translateX(19px);
 }
 
+/* ==========================================================================
+   設定画面 ピルセレクター (テスト出題設定)
+   ========================================================================== */
+.setting-item-block {
+    padding: 0.85rem 0.25rem;
+    border-bottom: 1px solid var(--border-color, #f1f5f9);
+}
+.setting-item-block:last-child {
+    border-bottom: none;
+}
+.setting-item-title {
+    display: block;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-color, #0f172a);
+    margin-bottom: 0.5rem;
+}
+.setting-pills-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+.setting-pill {
+    padding: 0.35rem 0.8rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: var(--radius-full, 9999px);
+    border: 1px solid var(--border-color, #e2e8f0);
+    background: #ffffff;
+    color: var(--text-muted, #64748b);
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+    .setting-pill:hover {
+        border-color: #cbd5e1;
+        color: var(--primary-color, #4f46e5);
+    }
+}
+.setting-pill:active {
+    transform: scale(0.97);
+}
+.setting-pill.active {
+    background: var(--primary-light, #eef2ff);
+    border-color: var(--primary-color, #4f46e5);
+    color: var(--primary-color, #4f46e5);
+    font-weight: 700;
+}
+
 
 /* ==========================================================================
    4. アクセシビリティ & フォーカスリング (:focus-visible)
@@ -233,7 +282,9 @@
 .dict-speak-btn:focus-visible,
 .dict-chevron-btn:focus-visible,
 .search-clear-btn:focus-visible,
-.set-btn:focus-visible {
+.set-btn:focus-visible,
+.setting-pill:focus-visible,
+.mask-pill:focus-visible {
     outline: none;
     box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.35) !important;
     border-color: var(--primary-color, #4f46e5);
@@ -331,4 +382,94 @@
 
 .set-btn:active {
     transform: translateY(0) scale(0.98);
+}
+
+/* ==========================================================================
+   暗記マスク（赤シート機能）
+   ========================================================================== */
+.mask-control-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 0.1rem;
+    margin-bottom: 0.25rem;
+}
+
+.mask-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text-muted, #64748b);
+    white-space: nowrap;
+}
+
+.mask-pills {
+    display: flex;
+    gap: 0.35rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+.mask-pills::-webkit-scrollbar {
+    display: none;
+}
+
+.mask-pill {
+    padding: 0.22rem 0.65rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: var(--radius-full, 9999px);
+    border: 1px solid var(--border-color, #e2e8f0);
+    background: #ffffff;
+    color: var(--text-muted, #64748b);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+}
+
+.mask-pill:hover {
+    border-color: #cbd5e1;
+    color: var(--primary-color, #4f46e5);
+}
+
+.mask-pill.active {
+    background: #fee2e2;
+    border-color: #fca5a5;
+    color: #b91c1c;
+    font-weight: 700;
+}
+
+/* マスクされた要素 */
+.is-masked {
+    cursor: pointer;
+    position: relative;
+    user-select: none;
+    -webkit-user-select: none;
+    transition: all 0.2s ease;
+}
+
+.dict-meaning.is-masked {
+    background: #fecaca;
+    color: transparent !important;
+    border-radius: 6px;
+    padding: 0.15rem 0.4rem;
+    display: inline-block;
+    box-shadow: inset 0 0 0 1px rgba(239, 68, 68, 0.2);
+}
+
+.dict-word.is-masked {
+    background: #fecaca;
+    color: transparent !important;
+    border-radius: 6px;
+    padding: 0 0.4rem;
+    box-shadow: inset 0 0 0 1px rgba(239, 68, 68, 0.2);
+}
+
+/* タップして表示（Revealed） */
+.dict-meaning.is-masked.is-revealed,
+.dict-word.is-masked.is-revealed {
+    background: #fef2f2;
+    color: var(--text-color, #0f172a) !important;
+    box-shadow: inset 0 0 0 1px #fca5a5;
 }

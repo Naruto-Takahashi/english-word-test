@@ -2,10 +2,10 @@
  * スピードクイズ（4択 / スペル入力）の画面View
  */
 
-import { initAudio, playSE, speak } from '../modules/audio.js?v=5.10';
-import { saveResultAsImage } from '../modules/share.js?v=5.10';
-import { icons } from '../modules/icons.js?v=5.10';
-import { getWordHint } from '../../data/hints1400.js?v=5.10';
+import { initAudio, playSE, speak } from '../modules/audio.js?v=5.20';
+import { saveResultAsImage } from '../modules/share.js?v=5.20';
+import { icons } from '../modules/icons.js?v=5.20';
+import { getWordHint } from '../../data/hints1400.js?v=5.20';
 
 export class QuizView {
     constructor({ container, store, engine, onFinish }) {
@@ -19,9 +19,16 @@ export class QuizView {
         this.setupKeyListeners();
     }
 
-    startSession({ words, title = 'スピードテスト', mode = 'en2ja', limit = 0, timeLimit = 10 }) {
+    startSession({ 
+        words, 
+        title = 'スピードテスト', 
+        mode = this.store.settings.quizMode || 'en2ja', 
+        limit = 0, 
+        timeLimit = (this.store.settings.timeLimit !== undefined ? this.store.settings.timeLimit : 10),
+        shuffle = (this.store.settings.quizOrder !== 'sequential')
+    }) {
         this.title = title;
-        this.engine.startQuiz({ words, mode, limit, timeLimit });
+        this.engine.startQuiz({ words, mode, limit, timeLimit, shuffle });
         this.isAnswering = false;
         this.renderQuestionScreen();
         this.displayNextQuestion();
@@ -166,9 +173,15 @@ export class QuizView {
             comboBadge.style.display = 'none';
         }
 
-        // 単語情報
+        // 単語情報（出題文: ja2enなら日本語、en2jaなら英単語）
+        const isJa2En = (q.mode === 'ja2en');
         posBadge.textContent = q.word.pos || '単語';
-        wordDisplay.textContent = q.word.word;
+        wordDisplay.textContent = isJa2En ? q.word.meaning : q.word.word;
+        if (isJa2En) {
+            wordDisplay.classList.add('is-ja-prompt');
+        } else {
+            wordDisplay.classList.remove('is-ja-prompt');
+        }
 
         // ブックマーク状態
         const isBkm = this.store.isBookmarked(q.word.id);
@@ -178,25 +191,27 @@ export class QuizView {
             bookmarkBtn.className = `icon-btn-star ${newState ? 'active' : ''}`;
         };
 
-        // 音声
+        // 音声（ja2enモード時は出題時に喋ると答えがバレるため自動再生はスキップ）
         speakBtn.onclick = () => {
             initAudio();
             speak(q.word.word);
         };
-        if (this.store.settings.autoSpeak) {
+        if (this.store.settings.autoSpeak && !isJa2En) {
             setTimeout(() => speak(q.word.word), 250);
         }
 
-        // 選択肢描画
+        // 選択肢描画（ja2enなら英単語、en2jaなら日本語意味）
         optionsGrid.innerHTML = '';
         q.options.forEach((opt, idx) => {
             const btn = document.createElement('button');
             btn.className = 'quiz-option-btn';
+            btn.type = 'button';
             btn.dataset.key = (idx + 1).toString();
             btn.dataset.wordId = opt.id;
+            const optionText = isJa2En ? opt.word : opt.main_meaning;
             btn.innerHTML = `
                 <span class="option-key">${idx + 1}</span>
-                <span class="option-text">${opt.main_meaning}</span>
+                <span class="option-text ${isJa2En ? 'option-text-en' : ''}">${optionText}</span>
             `;
             btn.addEventListener('click', () => this.handleSelectAnswer(opt.id, btn));
             optionsGrid.appendChild(btn);
@@ -273,13 +288,18 @@ export class QuizView {
                 comboBadge.classList.add('combo-pop-animate');
             }
 
-            feedback.innerHTML = `正解！`;
+            feedback.innerHTML = (q.mode === 'ja2en') 
+                ? `正解！ <strong>${q.word.word}</strong>` 
+                : `正解！`;
             feedback.className = 'quiz-feedback feedback-correct';
             if (this.store.settings.soundEnabled) {
                 playSE('correct');
                 if (q.combo + 1 >= 3) {
                     setTimeout(() => playSE('combo', q.combo + 1), 120);
                 }
+            }
+            if (q.mode === 'ja2en') {
+                speak(q.word.word);
             }
 
             // オートアドバンス（自動送り）
@@ -313,8 +333,11 @@ export class QuizView {
                     </div>
                 `;
             }
+            const answerDisplay = (q.mode === 'ja2en') 
+                ? `<strong>${q.word.word}</strong> <span class="feedback-sub-meaning">(${q.word.meaning})</span>`
+                : `<strong>${q.word.meaning}</strong>`;
             feedback.innerHTML = `
-                <div class="feedback-wrong-header">正解: <strong>${q.word.meaning}</strong></div>
+                <div class="feedback-wrong-header">正解: ${answerDisplay}</div>
                 ${hintHtml}
             `;
             feedback.className = 'quiz-feedback feedback-wrong';
@@ -384,8 +407,11 @@ export class QuizView {
             `;
         }
 
+        const answerDisplay = (q.mode === 'ja2en')
+            ? `<strong>${q.word.word}</strong> <span class="feedback-sub-meaning">(${q.word.meaning})</span>`
+            : `<strong>${q.word.meaning}</strong>`;
         feedback.innerHTML = `
-            <div class="feedback-wrong-header"><span class="timeup-tag">TIME UP</span>正解: <strong>${q.word.meaning}</strong></div>
+            <div class="feedback-wrong-header"><span class="timeup-tag">TIME UP</span>正解: ${answerDisplay}</div>
             ${hintHtml}
         `;
         feedback.className = 'quiz-feedback feedback-wrong';

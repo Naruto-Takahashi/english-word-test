@@ -2,18 +2,18 @@
  * 英単語テスト - メインエントリーポイント & ルーター
  */
 
-import { target1200Data } from '../data/target1200.js?v=5.10';
-import { target1400Data } from '../data/target1400.js?v=5.10';
-import { parseTSV, preprocessWords } from './modules/parser.js?v=5.10';
-import { VocabStore } from './modules/store.js?v=5.10';
-import { QuizEngine } from './modules/quiz-engine.js?v=5.10';
-import { initAudio } from './modules/audio.js?v=5.10';
+import { target1200Data } from '../data/target1200.js?v=5.20';
+import { target1400Data } from '../data/target1400.js?v=5.20';
+import { parseTSV, preprocessWords } from './modules/parser.js?v=5.20';
+import { VocabStore } from './modules/store.js?v=5.20';
+import { QuizEngine } from './modules/quiz-engine.js?v=5.20';
+import { initAudio } from './modules/audio.js?v=5.20';
 
-import { LearnView } from './views/learn-view.js?v=5.10';
-import { QuizView } from './views/quiz-view.js?v=5.10';
-import { WordsView } from './views/words-view.js?v=5.10';
-import { StatsView } from './views/stats-view.js?v=5.10';
-import { initPWA, promptInstallPWA, onPWAStateChange } from './modules/pwa.js?v=5.10';
+import { LearnView } from './views/learn-view.js?v=5.20';
+import { QuizView } from './views/quiz-view.js?v=5.20';
+import { WordsView } from './views/words-view.js?v=5.20';
+import { StatsView } from './views/stats-view.js?v=5.20';
+import { initPWA, promptInstallPWA, onPWAStateChange } from './modules/pwa.js?v=5.20';
 
 class App {
     constructor() {
@@ -184,7 +184,7 @@ class App {
         window.scrollTo({ top: 0, behavior: 'instant' });
     }
 
-    startQuiz({ words, title = 'スピードテスト', mode = 'en2ja', limit = 0 }) {
+    startQuiz({ words, title = 'スピードテスト', mode = undefined, limit = 0 }) {
         initAudio();
         document.body.classList.add('in-session');
         Object.keys(this.slots).forEach(name => {

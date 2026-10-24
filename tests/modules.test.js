@@ -190,3 +190,65 @@ test('getWordHint returns rich etymology, loanword link, and grammar note for cu
     assert.equal(hUnregistered, null);
 });
 
+test('VocabStore settings and review maintenance methods', () => {
+    global.localStorage.clear();
+    const store = new VocabStore();
+
+    // デフォルト設定の確認
+    assert.equal(store.settings.timeLimit, 10);
+    assert.equal(store.settings.quizMode, 'en2ja');
+    assert.equal(store.settings.quizOrder, 'random');
+    assert.equal(store.settings.wordsMask, 'none');
+
+    // 設定の保存と復元
+    store.settings.timeLimit = 5;
+    store.settings.quizMode = 'ja2en';
+    store.settings.wordsMask = 'meaning';
+    store.save();
+
+    const store2 = new VocabStore();
+    assert.equal(store2.settings.timeLimit, 5);
+    assert.equal(store2.settings.quizMode, 'ja2en');
+    assert.equal(store2.settings.wordsMask, 'meaning');
+
+    // 単語ステータスの設定
+    // 単語1: 3連勝で MASTERED
+    store.recordResult(1, true);
+    store.recordResult(1, true);
+    store.recordResult(1, true);
+    assert.equal(store.getWordRecord(1).status, STATUS.MASTERED);
+
+    // 単語2: 不正解で WEAK
+    store.recordResult(2, false);
+    assert.equal(store.getWordRecord(2).status, STATUS.WEAK);
+
+    // 周回学習: MASTERED -> LEARNING
+    const resetCount = store.resetMasteredToLearning();
+    assert.equal(resetCount, 1);
+    assert.equal(store.getWordRecord(1).status, STATUS.LEARNING);
+    assert.equal(store.getWordRecord(1).streak, 0);
+
+    // 要復習クリア: WEAK -> LEARNING
+    const clearCount = store.clearWeakStatus();
+    assert.equal(clearCount, 1);
+    assert.equal(store.getWordRecord(2).status, STATUS.LEARNING);
+    assert.equal(store.getWordRecord(2).streak, 0);
+});
+
+test('QuizEngine supports ja2en mode and custom time limits', () => {
+    const words = preprocessWords(parseTSV(target1400Data)).slice(0, 10);
+    const store = new VocabStore();
+    const engine = new QuizEngine({ allWords: words, store });
+
+    // ja2en モード & 制限時間 5秒
+    engine.startQuiz({ words, mode: 'ja2en', timeLimit: 5, shuffle: false });
+    const q = engine.getCurrentQuestion();
+
+    assert.equal(q.mode, 'ja2en');
+    assert.equal(q.timeLimit, 5);
+    assert.equal(q.word.id, 1);
+    assert.equal(q.word.word, 'believe');
+    assert(q.options.some(opt => opt.id === q.word.id));
+});
+
+

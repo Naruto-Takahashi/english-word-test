@@ -3,9 +3,9 @@
  * セクション別分割表示 (Section 1〜14)、全範囲検索、単語番号バッジ、厳選ヒントのアコーディオン表示
  */
 
-import { initAudio, speak } from '../modules/audio.js?v=5.10';
-import { icons } from '../modules/icons.js?v=5.10';
-import { getWordHint } from '../../data/hints1400.js?v=5.10';
+import { initAudio, speak } from '../modules/audio.js?v=5.20';
+import { icons } from '../modules/icons.js?v=5.20';
+import { getWordHint } from '../../data/hints1400.js?v=5.20';
 
 export class WordsView {
     constructor({ container, store }) {
@@ -68,11 +68,21 @@ export class WordsView {
 
                     <!-- フィルターピル -->
                     <div class="filter-pills-row">
-                        <button class="filter-pill ${this.currentFilter === 'all' ? 'active' : ''}" data-filter="all">すべて</button>
-                        <button class="filter-pill ${this.currentFilter === 'bookmarked' ? 'active' : ''}" data-filter="bookmarked">${icons.star(13, '', true)} お気に入り</button>
-                        <button class="filter-pill ${this.currentFilter === 'weak' ? 'active' : ''}" data-filter="weak">${icons.rotateCcw(13)} 要復習</button>
-                        <button class="filter-pill ${this.currentFilter === 'learning' ? 'active' : ''}" data-filter="learning">${icons.bookOpen(13)} 学習中</button>
-                        <button class="filter-pill ${this.currentFilter === 'mastered' ? 'active' : ''}" data-filter="mastered">${icons.check(13)} マスター</button>
+                        <button class="filter-pill ${this.currentFilter === 'all' ? 'active' : ''}" data-filter="all" type="button">すべて</button>
+                        <button class="filter-pill ${this.currentFilter === 'bookmarked' ? 'active' : ''}" data-filter="bookmarked" type="button">${icons.star(13, '', true)} お気に入り</button>
+                        <button class="filter-pill ${this.currentFilter === 'weak' ? 'active' : ''}" data-filter="weak" type="button">${icons.rotateCcw(13)} 要復習</button>
+                        <button class="filter-pill ${this.currentFilter === 'learning' ? 'active' : ''}" data-filter="learning" type="button">${icons.bookOpen(13)} 学習中</button>
+                        <button class="filter-pill ${this.currentFilter === 'mastered' ? 'active' : ''}" data-filter="mastered" type="button">${icons.check(13)} マスター</button>
+                    </div>
+
+                    <!-- 赤シート風マスク切り替えバー -->
+                    <div class="mask-control-row">
+                        <span class="mask-label">${icons.eye(14)} 暗記マスク:</span>
+                        <div class="mask-pills" role="radiogroup" aria-label="暗記マスク切り替え">
+                            <button class="mask-pill ${this.store.settings.wordsMask === 'none' ? 'active' : ''}" data-mask="none" type="button">表示</button>
+                            <button class="mask-pill ${this.store.settings.wordsMask === 'meaning' ? 'active' : ''}" data-mask="meaning" type="button">意味を隠す</button>
+                            <button class="mask-pill ${this.store.settings.wordsMask === 'word' ? 'active' : ''}" data-mask="word" type="button">単語を隠す</button>
+                        </div>
                     </div>
 
                     <div id="words-count-text" class="words-count-text"></div>
@@ -119,6 +129,18 @@ export class WordsView {
             btn.addEventListener('click', () => {
                 this.currentFilter = btn.dataset.filter;
                 this.container.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                this.updateList();
+            });
+        });
+
+        // マスクピル切り替え
+        this.container.querySelectorAll('.mask-pill').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const mask = btn.dataset.mask;
+                this.store.settings.wordsMask = mask;
+                this.store.save();
+                this.container.querySelectorAll('.mask-pill').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 this.updateList();
             });
@@ -250,6 +272,11 @@ export class WordsView {
         // 描画（セクション内は最大100件、検索時はパフォーマンスのため最大200件）
         const displayList = filtered.slice(0, 200);
 
+        // マスク設定の取得
+        const maskMode = this.store.settings.wordsMask || 'none';
+        const isWordMasked = (maskMode === 'word');
+        const isMeaningMasked = (maskMode === 'meaning');
+
         listContainer.innerHTML = displayList.map(w => {
             const record = this.store.getWordRecord(w.id);
             const isBkm = record.bookmarked;
@@ -265,12 +292,12 @@ export class WordsView {
                 <div class="word-dict-card ${hint ? 'has-hint' : ''}" data-word-id="${w.id}">
                     <div class="dict-card-main">
                         <div class="dict-top-row">
-                            <button class="dict-star-btn ${isBkm ? 'active' : ''}" data-word-id="${w.id}" aria-label="お気に入り" title="お気に入り">${icons.star(18)}</button>
+                            <button class="dict-star-btn ${isBkm ? 'active' : ''}" data-word-id="${w.id}" type="button" aria-label="お気に入り" title="お気に入り">${icons.star(18)}</button>
                             <span class="dict-no-badge">No. ${w.id}</span>
                             <div class="dict-word-wrap">
-                                <span class="dict-word">${w.word}</span>
+                                <span class="dict-word ${isWordMasked ? 'is-masked' : ''}" title="${isWordMasked ? 'タップして単語を表示' : ''}">${w.word}</span>
                                 <span class="pos-badge">${w.pos || '単語'}</span>
-                                <button class="dict-speak-btn" data-word="${w.word}" aria-label="発音" title="発音を聞く">${icons.volume(16)}</button>
+                                <button class="dict-speak-btn" data-word="${w.word}" type="button" aria-label="発音" title="発音を聞く">${icons.volume(16)}</button>
                             </div>
                             <div class="dict-card-actions">
                                 <span class="status-pill status-${record.status}">${statusLabel}</span>
@@ -282,7 +309,7 @@ export class WordsView {
                             </div>
                         </div>
                         <div class="dict-meaning-row">
-                            <div class="dict-meaning">${w.meaning}</div>
+                            <div class="dict-meaning ${isMeaningMasked ? 'is-masked' : ''}" title="${isMeaningMasked ? 'タップして意味を表示' : ''}">${w.meaning}</div>
                         </div>
                     </div>
                     ${hint ? `
@@ -299,6 +326,14 @@ export class WordsView {
                 </div>
             `;
         }).join('');
+
+        // イベント設定: マスクされた項目のタップ展開
+        listContainer.querySelectorAll('.is-masked').forEach(el => {
+            el.addEventListener('click', (e) => {
+                e.stopPropagation();
+                el.classList.toggle('is-revealed');
+            });
+        });
 
         // イベント設定: お気に入り
         listContainer.querySelectorAll('.dict-star-btn').forEach(btn => {
@@ -334,7 +369,7 @@ export class WordsView {
             }
 
             card.addEventListener('click', (e) => {
-                if (e.target.closest('.dict-star-btn') || e.target.closest('.dict-speak-btn') || e.target.closest('.dict-chevron-btn')) {
+                if (e.target.closest('.dict-star-btn') || e.target.closest('.dict-speak-btn') || e.target.closest('.dict-chevron-btn') || e.target.closest('.is-masked')) {
                     return;
                 }
                 toggle();
