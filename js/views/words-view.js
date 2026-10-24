@@ -3,9 +3,9 @@
  * セクション別分割表示 (Section 1〜14)、全範囲検索、単語番号バッジ、厳選ヒントのアコーディオン表示
  */
 
-import { initAudio, speak } from '../modules/audio.js?v=5.40';
-import { icons } from '../modules/icons.js?v=5.40';
-import { getWordHint } from '../../data/hints1400.js?v=5.40';
+import { initAudio, speak } from '../modules/audio.js?v=5.50';
+import { icons } from '../modules/icons.js?v=5.50';
+import { getWordHint } from '../../data/hints1400.js?v=5.50';
 
 export class WordsView {
     constructor({ container, store }) {
@@ -20,6 +20,7 @@ export class WordsView {
         this.isCardFlipped = false;
         this.touchStartX = 0;
         this.touchStartY = 0;
+        this.lastActiveMask = (this.store.settings.wordsMask && this.store.settings.wordsMask !== 'none') ? this.store.settings.wordsMask : 'meaning';
         this.setupKeyboardShortcuts();
     }
 
@@ -95,6 +96,8 @@ export class WordsView {
 
         const totalSections = this.getSectionCount();
         const sections = Array.from({ length: totalSections }, (_, i) => i + 1);
+        const maskMode = this.store.settings.wordsMask || 'none';
+        const isRedSheetActive = maskMode !== 'none';
 
         this.container.innerHTML = `
             <div class="words-view-container">
@@ -113,24 +116,32 @@ export class WordsView {
                     </div>
 
                     ${this.viewMode === 'list' ? `
-                        <!-- 検索バー ＆ 赤シートワンタップボタンの横並び行 -->
+                        <!-- 検索バー ＆ 赤シート一体型コントロールの横並び行 -->
                         <div class="search-action-bar">
                             <div class="search-box">
                                 <span class="search-icon">${icons.search(16)}</span>
                                 <input type="text" id="words-search-input" class="search-input" placeholder="英単語や意味で検索 (全範囲)..." value="${this.searchQuery}">
                                 ${this.searchQuery ? `<button id="words-search-clear" class="search-clear-btn" type="button" aria-label="検索をクリア">${icons.x(14)}</button>` : ''}
                             </div>
-                            <button id="btn-red-sheet" class="btn-red-sheet ${this.store.settings.wordsMask !== 'none' ? 'active' : ''}" type="button" aria-label="赤シート（暗記マスク）切り替え" title="赤シートを敷く / 外す">
-                                <span class="red-sheet-icon">
-                                    ${this.store.settings.wordsMask !== 'none' ? icons.eye(16) : icons.eyeOff(16)}
-                                </span>
-                                <span>赤シート ${this.store.settings.wordsMask !== 'none' ? 'ON' : 'OFF'}</span>
-                            </button>
+                            <div class="red-sheet-control-group ${isRedSheetActive ? 'active' : ''}">
+                                <button id="btn-red-sheet" class="btn-red-sheet" type="button" aria-label="赤シート切り替え" title="赤シートを敷く / 外す">
+                                    <span class="red-sheet-icon">
+                                        ${isRedSheetActive ? icons.eye(15) : icons.eyeOff(15)}
+                                    </span>
+                                    <span>赤シート ${isRedSheetActive ? 'ON' : 'OFF'}</span>
+                                </button>
+                                ${isRedSheetActive ? `
+                                    <button id="btn-sheet-target" class="btn-sheet-target" type="button" aria-label="隠す対象切り替え" title="意味 ⇄ 英語を切り替え">
+                                        <span>${maskMode === 'word' ? '英語隠し' : '意味隠し'}</span>
+                                        ${icons.rotateCcw(11)}
+                                    </button>
+                                ` : ''}
+                            </div>
                         </div>
 
-                        ${this.store.settings.wordsMask !== 'none' ? `
+                        ${isRedSheetActive ? `
                             <div class="red-sheet-toast-tip">
-                                ${icons.rotateCcw(12)} 長押しで覗き見、タップでめくり
+                                ${icons.rotateCcw(12)} 長押し・ホバーで覗き見、タップでめくり
                             </div>
                         ` : ''}
 
@@ -241,7 +252,25 @@ export class WordsView {
         if (redSheetBtn) {
             redSheetBtn.addEventListener('click', () => {
                 const current = this.store.settings.wordsMask || 'none';
-                this.store.settings.wordsMask = (current === 'none') ? 'meaning' : 'none';
+                if (current === 'none') {
+                    this.store.settings.wordsMask = this.lastActiveMask || 'meaning';
+                } else {
+                    this.lastActiveMask = current;
+                    this.store.settings.wordsMask = 'none';
+                }
+                this.store.save();
+                this.render();
+            });
+        }
+
+        // 隠す対象（意味 ⇄ 英語）のインライン切り替え
+        const sheetTargetBtn = this.container.querySelector('#btn-sheet-target');
+        if (sheetTargetBtn) {
+            sheetTargetBtn.addEventListener('click', () => {
+                const current = this.store.settings.wordsMask || 'meaning';
+                const next = (current === 'word') ? 'meaning' : 'word';
+                this.store.settings.wordsMask = next;
+                this.lastActiveMask = next;
                 this.store.save();
                 this.render();
             });

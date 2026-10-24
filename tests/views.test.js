@@ -216,4 +216,66 @@ test('WordsView flashcard mode supports flipping, status marking, and step navig
     assert.equal(wordsView.cardIndex, 1); // 次のカードへ進む
 });
 
+test('WordsView supports red sheet toggle and target switching between meaning and word', () => {
+    const dom = new JSDOM(`
+        <!DOCTYPE html>
+        <html>
+        <body>
+            <div id="view-words"></div>
+        </body>
+        </html>
+    `, { url: 'http://localhost' });
+
+    global.window = dom.window;
+    global.document = dom.window.document;
+    global.localStorage = dom.window.localStorage;
+
+    const words = preprocessWords(parseTSV(target1400Data)).slice(0, 10);
+    const store = new VocabStore();
+    store.settings.wordsMask = 'none';
+
+    const container = document.getElementById('view-words');
+    const wordsView = new WordsView({ container, store });
+    wordsView.setWords(words);
+
+    // 初期は赤シートOFF
+    assert.equal(store.settings.wordsMask, 'none');
+    let redSheetBtn = container.querySelector('#btn-red-sheet');
+    assert(redSheetBtn);
+    assert(!container.querySelector('#btn-sheet-target'));
+    assert.equal(container.querySelectorAll('.is-masked').length, 0);
+
+    // 赤シートをONにする
+    redSheetBtn.click();
+    assert.equal(store.settings.wordsMask, 'meaning');
+    assert(container.querySelector('.red-sheet-control-group.active'));
+    let sheetTargetBtn = container.querySelector('#btn-sheet-target');
+    assert(sheetTargetBtn);
+    assert(sheetTargetBtn.textContent.includes('意味隠し'));
+    assert(container.querySelectorAll('.dict-meaning.is-masked').length > 0);
+    assert.equal(container.querySelectorAll('.dict-word.is-masked').length, 0);
+
+    // 隠す対象を「英語」に切り替える
+    sheetTargetBtn.click();
+    assert.equal(store.settings.wordsMask, 'word');
+    sheetTargetBtn = container.querySelector('#btn-sheet-target');
+    assert(sheetTargetBtn);
+    assert(sheetTargetBtn.textContent.includes('英語隠し'));
+    assert(container.querySelectorAll('.dict-word.is-masked').length > 0);
+    assert.equal(container.querySelectorAll('.dict-meaning.is-masked').length, 0);
+
+    // 赤シートをOFFにする
+    redSheetBtn = container.querySelector('#btn-red-sheet');
+    redSheetBtn.click();
+    assert.equal(store.settings.wordsMask, 'none');
+    assert(!container.querySelector('#btn-sheet-target'));
+    assert.equal(container.querySelectorAll('.is-masked').length, 0);
+
+    // 再度赤シートをONにした時、直前の設定（word: 英語隠し）が復元される
+    redSheetBtn = container.querySelector('#btn-red-sheet');
+    redSheetBtn.click();
+    assert.equal(store.settings.wordsMask, 'word');
+    assert(container.querySelectorAll('.dict-word.is-masked').length > 0);
+});
+
 
