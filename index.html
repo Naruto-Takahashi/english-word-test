@@ -15,9 +15,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=4.30">
-    <link rel="stylesheet" href="css/quiz-animations.css?v=4.30">
-    <link rel="stylesheet" href="css/microinteractions.css?v=4.30">
+    <link rel="stylesheet" href="css/style.css?v=4.40">
+    <link rel="stylesheet" href="css/quiz-animations.css?v=4.40">
+    <link rel="stylesheet" href="css/microinteractions.css?v=4.40">
 </head>
 <body>
     <div class="app-layout">
@@ -39,28 +39,6 @@
                         <span>アプリ追加</span>
                     </button>
                 </div>
-
-                <!-- ナビゲーション（PC: ヘッダータブ / スマホ: ボトムナビ） -->
-                <nav class="app-nav" id="app-nav">
-                    <button class="nav-item active" data-tab="learn">
-                        <span class="nav-icon">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
-                        </span>
-                        <span class="nav-label">テスト</span>
-                    </button>
-                    <button class="nav-item" data-tab="words">
-                        <span class="nav-icon">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path></svg>
-                        </span>
-                        <span class="nav-label">単語帳</span>
-                    </button>
-                    <button class="nav-item" data-tab="stats">
-                        <span class="nav-icon">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon"><line x1="4" x2="4" y1="21" y2="14"></line><line x1="4" x2="4" y1="10" y2="3"></line><line x1="12" x2="12" y1="21" y2="12"></line><line x1="12" x2="12" y1="8" y2="3"></line><line x1="20" x2="20" y1="21" y2="16"></line><line x1="20" x2="20" y1="12" y2="3"></line><line x1="1" x2="7" y1="14" y2="14"></line><line x1="9" x2="15" y1="8" y2="8"></line><line x1="17" x2="23" y1="16" y2="16"></line></svg>
-                        </span>
-                        <span class="nav-label">設定</span>
-                    </button>
-                </nav>
             </div>
         </header>
 
@@ -71,8 +49,30 @@
             <section id="view-words" class="view-panel" style="display: none;"></section>
             <section id="view-stats" class="view-panel" style="display: none;"></section>
         </main>
+
+        <!-- ナビゲーション（スマホ: ボトム固定 / PC: ヘッダー配置） -->
+        <nav class="app-nav" id="app-nav">
+            <button class="nav-item active" data-tab="learn">
+                <span class="nav-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                </span>
+                <span class="nav-label">テスト</span>
+            </button>
+            <button class="nav-item" data-tab="words">
+                <span class="nav-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path></svg>
+                </span>
+                <span class="nav-label">単語帳</span>
+            </button>
+            <button class="nav-item" data-tab="stats">
+                <span class="nav-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon"><line x1="4" x2="4" y1="21" y2="14"></line><line x1="4" x2="4" y1="10" y2="3"></line><line x1="12" x2="12" y1="21" y2="12"></line><line x1="12" x2="12" y1="8" y2="3"></line><line x1="20" x2="20" y1="21" y2="16"></line><line x1="20" x2="20" y1="12" y2="3"></line><line x1="1" x2="7" y1="14" y2="14"></line><line x1="9" x2="15" y1="8" y2="8"></line><line x1="17" x2="23" y1="16" y2="16"></line></svg>
+                </span>
+                <span class="nav-label">設定</span>
+            </button>
+        </nav>
     </div>
 
-    <script type="module" src="js/app.js?v=4.00"></script>
+    <script type="module" src="js/app.js?v=4.40"></script>
 </body>
 </html>

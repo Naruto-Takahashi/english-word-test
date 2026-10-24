@@ -122,6 +122,24 @@ class App {
 
     setupNavigation() {
         if (!this.nav) return;
+
+        // PC（幅 820px以上: ヘッダー配置）とスマホ（幅 820px未満: 画面最下部ボトムナビ）でDOM配置を同期
+        const headerInner = document.querySelector('.header-inner');
+        const appLayout = document.querySelector('.app-layout');
+        const syncPlacement = () => {
+            if (window.innerWidth >= 820) {
+                if (headerInner && this.nav.parentElement !== headerInner) {
+                    headerInner.appendChild(this.nav);
+                }
+            } else {
+                if (appLayout && this.nav.parentElement !== appLayout) {
+                    appLayout.appendChild(this.nav);
+                }
+            }
+        };
+        syncPlacement();
+        window.addEventListener('resize', syncPlacement);
+
         this.nav.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', () => {
                 const tab = item.dataset.tab;

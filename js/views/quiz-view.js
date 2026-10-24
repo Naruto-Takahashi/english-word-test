@@ -95,6 +95,9 @@ export class QuizView {
     }
 
     displayNextQuestion() {
+        if (document.activeElement && typeof document.activeElement.blur === 'function') {
+            document.activeElement.blur();
+        }
         clearTimeout(this.autoAdvanceTimer);
         this.engine.stopTimer();
         const q = this.engine.getCurrentQuestion();
@@ -230,6 +233,13 @@ export class QuizView {
         if (!this.isAnswering) return;
         this.isAnswering = false;
         this.engine.stopTimer();
+
+        if (selectedBtn && typeof selectedBtn.blur === 'function') {
+            selectedBtn.blur();
+        }
+        if (document.activeElement && typeof document.activeElement.blur === 'function') {
+            document.activeElement.blur();
+        }
 
         const q = this.engine.getCurrentQuestion();
         if (!q) return;
@@ -577,6 +587,9 @@ export class QuizView {
                             btn.classList.remove('is-active-press');
                         }, 120);
                         btn.click();
+                        if (typeof btn.blur === 'function') {
+                            btn.blur();
+                        }
                     }
                 }
             } else {

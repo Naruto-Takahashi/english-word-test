@@ -175,13 +175,13 @@ body {
 }
 
 body.in-session .app-nav {
-    display: none;
+    display: none !important;
 }
 body.in-session .app-main {
     padding-bottom: 2rem;
 }
 
-/* ボトムナビゲーション（モバイル時） */
+/* ボトムナビゲーション（モバイル時: 画面最下部固定） */
 .app-nav {
     position: fixed;
     bottom: 0;
@@ -189,13 +189,13 @@ body.in-session .app-main {
     transform: translateX(-50%);
     width: 100%;
     max-width: 600px;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(16px);
+    background: #ffffff;
     border-top: 1px solid var(--border-color);
+    box-shadow: 0 -4px 16px rgba(15, 23, 42, 0.06);
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     padding: 0.4rem 0.5rem calc(0.4rem + env(safe-area-inset-bottom));
-    z-index: 50;
+    z-index: 100;
 }
 
 /* PC（画面共有・授業時）のヘッダー内タブナビゲーション */
@@ -206,8 +206,8 @@ body.in-session .app-main {
         width: auto;
         max-width: none;
         background: transparent;
-        backdrop-filter: none;
         border-top: none;
+        box-shadow: none;
         display: flex;
         align-items: center;
         gap: 0.4rem;
@@ -1036,6 +1036,16 @@ body.in-session .app-main {
     text-align: left;
     transition: all 0.12s ease;
     box-shadow: var(--shadow-sm);
+    -webkit-tap-highlight-color: transparent;
+}
+
+.quiz-option-btn:focus {
+    outline: none;
+}
+
+.quiz-option-btn:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
 }
 
 @media (min-width: 768px) {
@@ -1046,10 +1056,13 @@ body.in-session .app-main {
     }
 }
 
-.quiz-option-btn:hover:not(:disabled) {
-    border-color: var(--primary-color);
-    background: var(--primary-light);
-    transform: translateY(-1px);
+/* タッチ端末での hover 残留（Sticky Hover）を根絶するためマウス環境のみに限定 */
+@media (hover: hover) and (pointer: fine) {
+    .quiz-option-btn:hover:not(:disabled) {
+        border-color: var(--primary-color);
+        background: var(--primary-light);
+        transform: translateY(-1px);
+    }
 }
 
 .quiz-option-btn .option-key {
