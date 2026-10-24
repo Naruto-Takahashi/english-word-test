@@ -2,7 +2,7 @@
 // 単語データ
 // ===================================================================================
 // ここに単語データ tsvData を記述する
-const words1200Data = `
+export const target1200Data = `
 No	単語	意味
 1	change	変える
 2	learn	学ぶ
@@ -1705,3 +1705,4 @@ No	単語	意味
 1699	in any case [event]	いずれにしても
 1700	in short	要約すると，手短にいうと
 `;
+export const words1200Data = target1200Data;

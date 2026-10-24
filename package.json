@@ -1,0 +1,25 @@
+{
+  "name": "english-word-test",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "js/app.js",
+  "scripts": {
+    "test": "node --test tests/modules.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Naruto-Takahashi/english-word-test.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Naruto-Takahashi/english-word-test/issues"
+  },
+  "homepage": "https://github.com/Naruto-Takahashi/english-word-test#readme",
+  "dependencies": {
+    "jsdom": "^29.1.1",
+    "puppeteer": "^25.1.0"
+  }
+}

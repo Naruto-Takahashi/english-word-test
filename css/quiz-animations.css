@@ -1,0 +1,331 @@
+/* ===================================================================================
+   VocabFlow - Quiz & Result Animation Styles (quiz-animations.css)
+   =================================================================================== */
+
+/* -----------------------------------------------------------------------------------
+   1. 円形タイマーリング (問題カード内)
+   ----------------------------------------------------------------------------------- */
+.quiz-timer-ring-container {
+    position: relative;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.timer-ring-svg {
+    width: 36px;
+    height: 36px;
+    transform: rotate(-90deg);
+}
+
+.timer-ring-bg {
+    stroke: #e2e8f0;
+}
+
+.timer-ring-progress {
+    stroke: var(--primary-color, #4f46e5);
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.1s linear, stroke 0.3s ease;
+}
+
+.timer-ring-text {
+    position: absolute;
+    font-size: 0.8rem;
+    font-weight: 800;
+    font-family: var(--font-mono, "SF Mono", Menlo, Consolas, monospace);
+    color: var(--text-color, #1e293b);
+    line-height: 1;
+    pointer-events: none;
+    transition: color 0.3s ease;
+}
+
+/* 残り時間1.5秒以下: 警告色へスムーズに変化 & パルス演出 */
+.quiz-timer-ring-container.timer-warning .timer-ring-progress {
+    stroke: var(--danger-color, #ef4444) !important;
+    animation: ringDangerPulse 0.6s ease-in-out infinite alternate;
+}
+
+.quiz-timer-ring-container.timer-warning .timer-ring-text {
+    color: var(--danger-color, #ef4444) !important;
+    animation: textDangerPulse 0.6s ease-in-out infinite alternate;
+}
+
+@keyframes ringDangerPulse {
+    0% {
+        filter: drop-shadow(0 0 2px rgba(239, 68, 68, 0.4));
+    }
+    100% {
+        filter: drop-shadow(0 0 7px rgba(239, 68, 68, 0.85));
+    }
+}
+
+@keyframes textDangerPulse {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1.1);
+    }
+}
+
+
+/* -----------------------------------------------------------------------------------
+   2. 選択肢インタラクション & フィードバック
+   ----------------------------------------------------------------------------------- */
+.quiz-option-btn {
+    transition: transform 0.12s cubic-bezier(0.2, 0.8, 0.2, 1),
+                background-color 0.2s ease,
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
+    will-change: transform;
+}
+
+/* キーボード（1〜4）押下時の一瞬の押し込み & タッチ時の物理的打鍵フィードバック */
+.quiz-option-btn.is-active-press,
+.quiz-option-btn:active:not(:disabled) {
+    transform: scale(0.98) !important;
+}
+
+/* 正解時: 爽やかなグリーン + scale(1.02) + 控えめなグローアニメーション */
+.quiz-option-btn.is-correct {
+    background: var(--success-color, #10b981) !important;
+    border-color: var(--success-color, #10b981) !important;
+    color: #ffffff !important;
+    transform: scale(1.02);
+    animation: correctPopGlow 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.quiz-option-btn.is-correct .option-key {
+    background: rgba(255, 255, 255, 0.25) !important;
+    border-color: transparent !important;
+    color: #ffffff !important;
+}
+
+@keyframes correctPopGlow {
+    0% {
+        transform: scale(0.98);
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6);
+    }
+    50% {
+        transform: scale(1.03);
+        box-shadow: 0 0 18px 4px rgba(16, 185, 129, 0.45);
+    }
+    100% {
+        transform: scale(1.02);
+        box-shadow: 0 0 12px 2px rgba(16, 185, 129, 0.3);
+    }
+}
+
+/* 連続正解（コンボ）バッジの弾けるアニメーション (scale 1.25 -> 1.0) */
+@keyframes comboPop {
+    0% {
+        transform: scale(0.8);
+        opacity: 0.8;
+    }
+    45% {
+        transform: scale(1.25);
+        opacity: 1;
+    }
+    75% {
+        transform: scale(0.96);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.combo-badge,
+.combo-badge.combo-pop-animate {
+    animation: comboPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+/* 不正解時 & タイムアップ時: 物理的な微細シェイクアニメーション */
+@keyframes quizShake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    15% {
+        transform: translateX(-6px);
+    }
+    30% {
+        transform: translateX(6px);
+    }
+    45% {
+        transform: translateX(-4px);
+    }
+    60% {
+        transform: translateX(4px);
+    }
+    75% {
+        transform: translateX(-2px);
+    }
+    90% {
+        transform: translateX(2px);
+    }
+}
+
+.quiz-option-btn.is-wrong {
+    background: var(--danger-color, #ef4444) !important;
+    border-color: var(--danger-color, #ef4444) !important;
+    color: #ffffff !important;
+    animation: quizShake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+.quiz-option-btn.is-wrong .option-key {
+    background: rgba(255, 255, 255, 0.25) !important;
+    border-color: transparent !important;
+    color: #ffffff !important;
+}
+
+/* 問題カード全体のシェイク（タイムアップ時・誤答時） */
+.quiz-card.is-shaking {
+    animation: quizShake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+
+/* -----------------------------------------------------------------------------------
+   3. リザルト画面のプレミアム演出
+   ----------------------------------------------------------------------------------- */
+/* リザルト全体の入場アニメーション（下からスッと浮き上がる） */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.result-container {
+    text-align: center;
+    padding: 1.5rem 0;
+    animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.result-container .result-words-box {
+    animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+}
+
+.result-container .result-btn-col {
+    animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
+}
+
+/* 円形プログレスリング (SVG Circle Progress) */
+.result-ring-wrapper {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    margin: 0 auto 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+}
+
+.result-progress-ring {
+    width: 140px;
+    height: 140px;
+    transform: rotate(-90deg);
+}
+
+.result-progress-ring .ring-bg {
+    fill: none;
+    stroke: #f1f5f9;
+    stroke-width: 9;
+}
+
+.result-progress-ring .ring-progress {
+    fill: none;
+    stroke: var(--primary-color, #4f46e5);
+    stroke-width: 9;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.result-ring-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.result-ring-content .result-score-percent {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--primary-color, #4f46e5);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+
+.result-ring-content .result-score-sub {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-muted, #64748b);
+    margin-top: 0.25rem;
+}
+
+/* 満点 (100%) 時のゴールドグローとお祝い演出 */
+.result-ring-wrapper.is-perfect {
+    border-radius: 50%;
+    animation: goldGlowPulse 2s ease-in-out infinite alternate;
+}
+
+.result-ring-wrapper.is-perfect .ring-progress {
+    stroke: url(#goldGradient) #f59e0b;
+    filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.5));
+}
+
+.result-ring-wrapper.is-perfect .result-score-percent {
+    color: #d97706;
+    background: linear-gradient(135deg, #f59e0b 0%, #b45309 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+@keyframes goldGlowPulse {
+    0% {
+        box-shadow: 0 0 20px rgba(245, 158, 11, 0.3), 0 0 40px rgba(245, 158, 11, 0.15);
+        transform: scale(1);
+    }
+    100% {
+        box-shadow: 0 0 32px rgba(245, 158, 11, 0.65), 0 0 60px rgba(245, 158, 11, 0.3);
+        transform: scale(1.02);
+    }
+}
+
+.result-perfect-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.95rem;
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border: 1.5px solid #f59e0b;
+    border-radius: var(--radius-full, 9999px);
+    color: #b45309;
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.75rem;
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.2);
+    animation: comboPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
+}
+
+.result-title.is-perfect-title {
+    background: linear-gradient(135deg, #d97706 0%, #f59e0b 50%, #b45309 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 1.85rem;
+    font-weight: 800;
+}

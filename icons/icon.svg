@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1" />
+      <stop offset="100%" stop-color="#4338ca" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="16" stdDeviation="24" flood-color="#1e1b4b" flood-opacity="0.3" />
+    </filter>
+  </defs>
+  <!-- Background with subtle gradient & rounded squircle -->
+  <rect width="512" height="512" rx="128" fill="url(#grad)" />
+  
+  <!-- Central Motifs: Open Book base + Lightning Bolt (Speed Vocab Test) -->
+  <g filter="url(#shadow)">
+    <!-- Book Base: clean stylized curves -->
+    <path d="M128 368c36-24 84-24 128 0 44-24 92-24 128 0V176c-36-24-84-24-128 0-44-24-92-24-128 0v192z" 
+          fill="#ffffff" fill-opacity="0.22" />
+    <!-- Dynamic Lightning Bolt of Speed Test -->
+    <polygon points="276 112 188 272 252 272 236 400 324 240 260 240 276 112" 
+             fill="#ffffff" stroke="#ffffff" stroke-width="8" stroke-linejoin="round" />
+  </g>
+</svg>

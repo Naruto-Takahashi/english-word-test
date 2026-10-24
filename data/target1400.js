@@ -1,4 +1,4 @@
-const words1400Data = `No\t単語\t意味
+export const target1400Data = `No\t単語\t意味
 1	believe	を信じる
 2	consider	を見なす
 3	expect	を予期する、と思う
@@ -1400,3 +1400,4 @@ const words1400Data = `No\t単語\t意味
 1399	thorough	徹底的な
 1400	immense	計り知れない
 `;
+export const words1400Data = target1400Data;
